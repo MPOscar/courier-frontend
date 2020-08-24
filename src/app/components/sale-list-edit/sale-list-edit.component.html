@@ -1,0 +1,80 @@
+<div fxLayout="column" fxFlexFill>
+	<h2>Edición Lista</h2>
+	<mat-horizontal-stepper #stepper fxFlexFill>
+		<mat-step fxLayout="column" id="step1Cont">
+			<ng-template matStepLabel>Información básica</ng-template>
+			<div></div>
+			<form [formGroup]="firstFormGroup" fxLayout="column">
+				<mat-form-field>
+					<input
+						#nameInput
+						matInput
+						placeholder="Nombre de la lista de venta"
+						formControlName="name"
+						value="{{ saleListService.listToEdit.nombre }}"
+						required
+					/>
+				</mat-form-field>
+
+				<mat-form-field>
+					<textarea
+						#descriptionInput
+						matInput
+						placeholder="Descripción"
+						formControlName="description"
+						value="{{ saleListService.listToEdit.descripcion }}"
+						required
+						matTextareaAutosize
+						matAutosizeMinRows="1"
+						matAutosizeMaxRows="5"
+					></textarea>
+				</mat-form-field>
+			</form>
+
+			<div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
+				<button mat-raised-button (click)="showList()"></button>
+			</div>
+
+			<div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
+				<button mat-button color="warn" (click)="showList()">Cancelar</button>
+				<div fxLayoutAlign="space-between center" fxLayoutGap="4px">
+					<button
+						color="primary"
+						(click)="firstButtonClick(stepper, nameInput.value, descriptionInput.value)"
+						mat-button
+					>
+						Siguiente
+					</button>
+					<button mat-raised-button color="primary" (click)="saveSaleList()">Guardar</button>
+				</div>
+			</div>
+		</mat-step>
+
+		<mat-step>
+			<ng-template matStepLabel>Target</ng-template>
+			<sale-list-businesses></sale-list-businesses>
+
+			<div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
+				<button mat-button color="warn" (click)="showList()">Cancelar</button>
+				<div fxLayoutAlign="space-between center" fxLayoutGap="4px">
+					<button mat-button color="primary" matStepperPrevious>Anterior</button>
+					<button mat-button color="primary" (click)="secondButtonClick(stepper)">Siguiente</button>
+					<button mat-raised-button color="primary" (click)="saveSaleList()">Guardar</button>
+				</div>
+			</div>
+		</mat-step>
+
+		<mat-step>
+			<ng-template matStepLabel>Productos</ng-template>
+			<sale-list-products [isEditing]="true"></sale-list-products>
+
+			<div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
+				<button mat-button color="warn" (click)="showList()">Cancelar</button>
+				<div fxLayoutAlign="space-between center" fxLayoutGap="4px">
+					<button mat-button color="primary" matStepperPrevious>Anterior</button>
+					<button mat-raised-button color="primary" (click)="saveSaleList()">Guardar</button>
+				</div>
+			</div>
+		</mat-step>
+	</mat-horizontal-stepper>
+</div>

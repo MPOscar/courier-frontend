@@ -1,0 +1,110 @@
+<div
+	*ngIf="isEmpty && palletFormIn?.disabled"
+	class="emptyContainer"
+	fxLayout="column"
+	fxLayoutAlign="space-between center"
+>
+	<mat-icon>error_outline</mat-icon>
+	Este producto no tiene pallets.
+</div>
+
+<div *ngIf="!isEmpty || palletFormIn?.enabled" class="palletizacion">
+	<form [formGroup]="palletFormIn">
+		<div
+			fxLayout="column"
+			fxLayoutAlign.gt-xs="space-around center"
+			fxLayoutAlign.lt-sm="start stretch"
+			[ngClass]="{ 'not-editing': palletFormIn.disabled }"
+		>
+			<div fxLayout="row" fxLayoutAlign="center stretch">
+				<div id="palletImg" fxLayout="column" fxLayoutAlign="space-around center">
+					<img style="max-width: 100%; max-width: 100%;" src="./assets/images/palletizacion.png" />
+				</div>
+			</div>
+			<div
+				fxLayout.gt-xs="row"
+				fxLayoutAlign.gt-xs="center center"
+				fxLayout.lt-sm="column"
+				fxLayoutAlign.lt-sm="center stretch"
+				class="datos-pallet"
+			>
+				<div fxLayout="column" ngClass.gt-xs="cantidades-pallet">
+					<div fxLayout="row" fxLayoutAlign.gt-xs="end center" fxLayoutAlign.lt-sm="start center">
+						<mat-form-field
+							matTooltip="Unidad de venta/pallet"
+							matTooltipShowDelay="1000"
+							fxFlex.gt-xs="75"
+							fxFlex.lt-sm="100"
+						>
+							<input matInput placeholder="Unidad de venta/Pallet" formControlName="unidadesVenta" />
+							<mat-error *ngIf="f?.unidadesVenta?.errors?.pattern">Ingresar número entero</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxLayout="row" fxLayoutAlign.gt-xs="end center" fxLayoutAlign.lt-sm="start center">
+						<mat-form-field
+							matTooltip="Cajas por pallet"
+							matTooltipShowDelay="1000"
+							fxFlex.gt-xs="75"
+							fxFlex.lt-sm="100"
+						>
+							<input matInput placeholder="Cajas/Pallet" formControlName="cajas" />
+							<mat-error *ngIf="f?.cajas?.errors?.pattern">Ingresar número entero</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxLayout="row" fxLayoutAlign.gt-xs="end center" fxLayoutAlign.lt-sm="start center">
+						<mat-form-field
+							matTooltip="Nº Camadas por Pallet"
+							matTooltipShowDelay="1000"
+							fxFlex.gt-xs="75"
+							fxFlex.lt-sm="100"
+						>
+							<input matInput placeholder="Nº Camadas/Pallet" formControlName="camadas" />
+							<mat-error *ngIf="f?.camadas?.errors?.pattern">Ingresar número entero</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+				<mat-divider [vertical]="true" class="divider-medidas" fxHide.lt-sm></mat-divider>
+				<div fxLayout="column" fxLayoutAlign.lt-sm="start stretch">
+					<div fxLayout="row" fxLayoutAlign.gt-xs="start center" fxLayoutAlign.lt-sm="center center">
+						<img
+							class="img-dimensiones"
+							src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/alto.png"
+						/>
+						<mat-form-field fxFlex.gt-xs="50" fxFlex.lt-sm="100">
+							<input matInput placeholder="Alto" formControlName="alto" />
+							<strong matSuffix>CM</strong>
+							<mat-error *ngIf="f?.alto?.errors?.pattern">Ingresar número</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxLayout="row" fxLayoutAlign.gt-xs="start center" fxLayoutAlign.lt-sm="center center">
+						<img
+							class="img-dimensiones"
+							src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/ancho.png"
+						/>
+						<mat-form-field fxFlex.gt-xs="50" fxFlex.lt-sm="100">
+							<input matInput placeholder="Ancho" formControlName="ancho" />
+							<strong matSuffix>CM</strong>
+							<mat-error *ngIf="f?.ancho?.errors?.pattern">Ingresar número</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxLayout="row" fxLayoutAlign.gt-xs="start center" fxLayoutAlign.lt-sm="center center">
+						<img
+							class="img-dimensiones"
+							src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/profundidad.png"
+						/>
+						<mat-form-field
+							fxFlex.gt-xs="50"
+							fxFlex.lt-sm="100"
+							matTooltip="Profundidad"
+							matTooltipShowDelay="1000"
+						>
+							<input matInput placeholder="Prof." formControlName="profundidad" />
+							<strong matSuffix>CM</strong>
+							<mat-error *ngIf="f?.profundidad?.errors?.pattern">Ingresar número</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

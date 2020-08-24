@@ -1,0 +1,56 @@
+<div fxFlexFill>
+	<section id="catalogLeftColumn" fxFlex="15" fxHide.lt-md="true">
+		<div fxFlex class="width-100">
+			<div class="filtrar-titulo">
+				<strong>Filtros</strong>
+			</div>
+
+			<div class="filtros">
+				<app-filtros-catalogo
+					[productos]="productos"
+					[selectedFiltersInput]="selectedFilters"
+					[catalogoOtros]="catalogoOtros"
+					[providerId]="providerId"
+				>
+				</app-filtros-catalogo>
+			</div>
+		</div>
+	</section>
+
+	<section fxLayout="column" fxFlex="60" fxFlex.lt-md="100">
+		<div fxHide.gt-sm="true">
+			<mat-expansion-panel>
+				<mat-expansion-panel-header style="font-size: 16px;"> Filtros </mat-expansion-panel-header>
+				<app-filtros-catalogo
+					[productos]="productos"
+					[selectedFiltersInput]="selectedFilters"
+					[catalogoOtros]="catalogoOtros"
+					[providerId]="providerId"
+				>
+				</app-filtros-catalogo>
+			</mat-expansion-panel>
+		</div>
+
+		<div fxFlex>
+			<app-tabla-catalogo
+				[selectedFiltersInput]="selectedFilters"
+				(productosEmitter)="handleProductosChange($event)"
+				(productoDetalleEmitter)="handleProductoDetalleChange($event)"
+				[catalogoOtros]="catalogoOtros"
+				[proveedorId]="providerId"
+			>
+			</app-tabla-catalogo>
+		</div>
+	</section>
+
+	<section id="catalogoRightColumn" fxFlex="25" fxFlexFill>
+		<app-detalle-producto-catalogo
+			[producto]="productoDetalle"
+			[catalogoOtros]="catalogoOtros"
+			(goToProductDetailEventEmitter)="goToProductDetail($event)"
+			(addToWishlistEventEmitter)="addToWishlist($event)"
+			(removeFromWishlistEventEmitter)="removeFromWishlist($event)"
+		>
+		</app-detalle-producto-catalogo>
+	</section>
+</div>

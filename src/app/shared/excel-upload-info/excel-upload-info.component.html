@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>{{ (dialogData && dialogData.titleKey ? dialogData.titleKey : titleKey) | translate }}</h1>
+
+<p *ngIf="dialogData.data.kitCreados !== '0'">
+    Kits Nuevos: <span class="badge badge-green ml-2">{{ dialogData.data.kitCreados }}</span>
+</p>
+<p *ngIf="dialogData.data.kitActualizados !== '0'">
+    Kits Actualizados: <span class="badge badge-primary ml-2">{{ dialogData.data.kitActualizados }}</span>
+</p>
+<p *ngIf="dialogData.data.productosCreados !== '0'">
+    Productos Nuevos: <span class="badge badge-green ml-2">{{ dialogData.data.productosCreados }}</span>
+</p>
+<p *ngIf="dialogData.data.productosActualizados !== '0'">
+    Productos Actualizados: <span class="badge badge-primary ml-2">{{ dialogData.data.productosActualizados }}</span>
+</p>
+<p *ngIf="dialogData.data.kitDeProductosConError !== '0'">
+    Kits Con Error: <span class="badge badge-red ml-2">{{ dialogData.data.kitDeProductosConError }}</span>
+</p>
+<p *ngIf="dialogData.data.productosConError !== '0'">
+    Productos Con Error: <span class="badge badge-red ml-2">{{ dialogData.data.productosConError }}</span>
+</p>
+<p *ngIf="dialogData.data.totalDeErrores !== '0'">
+    Total de Errores: <span class="badge badge-red ml-2">{{ dialogData.data.totalDeErrores }}</span>
+</p>
+
+<div role="alert" class="alert alert-danger" *ngIf="dialogData.data.erroresKit !== ''">
+    Errores en Productos:
+    <p class="mt-0px" [innerHTML]="dialogData.data.erroresKit"></p>
+</div>
+
+<div role="alert" class="alert alert-danger" *ngIf="dialogData.data.erroresProductos !== ''">
+    Errores en Kits:
+    <p class="mt-0px" [innerHTML]="dialogData.data.erroresProductos"></p>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button [color]="dialogData.okBtnColor ? dialogData.okBtnColor : 'warn'" (click)="accept()">
+		{{ (dialogData && dialogData.okBtnKey ? dialogData.okBtnKey : okBtnKey) | translate }}
+	</button>
+    <button mat-raised-button (click)="cancel()">
+		{{ (dialogData && dialogData.cancelBtnKey ? dialogData.cancelBtnKey : cancelBtnKey) | translate }}
+	</button>
+</div>

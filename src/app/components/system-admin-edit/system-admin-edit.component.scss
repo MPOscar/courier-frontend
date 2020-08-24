@@ -1,0 +1,182 @@
+#welcome {
+	margin-top: 15px;
+	text-align: center;
+}
+.alta {
+	margin-top: 10px;
+}
+.baja {
+	margin-top: 10px;
+}
+.historyRow {
+	height: 16px;
+	position: relative;
+	margin-bottom: 5px;
+}
+.activationRow {
+	height: 20px;
+	position: relative;
+	margin-bottom: 5px;
+}
+#statusTitle {
+	float: left;
+	font-size: 15px;
+}
+#active {
+	color: rgb(70, 219, 97);
+	float: left;
+	margin-left: 20px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+#inactive {
+	color: rgb(216, 23, 23);
+	float: left;
+	margin-left: 20px;
+	font-weight: bold;
+	font-size: 15px;
+}
+#makeInactive {
+	float: left;
+	width: 15%;
+	margin-left: 3%;
+}
+#motiveText {
+	margin-top: 0px;
+	margin-bottom: 5px;
+	resize: none;
+	width: 80%;
+	float: left;
+	background-color: white;
+	border-radius: 7px;
+	height: 50px;
+}
+#buttonDiv {
+	text-align: center;
+}
+
+#saveButton {
+	margin-left: 50px;
+	margin-right: 20px;
+}
+
+#activations {
+	//min-height: 200px;
+	width: 80%;
+	position: relative;
+	margin-top: 60px;
+	margin-left: 30px;
+}
+#productInfo {
+	position: relative;
+	height: 100%;
+}
+#productImg {
+	position: relative;
+	/* display: block; */
+	float: left;
+	width: 200px;
+	//width: 20%;
+	/* margin-top: 25px; */
+	margin-left: 30px;
+}
+
+.example-container {
+	display: flex;
+	flex-direction: column;
+	float: left;
+	width: 75%;
+}
+.example-container button {
+	margin-top: 20px;
+	height: 50px;
+	margin-bottom: 20px;
+	width: 90%;
+}
+.example-container > * {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.example-container form {
+	margin-bottom: 20px;
+}
+
+.example-container form > * {
+	margin: 5px 0;
+}
+
+.example-container .mat-radio-button {
+	margin: 0 5px;
+}
+#createButton {
+	position: relative;
+	float: right;
+	background-color: #2f6bb9;
+	color: white;
+	margin-right: 4%;
+	width: 200px;
+	border-radius: 10px;
+	margin-top: 20px;
+	height: 40px;
+	margin-bottom: 20px;
+}
+
+#createBusinessTitle {
+	display: none;
+}
+
+#radioButtonsContainer {
+	position: relative;
+	width: 90%;
+	margin: 0 auto;
+	height: auto;
+}
+
+#radioButtonsText {
+	position: relative;
+	width: 100px;
+	float: left;
+}
+
+#radioButtons {
+	position: relative;
+	width: 100px;
+	float: left;
+	margin-left: 5px;
+}
+
+#providerRadioButtonOption {
+	margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+	#productImg {
+		position: relative;
+		width: 100%;
+		margin: auto;
+		margin-top: 25px;
+		height: auto;
+	}
+
+	#createBusinessTitle {
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 35px;
+	}
+
+	#createButton {
+		float: none;
+		margin-right: 0px;
+		width: 90%;
+		margin: 0 auto;
+		display: block;
+		margin-top: 20px;
+	}
+
+	.example-container {
+		font-size: 14px;
+	}
+}

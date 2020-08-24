@@ -1,0 +1,131 @@
+<!--<div class="spinner" *ngIf="!product && !isCreating" fxLayout="column" fxLayoutAlign="space-around center">
+	<mat-spinner></mat-spinner>
+</div>-->
+<div class="product-detail" *ngIf="product || isCreating" fxLayout="row" fxLayoutAlign="space-around center">
+	<mat-card fxFlex.lt-md="100" fxFlex.gt-sm="680px">
+		<div fxLayout="column">
+			<div fxLayout="row" fxLayoutAlign="space-between center">
+				<button mat-button color="primary" (click)="goBack()"><mat-icon>arrow_back</mat-icon> Volver</button>
+				<div fxHide.lt-md>
+					<button
+						*ngIf="isProviderAdmin && !productosService.isEditingProduct && !isCreating"
+						mat-button
+						color="warn"
+						(click)="openDeleteProduct()"
+					>
+						<mat-icon>delete_forever</mat-icon>
+						Eliminar Producto
+					</button>
+					<button
+						*ngIf="isProviderAdmin && !productosService.isEditingProduct && !isCreating"
+						mat-button
+						color="primary"
+						(click)="goToEdit()"
+					>
+						<mat-icon>edit</mat-icon>
+						Editar Producto
+					</button>
+
+					<ng-container *ngTemplateOutlet="buttonTemplate"></ng-container>
+				</div>
+				<div fxHide.gt-sm>
+					<button
+						mat-icon-button
+						[matMenuTriggerFor]="utilsMenu"
+						*ngIf="!productosService.isEditingProduct && !isCreating"
+					>
+						<mat-icon>more_vert</mat-icon>
+					</button>
+					<mat-menu #utilsMenu="matMenu">
+						<button
+							*ngIf="isProviderAdmin && !productosService.isEditingProduct && !isCreating"
+							mat-menu-item
+							(click)="openDeleteProduct()"
+						>
+							<mat-icon>delete_forever</mat-icon>
+							Eliminar Producto
+						</button>
+						<button
+							*ngIf="isProviderAdmin && !productosService.isEditingProduct && !isCreating"
+							mat-menu-item
+							(click)="goToEdit()"
+						>
+							<mat-icon>edit</mat-icon>
+							Editar Producto
+						</button>
+					</mat-menu>
+					<div>
+						<ng-container *ngTemplateOutlet="buttonTemplate"></ng-container>
+						<ng-template #buttonTemplate>
+							<button
+								*ngIf="isProviderAdmin && productosService.isEditingProduct && !isCreating"
+								mat-button
+								(click)="cancelEdit()"
+							>
+								Cancelar
+							</button>
+							<button
+								*ngIf="(isProviderAdmin && productosService.isEditingProduct) || isCreating"
+								mat-flat-button
+								color="primary"
+								(click)="saveProduct()"
+								[disabled]="!productForm.valid"
+							>
+								Guardar
+							</button>
+						</ng-template>
+					</div>
+				</div>
+			</div>
+
+			<mat-tab-group class="margen-tabs" dynamicHeight="true">
+				<mat-tab>
+					<ng-template mat-tab-label>
+						Información
+					</ng-template>
+					<app-producto-info
+						[productoFormIn]="getProductoInfoForm()"
+						[presentaciones]="presentaciones"
+						[imgURLIn]="imgURL"
+						(imageOut)="handleImageChangeEvent($event)"
+					></app-producto-info>
+				</mat-tab>
+
+				<mat-tab>
+					<ng-template mat-tab-label> Empaques </ng-template>
+					<app-producto-empaques
+						[empaquesFormIn]="getEmpaquesForm()"
+						[emptyEmpaqueForm]="createEmpaqueFormGroup()"
+						[isEmpty]="empaquesIsEmpty()"
+					></app-producto-empaques>
+				</mat-tab>
+
+				<mat-tab>
+					<ng-template mat-tab-label> Palletización </ng-template>
+					<app-producto-pallet
+						[palletFormIn]="getPalletForm()"
+						[isEmpty]="palletIsEmpty()"
+					></app-producto-pallet>
+				</mat-tab>
+
+				<mat-tab [ngClass]="{ hidden: !isCreating }">
+					<ng-template mat-tab-label> Visibilidad </ng-template>
+
+					<div *ngIf="productosService.isEditingProduct" id="product-visibility-text">
+						Limitar la visibilidad de este producto solo a las siguientes Empresas y/o Grupos de Empresas
+					</div>
+					<product-detail-visibility></product-detail-visibility>
+
+					<mat-divider *ngIf="businessesDataSource?.renderedData.length == 0"></mat-divider>
+				</mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label> Categoria GPC </ng-template>
+          <app-producto-categoria-gpc [disabled]="!(productosService.isEditingProduct || isCreating)" [categoriaGPC]="product?.categoriaGPC" (categoriaGPCEventEmitter)="updateCategoriaGPC($event)"
+          ></app-producto-categoria-gpc>
+        </mat-tab>
+
+			</mat-tab-group>
+		</div>
+	</mat-card>
+</div>

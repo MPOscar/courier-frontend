@@ -1,0 +1,39 @@
+.image-mobile {
+	margin-top: 32px;
+}
+.title-container {
+	margin-top: 32px;
+	margin-left: 24px;
+}
+.title {
+	font-weight: bold;
+	font-size: 1.5em;
+	width: 100%;
+}
+.title-not-editing {
+	.mat-input-element:disabled {
+		color: rgba(0, 0, 0, 1);
+		-webkit-text-fill-color: rgba(0, 0, 0, 1);
+		opacity: 1;
+	}
+	::ng-deep .mat-form-field-underline {
+		display: none;
+	}
+}
+.informacion {
+	margin-left: 24px;
+	opacity: 1;
+}
+.image-upload {
+	margin-bottom: 10px;
+}
+.checkbox-spacing {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+mat-form-field {
+	margin-bottom: 5px;
+}
+.medidas {
+	margin-top: 25px;
+}

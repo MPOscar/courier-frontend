@@ -1,0 +1,15 @@
+<!--<div class="spinner" *ngIf="loaderVisible" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner></mat-spinner>
+</div>-->
+
+<div *ngIf="!loaderVisible" class="business-groups" fxLayout="row" fxLayoutAlign="space-around center">
+	<mat-card fxFlex="85" fxFlex.sm="100" fxFlex.xs="100">
+		<button *ngIf="groupsService.showGroup" mat-stroked-button color="primary" (click)="showList()">
+			<mat-icon>arrow_back</mat-icon> Listado
+		</button>
+
+		<business-groups-list *ngIf="groupsService.showList"></business-groups-list>
+		<business-group-create *ngIf="groupsService.showCreate"></business-group-create>
+		<business-groups-edit *ngIf="groupsService.showGroup"></business-groups-edit>
+	</mat-card>
+</div>

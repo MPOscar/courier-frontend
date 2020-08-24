@@ -1,0 +1,17 @@
+[
+	{
+		"id": 1023,
+		"nombre": "ALGORTA",
+		"logoUrl": "assets/images/algortaLogo.png"
+	},
+	{
+		"id": 1001,
+		"nombre": "UNILEVER",
+		"logoUrl": "assets/images/unileverLogo.png"
+	},
+	{
+		"id": 1002,
+		"nombre": "DIAGEO",
+		"logoUrl": "assets/images/diageoLogo.png"
+	}
+]

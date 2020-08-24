@@ -1,0 +1,96 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'assets/css/flex.scss';
+@import 'app.scss';
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.mat-button,
+.mat-raised-button {
+    .mat-icon {
+        margin-top: 5px;
+        font-size: 16px;
+        width: auto;
+    }
+}
+
+mat-table td {
+    height: 48px !important;
+}
+
+.detalles-producto ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.detalles-producto ::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+.detalles-producto ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.x-scroll {
+    overflow-x: auto;
+}
+
+.y-scroll {
+    overflow-y: auto;
+}
+
+.scroll {
+    overflow: auto;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table-no-results {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.width-100 {
+    width: 100% !important;
+}
+
+.mat-header-cell,
+.mat-cell,
+.mat-form-field {
+    touch-action: auto !important;
+}
+
+.mat-paginator {
+    background: inherit !important;
+    .mat-paginator-range-label {
+        margin: 0 0 0 15px !important;
+    }
+}
+
+.mat-chip-list-wrapper {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    .mat-chip {
+        flex: 0 0 auto;
+    }
+}

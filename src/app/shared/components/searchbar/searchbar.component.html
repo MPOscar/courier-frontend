@@ -1,0 +1,26 @@
+<div fxLayoutAlign="start center" class="filtros-row">
+	<label class="chip-filtros-label">
+		<mat-icon>search</mat-icon>
+	</label>
+
+	<mat-form-field class="filtros-chip-list" floatLabel="never">
+		<mat-chip-list #chipList disableRipple>
+			<mat-chip
+				*ngFor="let filter of selectedFilters; let i = index"
+				[removable]="true"
+				(removed)="removeFilter(filter)"
+			>
+				{{ filter }}
+				<mat-icon matChipRemove>cancelar</mat-icon>
+			</mat-chip>
+
+			<input
+				matInput
+				[matChipInputFor]="chipList"
+				[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+				[matChipInputAddOnBlur]="true"
+				(matChipInputTokenEnd)="addFiltro($event)"
+			/>
+		</mat-chip-list>
+	</mat-form-field>
+</div>

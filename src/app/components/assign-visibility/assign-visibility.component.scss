@@ -1,0 +1,9 @@
+.assign-visibility {
+	margin-bottom: 16px;
+}
+
+@media screen and (max-width: 768px) {
+	::ng-deep .mat-horizontal-content-container {
+		padding: 0 0 24px 0 !important;
+	}
+}

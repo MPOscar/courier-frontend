@@ -1,0 +1,65 @@
+<div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="start stretch" style="height:100vh">
+	<div class="divPallets" fxFlex="50" fxLayoutAlign="center center" fxFlex.xs="30">
+		<img src="/assets/images/logoRondanet.svg" style="width: 60%" />
+	</div>
+
+	<div
+		fxLayout="row"
+		fxLayoutAlign="center center"
+		fxFlex="50"
+		fxFlex.xs="85"
+		fxLayoutAlign.xs="center start"
+		style="background-color: #EEE; font-size: 15px;"
+	>
+		<div id="registerFormCol" fxLayoutAlign="center center">
+			<form class="register-form" [formGroup]="registerForm" (ngSubmit)="register()">
+				<h1>Registro</h1>
+				<mat-form-field>
+					<input matInput required placeholder="Nombre" formControlName="nombre" [(ngModel)]="user.nombre" />
+					<mat-error *ngIf="registerForm.get('name')?.invalid">No puede estar vacío.</mat-error>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input
+						matInput
+						required
+						placeholder="Apellido"
+						formControlName="apellido"
+						[(ngModel)]="user.apellido"
+					/>
+					<mat-error *ngIf="registerForm.get('apellido')?.invalid">No puede estar vacío.</mat-error>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input matInput required placeholder="Email" formControlName="email" [(ngModel)]="user.email" />
+					<mat-error *ngIf="registerForm.get('userEmail')?.invalid">Email inválido.</mat-error>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input
+						matInput
+						required
+						minlength="6"
+						placeholder="Contraseña"
+						formControlName="contrasena"
+						[type]="hidePassword ? 'password' : 'text'"
+						[(ngModel)]="user.contrasena"
+					/>
+					<mat-icon matSuffix (click)="hidePassword = !hidePassword; $event.stopPropagation()">{{
+						hidePassword ? 'visibility' : 'visibility_off'
+					}}</mat-icon>
+					<mat-error *ngIf="registerForm.get('password')?.invalid"
+						>Contraseña debe tener al menos 6 caracteres.</mat-error
+					>
+				</mat-form-field>
+
+				<div class="form-button">
+					<button mat-raised-button color="primary" type="submit">REGISTRAR</button>
+					<div class="smallButtons">
+						<button id="goToLoginButton" (click)="goToLogin()">Volver al login</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

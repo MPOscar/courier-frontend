@@ -1,0 +1,85 @@
+.example-container {
+	display: flex;
+	flex-direction: column;
+}
+.example-container button {
+	margin-top: 20px;
+	height: 50px;
+	margin-bottom: 20px;
+	width: 90%;
+}
+.example-container > * {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.example-container form {
+	margin-bottom: 20px;
+}
+
+.example-container form > * {
+	margin: 5px 0;
+}
+
+.example-container .mat-checkbox {
+	margin: 0 5px;
+}
+#createButton {
+	position: relative;
+	background-color: rgba(51, 109, 182, 1);
+	color: white;
+	margin-right: 4%;
+	border-radius: 7px;
+	margin-top: 20px;
+	height: 35px;
+	margin-bottom: 20px;
+}
+
+#createUserTitle {
+	color: #797979;
+	font-size: 19px;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+#roleTitleRow {
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 20px;
+	overflow: hidden;
+}
+
+#roleTitle {
+	width: 70px;
+	float: left;
+	color: rgba(145, 145, 145, 1);
+}
+#roleOptions {
+	width: 100px;
+	float: left;
+}
+
+.mat-checkbox {
+	//width: 15px;
+	//height: 15px;
+	margin-bottom: 7px;
+	color: rgba(145, 145, 145, 1);
+}
+
+@media screen and (max-width: 768px) {
+	#createBusinessTitle {
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 35px;
+	}
+
+	#createButton {
+		float: none;
+		margin-right: 0px;
+		width: 90%;
+		margin: 0 auto;
+		display: block;
+		margin-top: 20px;
+	}
+}

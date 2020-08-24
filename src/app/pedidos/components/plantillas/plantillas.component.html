@@ -1,0 +1,87 @@
+<main
+	fxLayout="column"
+	fxFlexFill
+	fxLayoutAlign="start stretch"
+	[ngStyle]="{ 'min-width.px': 500 }"
+	[ngStyle.md]="{ 'width.px': 500 }"
+	[ngStyle.xs]="{ 'width.px': 350 }"
+	class="no-scroll"
+>
+	<!-- Header Section -->
+	<header fxFlex="60px" class="main-bar mat-elevation-z1">
+		<div fxFlex="10" fxLayoutAlign="start center">
+			<button mat-icon-button (click)="ocultarPlantilla(false)" matTooltip="Ocultar Plantillas">
+				<mat-icon>chevron_right</mat-icon>
+			</button>
+		</div>
+
+		<div fxFlex="80" fxLayoutAlign="center center">
+			<span>Plantillas</span>
+		</div>
+	</header>
+
+	<section
+		fxFlex
+		fxFlexFill
+		fxLayout="column"
+		fxLayoutAlign="start"
+		class="scroll"
+		*ngIf="plantillaDataSource != undefined"
+	>
+		<mat-table fxFlex fxFlexFill id="carritoTable" [dataSource]="plantillaDataSource">
+			<ng-container matColumnDef="descripcion">
+				<mat-header-cell fxFlex="40" fxLayoutAlign="start center" *matHeaderCellDef
+					>Descripción</mat-header-cell
+				>
+				<mat-cell fxFlex="40" fxLayoutAlign="start center" *matCellDef="let element">
+					<mat-radio-button value="{{ element.id }}" (change)="changeSeleccion($event)"></mat-radio-button>
+					<small>{{ element.nombre }}</small>
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="fecha">
+				<mat-header-cell fxFlex="40" fxLayoutAlign="start center" *matHeaderCellDef>Fecha</mat-header-cell>
+				<mat-cell fxFlex="40" fxLayoutAlign="start center" *matCellDef="let element">
+					<small>{{ element.fechaEdicion | date: 'dd/MM/yyyy' }}</small>
+				</mat-cell>
+			</ng-container>
+			<!--	<ng-container matColumnDef="actions">
+				<mat-cell fxFlex="30" fxLayoutAlign="start center" *matCellDef="let element">
+					<button mat-icon-button color="primary" matTooltip="Delete" (click)="delete(element.id)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</mat-cell>
+      </ng-container>-->
+			<ng-container matColumnDef="actions">
+				<mat-header-cell fxFlex="30" fxLayoutAlign="start center" *matHeaderCellDef></mat-header-cell>
+				<mat-cell fxFlex="30" fxLayoutAlign="start center" *matCellDef="let element">
+					<button mat-icon-button color="primary" matTooltip="Delete" (click)="delete(element.id)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</mat-cell>
+			</ng-container>
+			<mat-header-row *matHeaderRowDef="plantillaDisplayedColumns; sticky: true"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: plantillaDisplayedColumns"></mat-row>
+		</mat-table>
+
+		<div *ngIf="plantillaDataSource.data.length === 0" class="table-no-results" [@estadoCarrito]="'vacio'">
+			Usted no tiene plantillas guardadas.
+		</div>
+	</section>
+	<section id="subtotales" fxFlex="64px" fxFlexFill fxLayout="column" fxLayoutAlign="end stretch">
+		<div>
+			<mat-toolbar>
+				<mat-toolbar-row fxLayoutAlign="end center">
+					<button
+						aria-label="Enviar Pedido"
+						mat-raised-button
+						color="primary"
+						matTooltip="Finalizar Pedido"
+						(click)="seleccionarPlantilla()"
+					>
+						Seleccionar Plantilla
+					</button>
+				</mat-toolbar-row>
+			</mat-toolbar>
+		</div>
+	</section>
+</main>

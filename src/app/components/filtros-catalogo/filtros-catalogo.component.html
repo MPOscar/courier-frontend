@@ -1,0 +1,72 @@
+<div *ngFor="let tipos of tiposFiltros">
+	<mat-form-field *ngIf="tipos.filtros.length > 0" fxFlex.gt-sm="90" fxFlex.lt-md="100">
+		<mat-label>{{ tipos.nombre }}</mat-label>
+		<mat-select multiple>
+			<mat-option
+				*ngFor="let filtro of tipos.filtros; let i = index"
+				(onSelectionChange)="checkFiltro($event, tipos.nombre)"
+				[value]="filtro.nombre"
+				>{{ filtro.nombre }}</mat-option
+			>
+		</mat-select>
+	</mat-form-field>
+</div>
+
+<!-- TO DO: código comentado son los filtros de visibilidad -->
+
+<!-- <div
+	fxLayoutAlign="start center"
+	fxLayout="row"
+	(click)="visibilidadCollapsed = !visibilidadCollapsed"
+	class="filtro-visibilidad"
+>
+	<mat-icon [@buttonRotate]="visibilidadCollapsed ? 'default' : 'rotated'">keyboard_arrow_down</mat-icon>
+	Visibilidad
+</div>
+
+<div class="filtro-visibilidad-contenido" [@collapseChange]="visibilidadCollapsed">
+	<div class="filtro-checkbox">
+		<mat-checkbox color="primary" [(ngModel)]="productosPublicosCheck" (change)="checkProdPublicos()">
+			Productos Públicos
+		</mat-checkbox>
+	</div>
+
+	<div class="filtro-checkbox">
+		<mat-checkbox
+			color="primary"
+			class="filtro-checkbox"
+			[(ngModel)]="productosPrivadosCheck"
+			(change)="checkProdPrivados()"
+		>
+			Productos Ocultos
+		</mat-checkbox>
+	</div>
+
+	<div
+		fxLayoutAlign="start center"
+		fxLayout="row"
+		(click)="prodPrivadosCollapsed = !prodPrivadosCollapsed"
+		class="filtro-prod-privados"
+	>
+		<mat-icon [@buttonRotate]="prodPrivadosCollapsed ? 'default' : 'rotated'">keyboard_arrow_down</mat-icon>
+		Productos Privados
+	</div>
+	<div [@collapseChange]="prodPrivadosCollapsed">
+		<div class="select-visibilidad">
+			<mat-form-field>
+				<mat-label>Grupos de empresas</mat-label>
+				<mat-select multiple>
+					<mat-option *ngFor="let grupo of businessGroups" [value]="grupo">{{ grupo?.nombre }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="select-visibilidad">
+			<mat-form-field>
+				<mat-label>Empresas</mat-label>
+				<mat-select multiple>
+					<mat-option *ngFor="let empresa of businesses" [value]="empresa">{{ empresa?.nombre }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
+</div> -->

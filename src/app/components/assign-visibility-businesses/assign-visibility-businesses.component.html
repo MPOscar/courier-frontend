@@ -1,0 +1,413 @@
+<div fxLayout="column" fxFlexFill>
+	<h3>Privacidad</h3>
+
+	<mat-radio-group
+		aria-label="Seleccione la visibilidad:"
+		[(ngModel)]="privacidadSeleccionada"
+		(change)="cambiarPrivacidad()"
+		class="privacy-selectors-group"
+		fxLayout.lt-md="column"
+	>
+		<mat-radio-button class="privacy-selectors" *ngFor="let privacidad of privacidades" [value]="privacidad">
+			{{ privacidad }}
+		</mat-radio-button>
+	</mat-radio-group>
+
+	<p *ngIf="!isPrivate && !isPublic" class="noProducts" fxLayout="row" fxLayoutAlign="center center">
+		<mat-icon class="visibility-icons">visibility_off</mat-icon>Productos ocultos para todas las empresas.
+	</p>
+
+	<p *ngIf="isPublic" class="noProducts" fxLayout="row" fxLayoutAlign="center center">
+		<mat-icon class="visibility-icons">visibility</mat-icon>Productos públicos para todas las empresas.
+	</p>
+
+	<ng-container [fxHide]="!isPrivate">
+		<h3>Empresas seleccionadas</h3>
+
+		<div fxLayout="column" [fxHide]="!showAddedBusinesses" class="x-scroll">
+			<mat-table
+				fxFlex
+				#addedBusinessesSort="matSort"
+				class="businesses-table"
+				[dataSource]="addedBusinessesDataSource"
+				matSort
+				matSortActive="nombre"
+				matSortDirection="asc"
+			>
+				<ng-container matColumnDef="checkbox">
+					<mat-header-cell *matHeaderCellDef>
+						<mat-checkbox
+							(change)="$event ? masterToggleAddedBusinesses() : null"
+							[checked]="addedBusinessesSelection.hasValue() && areAllAddedBusinessesSelected()"
+							[indeterminate]="addedBusinessesSelection.hasValue() && !areAllAddedBusinessesSelected()"
+						>
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element">
+						<mat-checkbox
+							(click)="$event.stopPropagation()"
+							(change)="$event ? removeBusinessFromAdded(element) : null"
+							[checked]="addedBusinessesSelection.isSelected(element)"
+						>
+						</mat-checkbox
+					></mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="nombre">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="rut">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> RUT </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.rut }} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="razonSocial">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.razonSocial }} </mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumnsBusinesses"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumnsBusinesses; let rowInd = index"> </mat-row>
+			</mat-table>
+		</div>
+
+		<div [fxHide]="!showAddedBusinesses">
+			<footer class="footerVisibility" style="bottom: 0px; width: 100%;background-color: #fafafa;">
+				<mat-paginator
+					#addedBusinessesPaginator
+					[length]="addedBusinessesLength"
+					[pageIndex]="0"
+					[pageSize]="25"
+					[pageSizeOptions]="[5, 10, 25, 100]"
+				>
+				</mat-paginator>
+			</footer>
+		</div>
+
+		<div class="table-no-results" [fxHide]="showAddedBusinesses">
+			No hay empresas seleccionadas
+		</div>
+
+		<div [fxHide]="!showAddedBusinesses">
+			<button mat-raised-button class="add-button" color="warn" (click)="removeBusinesses()">
+				Quitar Empresas
+			</button>
+		</div>
+
+		<h3>Grupos de Empresas seleccionados</h3>
+
+		<div class="table-no-results" [fxHide]="showAddedGroups">
+			No hay grupos seleccionados
+		</div>
+
+		<div [fxHide]="!showAddedGroups">
+			<mat-table
+				fxFlexFill
+				#addedGroupsSort="matSort"
+				[dataSource]="addedGroupsDataSource"
+				matSort
+				class="groups-table"
+				matSortActive="nombre"
+				matSortDirection="asc"
+			>
+				<ng-container matColumnDef="checkbox">
+					<mat-header-cell *matHeaderCellDef>
+						<mat-checkbox
+							(change)="$event ? masterToggleAddedGroups() : null"
+							[checked]="addedGroupsSelection.hasValue() && areAllAddedGroupsSelected()"
+							[indeterminate]="addedGroupsSelection.hasValue() && !areAllAddedGroupsSelected()"
+						>
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element">
+						<mat-checkbox
+							(click)="$event.stopPropagation()"
+							(change)="$event ? removeGroupFromAdded(element) : null"
+							[checked]="addedGroupsSelection.isSelected(element)"
+						>
+						</mat-checkbox
+					></mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="emptyCheckbox">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+					<mat-cell *matCellDef="let element"> </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="tituloGrupo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </mat-header-cell>
+					<mat-cell *matCellDef="let element"> </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="nombre">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de empresa </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="razonSocial">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.razonSocial }} </mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumnsGroupsHeader"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumnsBusinessesOfGroup; let rowInd = index">
+				</mat-row>
+
+				<ng-container matColumnDef="groupHeader">
+					<mat-cell *matCellDef="let element" style="font-weight:bold;"> {{ element?.nombre }} </mat-cell>
+				</ng-container>
+
+				<mat-row *matRowDef="let row; columns: displayedColumnsGroup; when: isGroup" class="groupRow">
+				</mat-row>
+			</mat-table>
+
+			<div
+				class="table-no-results"
+				[style.display]="addedGroupsDataSource?.renderedData.length == 0 ? '' : 'none'"
+			>
+				No hay grupos de empresas agregados.
+			</div>
+			<div>
+				<footer class="footerVisibility" style="bottom: 0px; width: 100%;background-color: #fafafa;">
+					<mat-paginator
+						#addedGroupsPaginator
+						[length]="addedGroupsLength"
+						[pageIndex]="0"
+						[pageSize]="25"
+						[pageSizeOptions]="[5, 10, 25, 100]"
+					>
+					</mat-paginator>
+				</footer>
+			</div>
+			<div>
+				<button mat-raised-button class="add-button" color="warn" (click)="removeGroups()">
+					Quitar Grupos
+				</button>
+			</div>
+		</div>
+
+		<div *ngIf="isProviderAdmin" class="checkbox-container">
+			<mat-radio-group class="radio-group" (change)="changeRadioButton()">
+				<mat-radio-button value="true" checked="checked">Empresas</mat-radio-button>
+				<mat-radio-button value="false" id="second-radio-button">Grupos de Empresas</mat-radio-button>
+			</mat-radio-group>
+		</div>
+
+		<h3 [fxHide]="!isProviderAdmin || !businessesRadioButtonSelected">
+			Seleccionar empresas
+		</h3>
+
+		<h3 [fxHide]="!isProviderAdmin || businessesRadioButtonSelected">
+			Seleccionar grupos de empresas
+		</h3>
+
+		<div fxFlex="60px" fxLayoutAlign="start center" class="filtros-row">
+			<label class="chip-filtros-label">
+				<mat-icon>search</mat-icon>
+			</label>
+
+			<mat-form-field class="filtros-chip-list" floatLabel="never">
+				<mat-chip-list #chipList disableRipple>
+					<mat-chip
+						*ngFor="let filter of selectedFilters; let i = index"
+						[removable]="true"
+						(removed)="removeFilter(filter)"
+					>
+						{{ filter }}
+						<mat-icon matChipRemove>cancelar</mat-icon>
+					</mat-chip>
+
+					<input
+						matInput
+						[matChipInputFor]="chipList"
+						[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+						[matChipInputAddOnBlur]="true"
+						(matChipInputTokenEnd)="addFiltro($event)"
+					/>
+				</mat-chip-list>
+			</mat-form-field>
+		</div>
+
+		<div
+			fxLayout="column"
+			[fxHide]="!isProviderAdmin || businessesRadioButtonSelected || !groupsDataSource?.renderedData.length"
+			class="x-scroll"
+		>
+			<mat-table
+				fxFlex
+				multiTemplateDataRows
+				#groupsSort="matSort"
+				class="groups-table"
+				[dataSource]="groupsDataSource"
+				matSort
+				matSortActive="nombre"
+				matSortDirection="asc"
+			>
+				<ng-container matColumnDef="checkbox">
+					<mat-header-cell *matHeaderCellDef>
+						<mat-checkbox
+							(change)="$event ? masterToggleGroups() : null"
+							[checked]="groupsSelection.hasValue() && areAllGroupsSelected()"
+							[indeterminate]="groupsSelection.hasValue() && !areAllGroupsSelected()"
+						>
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element">
+						<mat-checkbox
+							(click)="$event.stopPropagation()"
+							(change)="$event ? addGroup(element) : null"
+							[checked]="groupsSelection.isSelected(element)"
+						>
+						</mat-checkbox
+					></mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="emptyCheckbox">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+					<mat-cell *matCellDef="let element"> </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="tituloGrupo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </mat-header-cell>
+					<mat-cell *matCellDef="let element"> </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="nombre">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de empresa </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="razonSocial">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.razonSocial }} </mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumnsGroupsHeader"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumnsBusinessesOfGroup; let rowInd = index">
+				</mat-row>
+
+				<ng-container matColumnDef="groupHeader">
+					<mat-cell *matCellDef="let element" style="font-weight:bold;"> {{ element?.nombre }} </mat-cell>
+				</ng-container>
+
+				<mat-row *matRowDef="let row; columns: displayedColumnsGroup; when: isGroup" class="groupRow">
+				</mat-row>
+			</mat-table>
+
+			<div>
+				<footer class="footerVisibility" style="bottom: 0px; width: 100%; background-color: #fafafa;">
+					<mat-paginator
+						#groupsPaginator
+						[length]="groupsLength"
+						[pageIndex]="0"
+						[pageSize]="25"
+						[pageSizeOptions]="[5, 10, 25, 100]"
+					>
+					</mat-paginator>
+				</footer>
+			</div>
+		</div>
+
+		<div
+			class="table-no-results"
+			[fxHide]="!isProviderAdmin || businessesRadioButtonSelected || groupsDataSource?.renderedData.length"
+		>
+			No hay grupos de empresas
+		</div>
+
+		<div [fxHide]="!isProviderAdmin || businessesRadioButtonSelected || !groupsDataSource?.renderedData.length">
+			<button mat-raised-button class="add-button" color="primary" (click)="addGroups()">
+				Agregar Grupos
+			</button>
+		</div>
+
+		<div
+			fxLayout="column"
+			[fxHide]="!isProviderAdmin || !businessesRadioButtonSelected || !businessesDataSource?.renderedData.length"
+			class="x-scroll"
+		>
+			<mat-table
+				fxFlex
+				#businessesSort="matSort"
+				class="businesses-table"
+				[dataSource]="businessesDataSource"
+				matSort
+				matSortActive="nombre"
+				matSortDirection="asc"
+			>
+				<ng-container matColumnDef="checkbox">
+					<mat-header-cell *matHeaderCellDef>
+						<mat-checkbox
+							(change)="$event ? masterToggleBusinesses() : null"
+							[checked]="businessesSelection.hasValue() && areAllBusinessesSelected()"
+							[indeterminate]="businessesSelection.hasValue() && !areAllBusinessesSelected()"
+						>
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element">
+						<mat-checkbox
+							(click)="$event.stopPropagation()"
+							(change)="$event ? addBusiness(element) : null"
+							[checked]="businessesSelection.isSelected(element)"
+						>
+						</mat-checkbox
+					></mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="nombre">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="rut">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> RUT </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.rut }} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="razonSocial">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{ element?.razonSocial }} </mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumnsBusinesses"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumnsBusinesses; let rowInd = index"> </mat-row>
+			</mat-table>
+		</div>
+
+		<div
+			class="table-no-results"
+			[fxHide]="!isProviderAdmin || !businessesRadioButtonSelected || businessesDataSource?.renderedData.length"
+		>
+			No hay empresas
+		</div>
+
+		<div
+			[fxHide]="!isProviderAdmin || !businessesRadioButtonSelected || !businessesDataSource?.renderedData.length"
+		>
+			<footer class="footerVisibility" style="bottom: 0px; width: 100%;background-color: #fafafa;">
+				<mat-paginator
+					#businessesPaginator
+					[length]="businessesLength"
+					[pageIndex]="0"
+					[pageSize]="25"
+					[pageSizeOptions]="[5, 10, 25, 100]"
+				>
+				</mat-paginator>
+			</footer>
+		</div>
+
+		<div
+			[fxHide]="!isProviderAdmin || !businessesRadioButtonSelected || !businessesDataSource?.renderedData.length"
+		>
+			<button mat-raised-button class="add-button" color="primary" (click)="addBusinesses()">
+				Agregar Empresas
+			</button>
+		</div>
+	</ng-container>
+</div>

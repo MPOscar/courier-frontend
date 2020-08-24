@@ -1,0 +1,109 @@
+create-business {
+	width: 100%;
+}
+
+.main-div {
+	.nopad {
+		height: 100%;
+		> div {
+			padding: 0;
+		}
+	}
+	.main-bar {
+		height: 60px;
+		z-index: 100;
+		.filtros-chip-list {
+			margin-left: 20px;
+			margin-top: 10px;
+			margin-right: 20px;
+			width: 100%;
+			input {
+				font-size: 16px;
+			}
+		}
+		label.chip-filtros-label {
+			margin-left: 15px;
+			font-size: 1.1rem;
+			color: rgba(0, 0, 0, 0.54);
+		}
+		.fill-space {
+			flex: 1 1 auto;
+		}
+	}
+	.filtros-div {
+		border-right: 1px solid #e0e0e0;
+		.filtrar-titulo {
+			padding: 20px 8px 5px 25px;
+			strong {
+				color: #3f51b5;
+				font-size: 1.3rem;
+			}
+		}
+		.filtros {
+			padding: 10px 8px 10px 20px;
+			font-size: 1rem;
+			cursor: pointer;
+			label.mat-checkbox-layout .mat-checkbox-inner-container {
+				transform: scale(0.7) !important;
+			}
+			mat-checkbox {
+				.mat-checkbox-label {
+					font-size: 0.65rem;
+				}
+				.mat-icon {
+					transform: scale(0.7);
+				}
+			}
+		}
+	}
+}
+
+#createBusiness {
+	cursor: pointer;
+	height: 31px;
+}
+#editBusiness {
+	height: 31px;
+}
+.main-bar strong {
+	color: #3f51b5;
+	font-size: 1.6rem;
+}
+
+.mat-chip:not(.mat-basic-chip):focus {
+	box-shadow: none !important;
+}
+
+.mat-form-field {
+	width: 100%;
+}
+
+.mat-sidenav-content {
+	z-index: 1;
+}
+
+.sidenav-container {
+	height: 100%;
+}
+
+.sidenav-content {
+	height: 100%;
+}
+
+#leftColumnAdminBusinesses {
+	display: block;
+}
+
+#adminBusinesses {
+	width: 100%;
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+@media screen and (max-width: 768px) {
+	#adminBusinesses {
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+	}
+}

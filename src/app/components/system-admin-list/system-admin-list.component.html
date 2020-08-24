@@ -1,0 +1,115 @@
+<div class="userList">
+	<div class="titleDiv">Administradores Confirmados</div>
+	<div class="tableDiv">
+		<mat-table
+			fxFlexFill
+			#tableUsuarios
+			id="tableUsuarios"
+			[dataSource]="dataSource"
+			matSort
+			matSortActive="nombre"
+			matSortDirection="asc"
+		>
+			<ng-container matColumnDef="nombre">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.nombre }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="apellido">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.apellido }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="email">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.email }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="quitar">
+				<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<button mat-raised-button class="quitarButton" (click)="deleteAdmin(element)">
+						Eliminar Administrador
+					</button>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+			<mat-row
+				*matRowDef="let row; columns: displayedColumns; let rowInd = index"
+				[ngClass]="{ 'detalles-row': detallesRow == rowInd }"
+				(click)="selection.toggle(row)"
+			>
+			</mat-row>
+		</mat-table>
+
+		<div class="table-no-results" [style.display]="dataSource?.renderedData.length == 0 ? '' : 'none'">
+			No hay usuarios.
+		</div>
+
+		<footer style="display: none">
+			<mat-paginator
+				#paginator
+				[length]="dataSource?.filteredData?.length"
+				[pageIndex]="0"
+				[pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+	</div>
+
+	<div [ngClass]="pendingInvitations == true ? 'titleDiv' : 'hidden'">Invitaciones enviadas</div>
+	<div [ngClass]="pendingInvitations == true ? 'tableDiv' : 'hidden'">
+		<mat-table
+			fxFlexFill
+			#tableInvitations
+			id="tableInvitations"
+			[dataSource]="invitationsDataSource"
+			matSort
+			matSortActive="email"
+			matSortDirection="asc"
+		>
+			<ng-container matColumnDef="invitationEmail">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.email }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="invitationQuitar">
+				<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<button mat-raised-button class="editarButton" (click)="sendEmail(element)">
+						Volver a enviar email
+					</button>
+					<button mat-raised-button class="quitarButton" (click)="cancelInvitation(element)">
+						Cancelar invitación
+					</button>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="invitationDisplayedColumns"></mat-header-row>
+
+			<mat-row
+				*matRowDef="let row; columns: invitationDisplayedColumns; let rowInd = index"
+				[ngClass]="{ 'detalles-row': detallesRow == rowInd }"
+			>
+			</mat-row>
+		</mat-table>
+
+		<div class="table-no-results" [style.display]="invitationsDataSource?.renderedData.length == 0 ? '' : 'none'">
+			No hay usuarios.
+		</div>
+
+		<footer style="display: none">
+			<mat-paginator
+				#paginator
+				[length]="dataSource?.filteredData?.length"
+				[pageIndex]="0"
+				[pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+	</div>
+</div>

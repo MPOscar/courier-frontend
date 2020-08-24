@@ -1,0 +1,81 @@
+i.proveedores-back {
+	margin-left: 20px;
+}
+
+.orden-compra-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #3f51b5;
+}
+
+#tableOrden {
+	margin-top: 20px;
+	display: block;
+	width: 100%;
+
+	.mat-row,
+	.mat-header-row {
+		display: flex;
+		align-items: center;
+		min-height: 48px;
+		padding: 0 24px;
+	}
+
+	.mat-cell,
+	.mat-header-cell {
+		flex: 1;
+		overflow: hidden;
+		word-wrap: break-word;
+	}
+
+	.mat-header-row {
+		background: whitesmoke;
+	}
+
+	.para-row {
+		color: rgba(0, 0, 0, 0.57);
+		background: rgb(216, 216, 216);
+	}
+
+	.mat-column-descripcion {
+		flex: 0 0 40%;
+	}
+
+	.mat-column-cantidad {
+		text-align: center;
+		flex: 0 0 10%;
+	}
+
+	.mat-column-precio {
+		text-align: center;
+		flex: 0 0 10%;
+	}
+
+	.mat-column-cajacamad {
+		text-align: center;
+		flex: 0 0 10%;
+	}
+
+	.mat-column-camadpall {
+		text-align: center;
+		flex: 0 0 10%;
+	}
+
+	.mat-column-unidcaja {
+		text-align: center;
+		flex: 0 0 10%;
+	}
+
+	.mat-column-envcant {
+		text-align: center;
+		flex: 0 0 10%;
+	}
+}
+
+.total-div {
+	float: right;
+	margin: 30px 35px 10px 10px;
+	color: #3f51b5;
+	font-size: 1.3rem;
+	border-bottom: 1px dotted;
+}

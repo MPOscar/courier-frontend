@@ -1,0 +1,44 @@
+<mat-sidenav-container class="sidenav-container">
+	<div fxFlexFill fxLayout="column" class="main-div">
+		<div fxLayout="row" class="nopad">
+			<div fxFlexFill fxLayout="column">
+				<div fxFlex style="height: calc(100% - 60px)">
+					<div fxFlexFill fxLayout="row">
+						<div id="businessGroupsLeftColumn" fxFlex="15">
+							<div fxFlexFill class="filtros-div">
+								<div
+									(click)="doShowCreateUser()"
+									class="filtrar-titulo"
+									[style.background-color]="userService.showCreateUser ? '#ffffff' : '#fafafa'"
+								>
+									<strong>Invitar Usuario</strong>
+								</div>
+								<mat-divider></mat-divider>
+								<div
+									(click)="doShowListUsers()"
+									class="filtrar-titulo"
+									[style.background-color]="userService.showProviderUserList ? '#ffffff' : '#fafafa'"
+								>
+									<strong>Listar Usuarios</strong>
+								</div>
+							</div>
+						</div>
+
+						<div id="businessGroupsRightColumn" fxLayout="row">
+							<div id="usersCenterColumn">
+								<create-system-admin
+									*ngIf="userService.showCreateUser"
+									style="width: 95%;"
+								></create-system-admin>
+								<system-admin-list
+									*ngIf="userService.showProviderUserList"
+									style="width: 95%;"
+								></system-admin-list>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</mat-sidenav-container>

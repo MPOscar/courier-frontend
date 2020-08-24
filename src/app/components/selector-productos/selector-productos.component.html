@@ -1,0 +1,18 @@
+<div fxLayout="column" fxFlexFill>
+	<h3>Productos Seleccionados</h3>
+
+	<app-selector-productos-tabla
+		[isAddingTable]="false"
+		[productsIn]="selectedElementsIn"
+		(productosOut)="removeElements($event)"
+	></app-selector-productos-tabla>
+
+	<h3>Seleccionar productos</h3>
+
+	<app-selector-productos-tabla
+		[isAddingTable]="true"
+		[productsIn]="allElementsIn"
+		[newProductosIn]="newElements"
+		(productosOut)="addElements($event)"
+	></app-selector-productos-tabla>
+</div>

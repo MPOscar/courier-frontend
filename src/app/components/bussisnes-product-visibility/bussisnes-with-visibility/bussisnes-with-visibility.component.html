@@ -1,0 +1,17 @@
+<mat-card id="providerSelectionCard">
+	<div id="topRow">Empresas con visibilidad sobre mis productos</div>
+	<div id="bottomRow">
+		<div id="textContainer"><div id="selectProviderText">Seleccione una empresa</div></div>
+		<div id="selectContainer">
+			<mat-select id="dropdownBusinesses" placeholder="Empresas" [(ngModel)]="selectedValue">
+				<div *ngFor="let empresa of empresas">
+					<mat-option [value]="empresa">{{ empresa.nombre }}</mat-option>
+				</div>
+			</mat-select>
+		</div>
+		<div id="buttonContainer">
+			<button mat-raised-button id="selectBusinessButton" (click)="goToProvider()">Seleccionar</button>
+		</div>
+	</div>
+</mat-card>
+<visible-products [products]="products" (deleteVisibilityEventEmitter)="deleteBussisnesFromList()"></visible-products>

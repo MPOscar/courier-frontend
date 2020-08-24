@@ -1,0 +1,127 @@
+<form [formGroup]="productoFormIn">
+    <div fxLayout="row" fxLayoutAlign="center center" fxHide.gt-xs class="image-mobile">
+        <ng-container *ngTemplateOutlet="imageTemplate"></ng-container>
+    </div>
+    <div ngClass.gt-xs="title-container">
+        <mat-form-field class="title" [ngClass]="{ 'title-not-editing': productoFormIn.disabled }">
+            <textarea matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="3" matInput required [placeholder]="productoFormIn.enabled ? 'Descripción' : ''" formControlName="descripcion"></textarea>
+            <mat-error *ngIf="f?.descripcion?.errors?.required">Campo requerido</mat-error>
+            <mat-hint *ngIf="productoFormIn.enabled">Campo requerido</mat-hint>
+        </mat-form-field>
+    </div>
+    <div [ngClass]="{ 'not-editing': productoFormIn.disabled }">
+        <div fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between start" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start stretch" ngClass.gt-xs="informacion" [ngClass]="{ 'not-editing': productoFormIn.disabled }">
+            <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex.gt-xs="50">
+                <mat-form-field matTooltip="Código Producto Proveedor" matTooltipShowDelay="1000">
+                    <input matInput required placeholder="CPP" formControlName="cpp" />
+                    <mat-error *ngIf="f?.cpp?.errors?.required">Campo requerido</mat-error>
+                    <mat-hint *ngIf="productoFormIn.enabled">Campo requerido</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="GTIN" formControlName="gtin" />
+                    <mat-error *ngIf="f?.gtin?.errors?.required">Campo requerido</mat-error>
+                    <mat-hint *ngIf="productoFormIn.enabled">Campo requerido</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="País de Origen" formControlName="paisOrigen">
+                        <div *ngFor="let element of countries">
+                            <mat-option [value]="element?.alpha2">{{ element?.name }}</mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="Marca" formControlName="marca" />
+                    <mat-error *ngIf="f?.marca?.errors?.required">Campo requerido</mat-error>
+                    <mat-hint *ngIf="productoFormIn.enabled">Campo requerido</mat-hint>
+                </mat-form-field>
+                <mat-form-field matTooltipShowDelay="1000">
+                    <input matInput placeholder="División" formControlName="division" />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Linea" formControlName="linea" />
+                    <mat-error *ngIf="f?.linea?.errors?.mustNotMatch">Linea debe ser distinta a división</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select [compareWith]="presentationCompare" placeholder="Presentación" formControlName="presentacion">
+                        <div *ngFor="let element of presentaciones">
+                            <mat-option [value]="element">{{ element?.nombre }}</mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+                <div fxLayout="row" fxLayoutAlign=" center">
+                    <mat-form-field fxFlex="70">
+                        <input matInput required placeholder="Contenido Neto" formControlName="contenidoNeto" />
+                        <mat-error *ngIf="f?.contenidoNeto?.errors?.required">Campo requerido</mat-error>
+                        <mat-error *ngIf="f?.contenidoNeto?.errors?.pattern">Ingresar número</mat-error>
+                        <mat-hint *ngIf="productoFormIn.enabled">Campo requerido</mat-hint>
+                    </mat-form-field>
+                    <span fxFlex="2"></span>
+                    <mat-form-field matToolTip="Unidad Medida Contenido Neto" fxFlex="28">
+                        <mat-select required placeholder="Unidad" formControlName="unidadMedida">
+                            <div *ngFor="let element of measurementUnits">
+                                <mat-option [value]="element">{{ element }}</mat-option>
+                            </div>
+                        </mat-select>
+                        <mat-error *ngIf="f?.unidadMedida?.errors?.required">Requerido</mat-error>
+                        <mat-hint *ngIf="productoFormIn.enabled">Requerido</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign=" center">
+                    <mat-form-field fxFlex="70">
+                        <input matInput placeholder="Peso Bruto" formControlName="pesoBruto" />
+                        <mat-error *ngIf="f?.pesoBruto?.errors?.pattern">Ingresar número</mat-error>
+                    </mat-form-field>
+                    <span fxFlex="2"></span>
+                    <mat-form-field matToolTip="Unidad Medida Peso Bruto" fxFlex="28">
+                        <mat-select placeholder="Unidad" formControlName="unidadMedidaPesoBruto">
+                            <div *ngFor="let element of weightUnits">
+                                <mat-option [value]="element">{{ element }}</mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <mat-form-field matTooltip="De a cuantas unidades de consumo se venden" matTooltipShowDelay="1000">
+                    <input type="number" matInput placeholder="Unidades de Consumo" formControlName="nivelMinimoVenta" />
+                    <mat-error *ngIf="f?.nivelMinimoVenta?.errors?.pattern">Ingresar número</mat-error>
+                </mat-form-field>
+                <mat-checkbox class="checkbox-spacing" matTooltip="Indica si es promoción o no" matTooltipShowDelay="1000" formControlName="esPromo" labelPosition="before">Es Promo</mat-checkbox>
+            </div>
+            <div fxLayout="column">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxHide.lt-sm>
+                        <ng-container *ngTemplateOutlet="imageTemplate"></ng-container>
+                    </div>
+                    <ng-template #imageTemplate>
+                        <app-image-upload (fileChange)="handleImageChangeEvent($event)" [actualImagePath]="imgURLIn" [showButton]="productoFormIn.enabled" class="image-upload"></app-image-upload>
+                    </ng-template>
+                </div>
+                <div fxLayout="column" ngClass.gt-xs="medidas">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <img class="img-dimensiones" src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/alto.png" />
+                        <mat-form-field fxFlex.gt-xs="55" fxFlex.lt-sm="100">
+                            <input matInput placeholder="Alto" formControlName="alto" />
+                            <strong matSuffix>CM</strong>
+                            <mat-error *ngIf="f?.alto?.errors?.pattern">Ingresar número</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <img class="img-dimensiones" src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/ancho.png" />
+                        <mat-form-field fxFlex.gt-xs="55" fxFlex.lt-sm="100">
+                            <input matInput placeholder="Ancho" formControlName="ancho" />
+                            <strong matSuffix>CM</strong>
+                            <mat-error *ngIf="f?.ancho?.errors?.pattern">Ingresar número</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <img class="img-dimensiones" src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/profundidad.png" />
+                        <mat-form-field fxFlex.gt-xs="55" fxFlex.lt-sm="100" matTooltip="Profundidad" matTooltipShowDelay="1000">
+                            <input matInput placeholder="Profundidad" formControlName="profundidad" />
+                            <strong matSuffix>CM</strong>
+                            <mat-error *ngIf="f?.profundidad?.errors?.pattern">Ingresar número</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,27 @@
+{
+	"productName": "Catalogo",
+	"systemName": "Catalogo Systems",
+	"external": false,
+	"apiConfigs": {
+		"authentication": {
+			"loginUser": {
+				"apiEndpoint": "token/"
+			},
+			"revokeUser": {
+				"apiEndpoint": "revoke-token/"
+			},
+			"changePassword": {
+				"apiEndpoint": "passwordchange/"
+			},
+			"tokenExpirationTime": {
+				"apiEndpoint": "token/expirationtime/"
+			}
+		},
+		"settings": {
+			"apiEndpoint": "settings/"
+		},
+		"images": {
+			"apiEndpoint": "/file/producto"
+		}
+	}
+}

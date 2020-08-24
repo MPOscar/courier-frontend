@@ -1,0 +1,48 @@
+<div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="start stretch" style="height:100vh">
+	<div class="divPallets" fxFlex="50" fxLayoutAlign="center center" fxFlex.xs="30">
+		<img src="/assets/images/logoRondanet.svg" style="width: 60%" />
+	</div>
+
+	<div
+		fxLayout="row"
+		fxLayoutAlign="center center"
+		fxFlex="50"
+		fxFlex.xs="85"
+		fxLayoutAlign.xs="center start"
+		style="background-color: #EEE; font-size: 15px;"
+	>
+		<div id="loginFormCol" fxLayoutAlign="center center">
+			<form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+				<h1>Ingresar</h1>
+				<p>Bienvenido a lo que estabas buscando.</p>
+				<mat-form-field>
+					<input matInput placeholder="Usuario" formControlName="usuario" />
+					<mat-error *ngIf="loginForm.get('usuario')?.invalid">No puede estar vacío.</mat-error>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input
+						matInput
+						placeholder="Contraseña"
+						formControlName="contrasena"
+						[type]="hidePassword ? 'password' : 'text'"
+					/>
+					<mat-icon matSuffix (click)="hidePassword = !hidePassword; $event.stopPropagation()">{{
+						hidePassword ? 'visibility' : 'visibility_off'
+					}}</mat-icon>
+					<mat-error *ngIf="loginForm.get('contrasena')?.invalid">No puede estar vacío.</mat-error>
+				</mat-form-field>
+
+				<div class="form-button">
+					<button mat-raised-button color="primary" type="submit">Ingresar</button>
+					<div class="smallButtons">
+						<button id="forgotPasswordButton" routerLink="/olvide-mi-contrasena">
+							Olvidé mi contraseña
+						</button>
+						<button id="noAccountButton" routerLink="/registro">No tengo cuenta</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

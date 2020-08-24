@@ -1,0 +1,24 @@
+<h2>Asignación de visibilidad masiva</h2>
+<mat-horizontal-stepper #stepper fxFlexFill>
+	<mat-step completed="false" fxLayout="column" id="step1column">
+		<ng-template matStepLabel>Productos</ng-template>
+		<assign-visibility-products></assign-visibility-products>
+		<div fxLayout="row" style="margin-top: 15px; " fxLayoutAlign="space-between center">
+			<button mat-button color="warn" (click)="showList()">Cancelar</button>
+			<button (click)="productsChosen(stepper)" mat-raised-button color="primary">Siguiente</button>
+		</div>
+	</mat-step>
+
+	<mat-step completed="false">
+		<ng-template matStepLabel>Empresas</ng-template>
+		<assign-visibility-businesses></assign-visibility-businesses>
+		<!-- <sale-list-businesses></sale-list-businesses> -->
+		<div fxLayout="row" style="margin-top:15px;" fxLayoutAlign="space-between center">
+			<button mat-button color="warn" (click)="showList()">Cancelar</button>
+			<div>
+				<button mat-button matStepperPrevious>Anterior</button>
+				<button (click)="businessesChosen(stepper)" mat-raised-button color="primary">Guardar</button>
+			</div>
+		</div>
+	</mat-step>
+</mat-horizontal-stepper>

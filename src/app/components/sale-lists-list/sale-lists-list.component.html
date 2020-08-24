@@ -1,0 +1,75 @@
+<div>
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h2>Listas de Venta</h2>
+		<button
+			*ngIf="saleListService.showList && !saleListService.showEdit && saleListService.canCreate"
+			mat-raised-button
+			color="primary"
+			(click)="showCreateSaleList()"
+		>
+			Crear
+		</button>
+	</div>
+	<mat-table
+		fxFlexFill
+		#tableListasDeVenta
+		id="tableListasDeVenta"
+		[dataSource]="listaVentaBasicDataSource"
+		matSort
+		matSortActive="nombre"
+		matSortDirection="asc"
+	>
+		<ng-container matColumnDef="nombre">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+			<mat-cell *matCellDef="let element">{{ element.nombre }}</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="descripcion">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</mat-header-cell>
+			<mat-cell *matCellDef="let element">{{ element.descripcion }}</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="quitar" [style.display]="saleListService.canCreate ? '' : 'none'">
+			<mat-header-cell *matHeaderCellDef></mat-header-cell>
+			<mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+				<button
+					[style.display]="saleListService.canCreate ? '' : 'none'"
+					*ngIf="canEdit"
+					mat-icon-button
+					[matMenuTriggerFor]="appMenu"
+					(click)="$event.stopPropagation()"
+				>
+					<mat-icon>more_vert</mat-icon>
+				</button>
+				<mat-menu #appMenu="matMenu">
+					<button mat-menu-item (click)="editSaleList(element)"><mat-icon>edit</mat-icon>Editar</button>
+					<button mat-menu-item (click)="openDeleteDialog(element)">
+						<mat-icon>delete</mat-icon>Eliminar
+					</button>
+				</mat-menu>
+			</mat-cell>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+		<mat-row
+			*matRowDef="let row; columns: displayedColumns; let rowInd = index"
+			(click)="watchSaleList(row)"
+		></mat-row>
+	</mat-table>
+
+	<footer [hidden]="saleListsLength <= 5">
+		<mat-paginator
+			#paginator
+			[length]="saleListsLength"
+			[pageIndex]="0"
+			[pageSize]="10"
+			[pageSizeOptions]="[5, 10, 25, 100]"
+		>
+		</mat-paginator>
+	</footer>
+
+	<div class="table-no-results" [style.display]="dataSource?.renderedData.length == 0 ? '' : 'none'">
+		No hay listas de venta.
+	</div>
+</div>

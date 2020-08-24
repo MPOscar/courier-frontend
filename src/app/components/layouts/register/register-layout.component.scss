@@ -1,0 +1,52 @@
+.toolbar-spacer {
+	flex: 1 1 auto;
+}
+
+.mat-elevation-z2 {
+	position: relative;
+	z-index: 2;
+}
+
+mat-drawer {
+	.sideMenuButton {
+	}
+	.sideMenuButton {
+		position: relative;
+		width: 100%;
+		float: left;
+		height: 50px;
+	}
+}
+
+mat-drawer-content {
+	#burgerIcon {
+		display: none;
+	}
+
+	#welcomeText {
+		display: unset;
+		font-size: 14px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	mat-drawer-content {
+		#burgerIcon {
+			display: block;
+			position: relative;
+			float: left;
+		}
+		#topImage {
+			position: relative;
+			display: block;
+			margin: auto;
+		}
+		.toolbar-spacer {
+			display: none;
+		}
+		#welcomeText {
+			display: none;
+			font-size: 14px;
+		}
+	}
+}

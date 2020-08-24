@@ -1,0 +1,743 @@
+<div ngClass.gt-sm="productos-container" ngClass.lt-md="productos-container-mobile">
+	<mat-drawer-container fxFlexFill>
+		<mat-progress-bar mode="indeterminate" *ngIf="mostrarIndicadorCargando"></mat-progress-bar>
+
+		<mat-drawer position="end" autoFocus="false">
+			<app-carrito
+				[hidden]="mostrarPlantillas"
+				(carritoToggled)="carritoSidenav.toggle(false)"
+				(keydown.esc)="carritoSidenav.close()"
+				(vaciarPlantillaEventEmitter)="vaciarPlantilla($event)"
+				(eliminarProductoEventEmitter)="eliminarProducto($event)"
+				(guardarPlantillaEventEmitter)="guardarPlantilla($event)"
+			></app-carrito>
+
+			<app-plantillas
+				[hidden]="!mostrarPlantillas"
+				(plantillaToggled)="mostrarPlantillas = false"
+				(keydown.esc)="carritoSidenav.close()"
+				(plantillaSeleccionada)="cargarPlantilla($event)"
+				(ocultarPlantillaEventEmmitter)="carritoSidenav.toggle(false)"
+			></app-plantillas>
+		</mat-drawer>
+
+		<mat-drawer-content>
+			<div id="seccionFiltros" fxLayout="column" fxFlex="20" fxFlex.gt-md="15" fxHide.lt-md="true">
+				<div fxLayoutAlign="start center" fxFlex="60px">
+					<button mat-icon-button fxFlex="25" routerLink="/pedidos/proveedores">
+						<mat-icon class="proveedores-back">arrow_back</mat-icon>
+					</button>
+
+					<form fxFlex="75">
+						<mat-form-field class="proveedor-select" fxFlex="90">
+							<mat-select
+								[(value)]="idProveedor"
+								(selectionChange)="goTo(['/pedidos/productos', idProveedor])"
+							>
+								<mat-option
+									*ngFor="let proveedor of proveedores | async"
+									value="{{ proveedor.id }}"
+									[routerLink]="['/pedidos/productos', proveedor.id]"
+									fxFlex
+									fxLayoutAlign="start center"
+								>
+									<span fxFlex="20">
+										<img
+											class="example-option-img"
+											aria-hidden
+											[src]="proveedor?.logoUrl"
+											width="20"
+											height="20"
+										/>
+									</span>
+									<span fxFlex> {{ proveedor.nombre }}</span>
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</form>
+				</div>
+
+				<ng-container *ngTemplateOutlet="areaFiltros"></ng-container>
+
+				<div fxFlex="nogrow" fxLayout="column">
+					<ng-container *ngTemplateOutlet="leyendaTemplate" fxHide.lt-md="true"></ng-container>
+					<ng-template #leyendaTemplate>
+						<div class="filtros-div">
+							<div class="filtrar-titulo">
+								<strong>LEYENDA</strong>
+							</div>
+						</div>
+						<div class="filtros-div">
+							<div class="leyenda">
+								<div class="leyenda-estado">
+									<div class="d-flex align-center">
+										<mat-icon>remove_circle</mat-icon>
+										<span class="align-self-center pl-5px"> Discontinuados</span>
+									</div>
+								</div>
+								<div class="leyenda-estado">
+									<div class="d-flex align-center">
+										<mat-icon>pause_circle_filled</mat-icon>
+										<span class="align-self-center pl-5px"> Suspendidos</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</div>
+			</div>
+
+			<div
+				id="seccionPrincipal"
+				fxLayout="column"
+				fxLayoutAlign="start stretch"
+				fxFlex.gt-sm="80"
+				fxFlex.gt-md="85"
+				fxFlexFill.lt-md
+			>
+				<div>
+					<mat-expansion-panel fxHide.gt-sm="true" style="min-height: 48px;">
+						<mat-expansion-panel-header style="font-size: 16px;">
+							Filtros
+						</mat-expansion-panel-header>
+						<ng-container *ngTemplateOutlet="areaFiltros"></ng-container>
+					</mat-expansion-panel>
+				</div>
+				<div fxFlex="60px" fxLayoutAlign="start center">
+					<div fxFlex class="filtros-row" fxLayoutAlign="center center">
+						<label class="chip-filtros-label">
+							<mat-icon>search</mat-icon>
+						</label>
+
+						<mat-form-field fxFlex class="filtros-chip-list" floatPlaceholder="never">
+							<mat-chip-list #chipList selectable="false">
+								<mat-chip
+									*ngFor="let filtro of filtrosActivos; let i = index"
+									(removed)="borrarFiltro(filtro)"
+									removable="true"
+								>
+									{{ filtro }}
+									<mat-icon matChipRemove>cancelar</mat-icon>
+								</mat-chip>
+
+								<input
+									matInput
+									[matChipInputFor]="chipList"
+									[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+									(matChipInputTokenEnd)="addFiltro($event)"
+									matChipInputAddOnBlur="true"
+								/>
+							</mat-chip-list>
+						</mat-form-field>
+					</div>
+
+					<div class="plantillas-carrito-div" fxLayoutAlign="end center">
+						<button mat-icon-button (click)="mostrarPlantillas = true; carritoSidenav.open()" disableRipple>
+							<mat-icon>calendar_today</mat-icon>
+						</button>
+
+						<button
+							mat-icon-button
+							class="carrito-button"
+							(click)="mostrarPlantillas = false; carritoSidenav.open()"
+							disableRipple
+						>
+							<mat-icon
+								*ngIf="carrito.length === 0"
+								svgIcon="carrito_flecha"
+								[ngClass]="carrito.length ? 'carrito-badge' : ''"
+							>
+							</mat-icon>
+
+							<mat-icon
+								*ngIf="carrito.length && carrito.length > 0"
+								svgIcon="carrito_flecha"
+								matBadge="{{ carrito.length }}"
+								[ngClass]="carrito.length ? 'carrito-badge' : ''"
+							>
+							</mat-icon>
+						</button>
+					</div>
+				</div>
+
+				<div fxFlex fxLayout="column" class="scroll" [fxHide]="!productosDataSource?.filteredData.length">
+					<mat-table
+						fxFlex
+						id="productosTable"
+						#productosSort="matSort"
+						matSort
+						[dataSource]="productosDataSource"
+						multiTemplateDataRows
+					>
+						<ng-container matColumnDef="imagen">
+							<mat-header-cell *matHeaderCellDef fxFlex="6" fxLayoutAlign="center center">
+								<button
+									class="grid-view-header-menu"
+									mat-icon-button
+									[matMenuTriggerFor]="menuOpciones"
+									(click)="$event.stopPropagation()"
+								>
+									<mat-icon>more_vert</mat-icon>
+								</button>
+
+								<mat-menu #menuOpciones>
+									<button mat-menu-item [matMenuTriggerFor]="visibilidadColumnas">
+										<mat-icon>view_column</mat-icon>
+										Ocultar/Mostrar Columnas
+									</button>
+									<mat-menu #visibilidadColumnas="matMenu">
+										<div cdkDropList>
+											<div
+												cdkDrag
+												mat-menu-item
+												*ngFor="let column of columns; let i = index"
+												(cdkDragDropped)="dropListDropped($event, i)"
+											>
+												<mat-icon cdkDragHandle>drag_indicator</mat-icon>
+												<mat-checkbox
+													[disabled]="!column.hiddable"
+													[checked]="column.visible"
+													(click)="$event.stopPropagation()"
+													(change)="toggleColumnVissibility(column)"
+												>
+													{{ column.label }}
+												</mat-checkbox>
+
+												<mat-card *cdkDragPreview>
+													<mat-checkbox [checked]="column.visible">
+														{{ column.label }}
+													</mat-checkbox>
+												</mat-card>
+											</div>
+										</div>
+									</mat-menu>
+								</mat-menu>
+							</mat-header-cell>
+							<mat-cell *matCellDef="let item" fxFlex="6" fxLayoutAlign="center center">
+								<img
+									*ngIf="item?.foto"
+									matListAvatar
+									src="{{ item?.foto }}"
+									onerror="this.onerror=null; this.src='./assets/images/no-image-available.png';"
+									class="rowImage"
+								/>
+								<img
+									*ngIf="!item?.foto"
+									matListAvatar
+									src="./assets/images/no-image-available.png"
+									class="rowImage"
+								/>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="cantidad">
+							<mat-header-cell fxFlex="5" fxLayoutAlign="center center" *matHeaderCellDef>
+								Cantidad del Pedido
+							</mat-header-cell>
+							<mat-cell fxFlex="5" fxLayoutAlign="center center" *matCellDef="let element; let i = index">
+								<mat-icon
+									class="margin-bottom-16px margin-top-16px"
+									*ngIf="estadoProducto(element).estado != 'Activo'"
+									matTooltip="{{ estadoProducto(element).estado }}"
+								>
+									{{ estadoProducto(element).icon }}
+								</mat-icon>
+
+								<mat-form-field
+									*ngIf="estadoProducto(element).estado == 'Activo'"
+									floatPlaceholder="never"
+								>
+									<input
+										(click)="$event.stopPropagation()"
+										#cantInput
+										matInput
+										type="number"
+										[value]="element.cantidad"
+										(input)="addProducto(element, $event)"
+										autofocus
+										(focus)="inputFocused = i"
+										(focusout)="inputFocused = null"
+										(keydown.enter)="carritoSidenav.open()"
+										matTooltip=" {{ tooltipProducto(element) }}"
+										autocomplete="off"
+									/>
+									<mat-icon
+										*ngIf="element.esPromo == true"
+										matTooltip="Producto en Promoción"
+										matSuffix
+										>card_giftcard
+									</mat-icon>
+								</mat-form-field>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="cantidadunidades">
+							<mat-header-cell fxFlex="7" fxLayoutAlign="center center" *matHeaderCellDef>
+								Unidades
+							</mat-header-cell>
+							<mat-cell fxFlex="7" fxLayoutAlign="center center" *matCellDef="let element; let i = index">
+								{{ element.cantidad * element.nivelMinimoVenta || '0' }}
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="sevende">
+							<mat-header-cell fxFlex="6" fxLayoutAlign="center center" *matHeaderCellDef>
+								Se Vende de a
+							</mat-header-cell>
+							<mat-cell fxFlex="6" fxLayoutAlign="center center" *matCellDef="let element">
+								<small> {{ element.nivelMinimoVenta }} </small>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="descripcion">
+							<mat-header-cell fxFlex fxLayoutAlign="center center" *matHeaderCellDef mat-sort-header>
+								Descripción
+							</mat-header-cell>
+							<mat-cell
+								class="position-relative overflow-initial"
+								*matCellDef="let element"
+								matTooltip="{{ element.description }}"
+							>
+								<span class="badge badge-success-lighten new-product" *ngIf="element.nuevo"
+									><i class="mdi mdi-coin"></i> Nuevo</span
+								>
+								<small>
+									{{ element.descripcion }}
+								</small>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="moneda">
+							<mat-header-cell fxFlex="6" fxLayoutAlign="center center" *matHeaderCellDef>
+								Moneda
+							</mat-header-cell>
+							<mat-cell fxFlex="6" fxLayoutAlign="center center" *matCellDef="let element">
+								<span class="ellipsis">
+									<small>{{ element.moneda || 'N/D' }}</small>
+								</span>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="marca">
+							<mat-header-cell fxFlex="9" fxLayoutAlign="center" *matHeaderCellDef mat-sort-header>
+								Marca
+								<ng-container
+									*ngTemplateOutlet="
+										menuAgrupamientos;
+										context: {
+											agruparPor: 'Agrupar por Marca',
+											desagruparPor: 'Desagrupar por Marca',
+											columna: 'marca'
+										}
+									"
+								></ng-container>
+							</mat-header-cell>
+							<mat-cell fxFlex="9" *matCellDef="let element">
+								<small> {{ element.marca }} </small>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="linea">
+							<mat-header-cell
+								fxFlex="11"
+								fxLayoutAlign="center center"
+								*matHeaderCellDef
+								mat-sort-header
+							>
+								Linea
+								<ng-container
+									*ngTemplateOutlet="
+										menuAgrupamientos;
+										context: {
+											agruparPor: 'Agrupar por Linea',
+											desagruparPor: 'Desagrupar por Linea',
+											columna: 'linea'
+										}
+									"
+								></ng-container>
+							</mat-header-cell>
+							<mat-cell fxFlex="11" *matCellDef="let element">
+								<small> {{ element.linea }}</small>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="contenido">
+							<mat-header-cell fxFlex="7" fxLayoutAlign="center center" *matHeaderCellDef mat-sort-header>
+								Cont. Neto
+							</mat-header-cell>
+							<mat-cell fxFlex="7" fxLayoutAlign="center center" *matCellDef="let element">
+								<small>
+									<b>{{ element.contenidoNeto }} {{ element.unidadMedida }}</b>
+								</small>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="gtin">
+							<mat-header-cell fxFlex="8" fxLayoutAlign="center center" *matHeaderCellDef>
+								GTIN
+							</mat-header-cell>
+							<mat-cell fxFlex="8" fxLayoutAlign="center center" *matCellDef="let element">
+								<small>
+									<b>{{ element.gtin13 }}</b>
+								</small>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="cpp">
+							<mat-header-cell fxFlex="7" fxLayoutAlign="center center" *matHeaderCellDef mat-sort-header>
+								CPP
+							</mat-header-cell>
+							<mat-cell fxFlex="7" fxLayoutAlign="center center" *matCellDef="let element">
+								<small>
+									<b>{{ element.cpp }}</b>
+								</small>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="cajaspallet">
+							<mat-header-cell fxFlex="8" fxLayoutAlign="center center" *matHeaderCellDef>
+								Cajas x Pallet
+							</mat-header-cell>
+							<mat-cell fxFlex="8" fxLayoutAlign="center center" *matCellDef="let element">
+								<small>
+									<b> {{ element.cajacamad * element.camadpall | number }}</b>
+								</small>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="precio">
+							<mat-header-cell fxFlex="6" fxLayoutAlign="center center" *matHeaderCellDef mat-sort-header>
+								Precio
+							</mat-header-cell>
+							<mat-cell fxFlex="6" fxLayoutAlign="center center" *matCellDef="let element">
+								<ng-container *ngIf="element.precio; else SinMoneda">
+									<span>
+										<small>
+											<b> {{ element.precio }}</b>
+										</small>
+									</span>
+								</ng-container>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="importe">
+							<mat-header-cell fxFlex="8" fxLayoutAlign="center center" *matHeaderCellDef>
+								Importe
+							</mat-header-cell>
+							<mat-cell fxFlex="8" fxLayoutAlign="center center" *matCellDef="let element">
+								<ng-container *ngIf="element.precio; else SinMoneda">
+									<span>
+										<small>
+											{{ element.cantidad * element.precio | number: '1.2-2' }}
+										</small>
+									</span>
+								</ng-container>
+							</mat-cell>
+						</ng-container>
+
+						<!-- Group header -->
+						<ng-container matColumnDef="groupHeader">
+							<mat-cell fxFlex fxLayoutAlign="start center" *matCellDef="let group" class="selectable">
+								<button
+									[style.margin-left.px]="group.level * 5"
+									mat-icon-button
+									(click)="groupHeaderClick($event, group)"
+									matTooltip="{{ group.expanded ? 'Mostrar Grupo' : 'Ocultar Grupo' }}"
+								>
+									<mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+									<mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+								</button>
+								&nbsp;
+								<strong matTooltip="Agrupado Por: {{ groupByColumns[group.level - 1] | uppercase }}">
+									{{ groupByColumns[group.level - 1] | uppercase }} =
+									{{ group[groupByColumns[group.level - 1]] }}
+								</strong>
+								<span
+									[matBadge]="group.totalCounts"
+									matBadgeOverlap="false"
+									matTooltip="Cantidad de Productos"
+									class="grupo-badge"
+								>
+								</span>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="expandedDetail">
+							<mat-cell *matCellDef="let element" [attr.colspan]="productosDisplayedColumns.length">
+								<app-pedidos-producto [producto]="element"></app-pedidos-producto>
+							</mat-cell>
+						</ng-container>
+
+						<mat-header-row *matHeaderRowDef="productosDisplayedColumns; sticky: true"></mat-header-row>
+
+						<mat-row
+							*matRowDef="let row; columns: ['groupHeader']; when: isGroup"
+							(click)="groupHeaderClick($event, row)"
+							[fxShow]="
+								((row?.parent.expanded && row?.parent.visible) || row.level == 1 || row.level == 0) &&
+								row.totalCounts > 0
+							"
+							class="selectable"
+						></mat-row>
+
+						<mat-row
+							*matRowDef="let row; columns: productosDisplayedColumns; let rowInd = index"
+							(mouseenter)="hoveredRow = rowInd"
+							(mouseleave)="hoveredRow = null"
+							[ngClass]="{
+								hovered: rowInd == hoveredRow || rowInd == inputFocused,
+								rowInput: rowInd == inputFocused,
+								boldRow: row.cantidad > 0
+							}"
+							[fxShow]="row?.parent.visible && row?.parent.expanded && !isGroup(0, row)"
+							class="selectable"
+							(click)="expandirFila(row)"
+						></mat-row>
+
+						<mat-row
+							*matRowDef="let row; columns: ['expandedDetail']"
+							[fxShow]="
+								!isGroup(0, row) &&
+								row == productoSeleccionado &&
+								row?.parent.visible &&
+								row?.parent.expanded
+							"
+						></mat-row>
+					</mat-table>
+				</div>
+
+				<div fxFlex="56px" [fxHide]="!productosDataSource?.filteredData.length">
+					<footer fxLayout="row" fxLayoutAlign="space-between center">
+						<button mat-icon-button aria-label="Leyenda" fxHide.gt-sm="true" (click)="openLeyendaMobile()">
+							<mat-icon>help_outline</mat-icon>
+						</button>
+						<div fxHide.lt-sm="true">
+							<span class="paginator-productos">{{
+								'Total: ' + productosSinGrupos.length + ' productos'
+							}}</span>
+						</div>
+						<mat-paginator
+							#paginator
+							[length]="productosSinGrupos.length"
+							[pageIndex]="0"
+							[pageSize]="25"
+							[pageSizeOptions]="[5, 10, 25, 100]"
+						>
+						</mat-paginator>
+					</footer>
+				</div>
+
+				<div
+					fxFlex
+					fxLayout="column"
+					fxLayoutAlign="center center"
+					*ngIf="!productosDataSource.filteredData.length"
+				>
+					<div
+						fxLayout="column"
+						fxLayoutAlign="center center"
+						class="table-no-results"
+						*ngIf="(listasVenta.asObservable() | async).length == 0"
+					>
+						<div>No existen Listas de Ventas disponibles del Proveedor seleccionado <br /></div>
+
+						<button mat-button color="primary" (click)="refrescarListasDeVentas()" class="refresh-button">
+							Volver a intentar
+							<mat-icon>refresh</mat-icon>
+						</button>
+					</div>
+					<div
+						class="table-no-results"
+						*ngIf="!((listasVenta.asObservable() | async).length == 0) && !mostrarIndicadorCargando"
+					>
+						No hay productos para mostrar<br />
+					</div>
+					<div
+						class="table-no-results"
+						*ngIf="!((listasVenta.asObservable() | async).length == 0) && mostrarIndicadorCargando"
+					>
+						Cargando Productos<br />
+					</div>
+				</div>
+			</div>
+		</mat-drawer-content>
+	</mat-drawer-container>
+</div>
+
+<ng-template #areaFiltros>
+	<div fxFlex fxLayout="column">
+		<div fxLayoutAlign="start center" fxFlex="60px" fxHide.gt-sm="true">
+			<button mat-icon-button fxFlex="20" routerLink="/pedidos/proveedores" disableRipple="true">
+				<mat-icon class="proveedores-back">arrow_back</mat-icon>
+			</button>
+
+			<form fxFlex>
+				<mat-form-field class="proveedor-select" fxFlex="80">
+					<mat-select [(value)]="idProveedor" (selectionChange)="goTo(['/pedidos/productos', idProveedor])">
+						<mat-option
+							*ngFor="let proveedor of proveedores | async"
+							value="{{ proveedor.id }}"
+							[routerLink]="['/pedidos/productos', proveedor.id]"
+							fxFlex
+							fxLayoutAlign="start center"
+						>
+							<span fxFlex="20">
+								<img
+									class="example-option-img"
+									aria-hidden
+									[src]="proveedor?.logoUrl"
+									width="20"
+									height="20"
+								/>
+							</span>
+							<span fxFlex> {{ proveedor.nombre }}</span>
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</form>
+		</div>
+
+		<div fxLayout="column">
+			<div class="filtros-div">
+				<div>
+					<div class="filtrar-titulo">
+						<strong>LISTAS DE VENTA</strong>
+					</div>
+
+					<div class="categorias" fxLayoutAlign="start stretch">
+						<mat-form-field fxFlex>
+							<mat-label>Listas de Ventas</mat-label>
+							<mat-select
+								required="true"
+								[(ngModel)]="listaVenta"
+								(ngModelChange)="actualizarProductos()"
+								[ngClass]="{ 'mat-error': true }"
+							>
+								<mat-option *ngFor="let lista of listasVenta | async" [value]="lista">
+									{{ lista.nombre }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="categorias" fxLayoutAlign="stretch">
+						<mat-checkbox [(ngModel)]="unidadMenor" (change)="actualizarProductos()">
+							Pedir Unidad Menor
+						</mat-checkbox>
+					</div>
+				</div>
+				<div class="filtrar-titulo">
+					<strong>FILTRAR</strong>
+				</div>
+
+				<div class="filtros" fxLayout="column" fxLayoutAlign="start stretch">
+					<mat-form-field>
+						<mat-label>Precio</mat-label>
+						<mat-select [(ngModel)]="moneda" (ngModelChange)="actualizarProductos()">
+							<mat-option value="">Todos los Productos</mat-option>
+							<mat-option value="UYU">Con precio en UYU</mat-option>
+							<mat-option value="USD">Con precio en USD</mat-option>
+						</mat-select>
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Discontinuados/Suspendidos</mat-label>
+						<mat-select [(ngModel)]="moneda">
+							<mat-option>
+								<mat-checkbox
+									class="align-self-center"
+									(change)="filtrarDiscontinuados($event)"
+									[(ngModel)]="discontinuados"
+									>Discontinuados</mat-checkbox
+								>
+							</mat-option>
+
+							<mat-option>
+								<button
+									mat-menu-item
+									(click)="ocultarProductosDiscontinuados(true)"
+									*ngIf="!ocultarDiscontinuados"
+								>
+									<mat-icon>visibility_off</mat-icon>
+									<span>Ocultar Discontinuados</span>
+								</button>
+								<button
+									mat-menu-item
+									(click)="ocultarProductosDiscontinuados(false)"
+									*ngIf="ocultarDiscontinuados"
+								>
+									<mat-icon>visibility_on</mat-icon>
+									<span>Mostrar Discontinuados</span>
+								</button>
+							</mat-option>
+
+							<mat-option>
+								<mat-checkbox
+									class="align-self-center"
+									(change)="filtrarSuspendidos($event)"
+									[(ngModel)]="suspendidos"
+									>Suspendidos</mat-checkbox
+								>
+							</mat-option>
+
+							<mat-option>
+								<button
+									mat-menu-item
+									(click)="ocultarProductosSuspendidos(true)"
+									*ngIf="!ocultarSuspendidos"
+								>
+									<mat-icon>visibility_off</mat-icon>
+									<span>Ocultar Suspendidos</span>
+								</button>
+								<button
+									mat-menu-item
+									(click)="ocultarProductosSuspendidos(false)"
+									*ngIf="ocultarSuspendidos"
+								>
+									<mat-icon>visibility_on</mat-icon>
+									<span>Mostrar Suspendidos</span>
+								</button>
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+
+					<div *ngFor="let tipos of tiposFiltros">
+						<mat-form-field *ngIf="tipos.filtros.length > 0" fxFlex.gt-sm="100" fxFlex.lt-md="100">
+							<mat-label>{{ tipos.nombre }}</mat-label>
+							<mat-select multiple>
+								<mat-option
+									*ngFor="let filtro of tipos.filtros; let i = index"
+									(onSelectionChange)="checkFiltroMatSelect($event, tipos.nombre)"
+									[value]="filtro.nombre"
+									>{{ filtro.nombre }}</mat-option
+								>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #SinMoneda>
+	<small> N/D </small>
+</ng-template>
+
+<ng-template #menuAgrupamientos let-agruparPor="agruparPor" let-desagruparPor="desagruparPor" let-columna="columna">
+	<button class="grid-view-header-menu" mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+		<mat-icon *ngIf="groupByColumns.indexOf(columna) < 0">menu</mat-icon>
+		<mat-icon *ngIf="groupByColumns.indexOf(columna) >= 0">clear_all</mat-icon>
+	</button>
+
+	<mat-menu #menu>
+		<button mat-menu-item (click)="groupBy($event, { field: columna })" *ngIf="groupByColumns.indexOf(columna) < 0">
+			<mat-icon>call_merge</mat-icon>
+			{{ agruparPor }}
+		</button>
+		<button
+			mat-menu-item
+			(click)="unGroupBy($event, { field: columna })"
+			*ngIf="groupByColumns.indexOf(columna) >= 0"
+		>
+			<mat-icon>call_split</mat-icon>
+			{{ desagruparPor }}
+		</button>
+	</mat-menu>
+</ng-template>

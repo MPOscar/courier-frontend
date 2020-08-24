@@ -1,0 +1,79 @@
+<mat-dialog-content>
+	<main fxFlex fxLayout="column" style="height:300px">
+		<header fxFlex="30" fxLayoutAlign="center center">
+			<img
+				style="opacity:1"
+				fxFlex="25"
+				src="{{ actualIcon }}"
+				[@slide]="transicion"
+				(@slide.done)="onAnimationFinish($event)"
+			/>
+		</header>
+		<section fxFlex fxLayoutAlign="center center">
+			<b>{{mensaje}}</b>
+		</section>
+		<section fxFlex fxLayoutAlign="center center">
+			<p>
+				Puede agregar un nombre para personalizar su pedido asi le sera mas facil recordarlo encaso de que desee
+				retomar o hacer uno similar. En caso de no especificar un nombre este se guardara con el numero de la
+				Orden.
+			</p>
+		</section>
+		<mat-form-field class="cases-full-width">
+			<input matInput placeholder="Nombre del Pedido" matinput type="text" [(ngModel)]="nombrePedido" />
+		</mat-form-field>
+	</main>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<footer fxFlex fxLayoutAlign="end center">
+		<button
+			mat-button
+			[disabled]="disableActions"
+			cdkFocusInitial
+			(click)="onNoClick()"
+			tabindex="-1"
+			matTooltip="{{ cancelButtonText }}"
+		>
+			{{ cancelButtonText }}
+		</button>
+		<button
+			mat-raised-button
+			[disabled]="disableActions"
+			(click)="onAcceptClick()"
+			color="primary"
+			matTooltip="{{ okButtonText }}"
+		>
+			{{ okButtonText }}
+		</button>
+	</footer>
+</mat-dialog-actions>
+
+<!--
+
+
+
+<mat-dialog-content fxFlex fxFlexFill fxLayout="column">
+	<header fxFlex="30%" fxLayout="column">
+		<div style="float:left">
+			<mat-icon [@fade]="estado == 1 ? 'in' : 'out'">info</mat-icon>
+			<mat-icon style="opacity: 0;" [@fade]="estado == 2 ? 'in' : 'out'" (@fade.done)="onAnimationFinish($event)"
+				>check_circle</mat-icon
+			>
+			<mat-icon style="opacity: 0;" [@fade]="estado == 3 ? 'in' : 'out'" (@fade.done)="onAnimationFinish($event)"
+				>cancel</mat-icon
+			>
+			<h1 mat-dialog-title>{{ titulo }}</h1>
+		</div>
+	</header>
+	<main fxFlex>
+		<div>
+			<small>{{ mensaje }}</small>
+		</div>
+	</main>
+</mat-dialog-content>
+<mat-dialog-actions align="start">
+	<footer fxFlex="row" fxFlexLayoutAlig="end center">
+		<button mat-button cdkFocusInitial (click)="onNoClick()" tabindex="-1">{{ cancelButtonText }}</button>
+		<button mat-raised-button (click)="onAcceptClick()" color="primary">{{ okButtonText }}</button>
+	</footer>
+</mat-dialog-actions> -->

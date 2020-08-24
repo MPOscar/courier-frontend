@@ -1,0 +1,35 @@
+<div class="margen-inferior" fxLayout="row" fxLayoutAlign="space-around center">
+	<mat-card class="main-container" fxFlex="nogrow" fxFlex.xs="100" fxLayout="row" fxLayoutAlign="space-around center">
+		<form fxLayout="column" [formGroup]="options" (ngSubmit)="saveUser()">
+			<h2>Mi Perfil</h2>
+
+			<mat-form-field [hideRequiredMarker]="false">
+				<input
+					matInput
+					placeholder="Nombre"
+					required
+					[(ngModel)]="user.nombre"
+					[ngModelOptions]="{ standalone: true }"
+					(keyup)="hasBeenChanged()"
+				/>
+				<mat-error *ngIf="invalidName()">Debes ingresar un nombre</mat-error>
+			</mat-form-field>
+
+			<mat-form-field [hideRequiredMarker]="false">
+				<input
+					matInput
+					placeholder="Apellido"
+					required
+					[(ngModel)]="user.apellido"
+					[ngModelOptions]="{ standalone: true }"
+					(keyup)="hasBeenChanged()"
+				/>
+				<mat-error *ngIf="invalidLastName()">Debes ingresar un apellido</mat-error>
+			</mat-form-field>
+			<div fxLayout="row" fxLayoutAlign="end center">
+				<button mat-button [disabled]="!cambiosDePerfil" (click)="cancel()">Cancelar</button>
+				<button type="submit" mat-button color="primary" [disabled]="!cambiosDePerfil">Guardar</button>
+			</div>
+		</form>
+	</mat-card>
+</div>

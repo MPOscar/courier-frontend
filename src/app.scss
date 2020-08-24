@@ -1,0 +1,42 @@
+@import '~@angular/material/theming';
+@include mat-core();
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-deep_orange, A200, A100, A400);
+$warn: mat-palette($mat-red, A700);
+$theme: mat-light-theme($primary, $accent);
+@include angular-material-theme($theme);
+
+.app-button {
+    margin: 10px 0px;
+    color: white !important;
+    border-radius: 7px !important;
+    position: relative;
+    width: auto;
+    height: auto;
+    line-height: 32px;
+    font-size: 13px;
+    padding: 0 8px;
+}
+
+.blue-background {
+    background-color: #2f66b9;
+}
+
+.gray-background {
+    background-color: #9da3aa;
+}
+
+.white {
+    color: white !important;
+}
+
+.light-gray-background {
+    background-color: rgb(246, 246, 246);
+}
+
+.okButton {
+    color: white !important;
+    position: relative;
+    background-color: #2f6bb9;
+    border-radius: 7px !important;
+}

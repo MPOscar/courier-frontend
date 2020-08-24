@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{ (data && data.titleKey ? data.titleKey : titleKey) | translate }}</h1>
+<div
+	mat-dialog-content
+	[ngStyle]="data.contentStyle ? data.contentStyle : null"
+	innerHtml="{{
+		(data && data.messageKey ? data.messageKey : messageKey)
+			| translate: (data && data.messageParam ? data.messageParam : messageParam)
+	}}"
+></div>
+<div mat-dialog-actions>
+	<button mat-raised-button [color]="data.okBtnColor ? data.okBtnColor : 'warn'" (click)="accept()">
+		{{ (data && data.okBtnKey ? data.okBtnKey : okBtnKey) | translate }}
+	</button>
+	<button mat-raised-button (click)="cancel()">
+		{{ (data && data.cancelBtnKey ? data.cancelBtnKey : cancelBtnKey) | translate }}
+	</button>
+</div>

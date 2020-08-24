@@ -1,0 +1,62 @@
+<ng-template [ngIf]="esTabla" [ngIfElse]="tablaLista">
+	<ng-container *ngTemplateOutlet="tempTabla ? tempTabla : tablaDefecto"></ng-container>
+</ng-template>
+
+<ng-template #tablaLista>
+	<ng-container *ngTemplateOutlet="tempTablaLista ? tempTablaLista : tablaListaDefecto"></ng-container>
+</ng-template>
+
+<ng-template #tablaDefecto>
+	<mat-table [dataSource]="config.dataSource" matSortDirection="desc" matSort>
+		<ng-container *ngFor="let columna of config.displayedColumns" [matColumnDef]="columna">
+			<ng-container *ngIf="config.columns[columna].template; else columnaDefault">
+				<mat-header-cell
+					[fxFlex]="config.columns[columna].width"
+					[fxLayoutAlign]="config.columns[columna].headerAlign || 'center center'"
+					*matHeaderCellDef
+				>
+					{{ config.columns[columna].header }}
+				</mat-header-cell>
+
+				<mat-cell
+					*matCellDef="let element"
+					[fxFlex]="config.columns[columna].width"
+					[fxLayoutAlign]="config.columns[columna].cellAlign || 'center center'"
+				>
+					<ng-container
+						[ngTemplateOutlet]="config.columns[columna].template"
+						[ngTemplateOutletContext]="{ element: element }"
+					>
+					</ng-container>
+				</mat-cell>
+			</ng-container>
+
+			<ng-template #columnaDefault>
+				<mat-header-cell
+					mat-sort-header
+					[fxFlex]="config.columns[columna].width"
+					[fxLayoutAlign]="config.columns[columna].headerAlign || 'center center'"
+					*matHeaderCellDef
+				>
+					{{ config.columns[columna].header }}
+				</mat-header-cell>
+
+				<mat-cell
+					[fxFlex]="config.columns[columna].width"
+					*matCellDef="let element"
+					[fxLayoutAlign]="config.columns[columna].cellAlign || 'center center'"
+				>
+					{{ element[columna] }}
+				</mat-cell>
+			</ng-template>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="config.displayedColumns; sticky: true"> </mat-header-row>
+
+		<mat-row *matRowDef="let row; columns: config.displayedColumns" (click)="config.rowClickAction(row)"> </mat-row>
+	</mat-table>
+</ng-template>
+
+<ng-template #tablaListaDefecto>
+	<!-- TODO -->
+</ng-template>

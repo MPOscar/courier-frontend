@@ -1,0 +1,52 @@
+.select-business {
+	margin: 30px 10px;
+
+	.business-card-container {
+		width: 320px;
+		height: 210px;
+		margin: 0 15px 20px 15px;
+		position: relative;
+		-webkit-perspective: 500px;
+		perspective: 500px;
+
+		.business-card {
+			position: absolute;
+			transform-style: preserve-3d;
+			transition: transform 0.4s;
+			transform: translateZ(1px);
+
+			mat-card {
+				display: block;
+				position: absolute;
+				width: 288px;
+				height: 178px;
+				backface-visibility: hidden;
+			}
+
+			.back {
+				transform: rotateY(180deg);
+				width: 320px;
+				height: 210px;
+			}
+		}
+
+		&:hover .business-card {
+			transform: rotateY(180deg) translateZ(-1px);
+		}
+
+		.new-business-card {
+			width: 288px;
+			height: 178px;
+			cursor: pointer;
+		}
+
+		.image-header {
+			margin-bottom: 18px;
+			background-position: center center;
+			background-size: contain;
+			background-repeat: no-repeat;
+			width: 100px;
+			height: 100px;
+		}
+	}
+}

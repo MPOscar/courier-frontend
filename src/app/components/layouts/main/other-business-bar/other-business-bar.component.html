@@ -1,0 +1,93 @@
+<div fxFlexFill fxLayout="row" fxLayoutAlign="start center" fxHide.lt-md="true">
+	<button mat-stroked-button *ngIf="!haveCurrentProvider" (click)="goToProviderList()">
+		Catálogo de otras empresas
+	</button>
+
+	<button mat-stroked-button color="primary" *ngIf="haveCurrentProvider" (click)="goToProviderList()">
+		{{ currentProvider }}
+	</button>
+
+	<nav mat-tab-nav-bar [backgroundColor]="background" *ngIf="haveCurrentProvider" class="navbar-margin">
+		<a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="goToProducts()">
+			Productos
+		</a>
+
+		<a
+			mat-tab-link
+			routerLinkActive
+			#rla2="routerLinkActive"
+			[active]="rla2.isActive"
+			[routerLink]="goToWishlist()"
+		>
+			Exportación
+		</a>
+
+		<a
+			mat-tab-link
+			routerLinkActive
+			#rla3="routerLinkActive"
+			[active]="rla3.isActive"
+			[routerLink]="goToSaleList()"
+		>
+			Listas de Venta
+		</a>
+	</nav>
+</div>
+
+<div fxLayout="column" fxLayoutAlign=" start" fxHide.gt-sm="true">
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		class="button-inactive-mobile"
+		*ngIf="!haveCurrentProvider"
+		(click)="goToProviderList()"
+	>
+		Catálogo de otras empresas
+	</button>
+
+	<button
+		mat-stroked-button
+		color="primary"
+		*ngIf="haveCurrentProvider"
+		class="providerMenuOption-mobile"
+		(click)="goToProviderList()"
+	>
+		{{ currentProvider }}
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		*ngIf="haveCurrentProvider"
+		routerLinkActive
+		#rla="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla.isActive, 'button-active-mobile': rla.isActive }"
+		[routerLink]="goToProducts()"
+	>
+		Productos
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		*ngIf="haveCurrentProvider"
+		routerLinkActive
+		#rla2="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla2.isActive, 'button-active-mobile': rla2.isActive }"
+		[routerLink]="goToWishlist()"
+	>
+		Exportación
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		*ngIf="haveCurrentProvider"
+		routerLinkActive
+		#rla3="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla3.isActive, 'button-active-mobile': rla3.isActive }"
+		[routerLink]="goToSaleList()"
+	>
+		Listas de Venta
+	</button>
+</div>

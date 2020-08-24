@@ -1,0 +1,36 @@
+<div fxLayout="column" fxLayoutAlign="space-between none">
+	<div>
+		<form [formGroup]="options"></form>
+		<h2>Modificar Usuario</h2>
+		<div fxLayout="column" fxLayoutAlign="none none">
+			<mat-form-field [hideRequiredMarker]="false">
+				<input matInput placeholder="Nombre" disabled required [(ngModel)]="user.nombre" />
+			</mat-form-field>
+
+			<mat-form-field [hideRequiredMarker]="false">
+				<input matInput placeholder="Apellido" disabled required [(ngModel)]="user.apellido" />
+			</mat-form-field>
+
+			<mat-form-field [hideRequiredMarker]="false">
+				<input matInput placeholder="Email" disabled required [(ngModel)]="user.email" />
+			</mat-form-field>
+		</div>
+	</div>
+
+	<div id="roleOptions">
+		<h4>Roles:</h4>
+		<mat-checkbox
+			(change)="roleChecked(rol)"
+			*ngFor="let rol of roles"
+			[checked]="rol.checked"
+			[disabled]="rol.id == 0"
+			[value]="rol.id"
+			>{{ rol.descripcion }}</mat-checkbox
+		>
+	</div>
+
+	<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+		<button mat-button (click)="showUserList()">Cancelar</button>
+		<button mat-button color="primary" (click)="editUser()">Guardar</button>
+	</div>
+</div>

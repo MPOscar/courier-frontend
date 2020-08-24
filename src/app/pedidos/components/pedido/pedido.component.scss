@@ -1,0 +1,266 @@
+.container1 {
+	background: #fafafa;
+	margin-bottom: 2px;
+}
+
+.box1 h5 {
+	display: inline-block;
+	font-weight: 500;
+	color: rgb(169, 169, 169);
+}
+
+.box1 {
+	padding-left: 20px;
+}
+
+.box2 {
+	text-align: center;
+}
+
+.box2 h2 {
+	color: #3f51b5;
+	letter-spacing: 1px;
+}
+
+.box3 {
+	text-align: center;
+}
+
+.box-comentario {
+	min-width: 150px;
+	width: 100%;
+}
+
+.icon4 {
+	font-size: 30px;
+	color: #f44336;
+}
+
+.comentario {
+	width: 100%;
+}
+
+.container2 {
+	padding-top: 10px;
+}
+
+.box4 img {
+	object-fit: contain;
+	max-width: 100%;
+	max-height: 60px;
+}
+
+.box4 {
+	text-align: center;
+	padding: 5px;
+}
+
+.box5 {
+	padding-left: 15px;
+}
+
+.box7 {
+	text-align: right;
+	overflow: hidden;
+}
+
+.container3 {
+	background: #fafafa;
+}
+
+.container3 h4 {
+	margin-right: 8px;
+}
+
+.container3 .mat-input-element {
+	text-align: center;
+}
+
+.cabecera-fila {
+	background: #f5f5f5;
+}
+
+.mat-row,
+.mat-header-row {
+	min-width: 600px;
+	width: 100%;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-color: black;
+}
+
+.mat-column-remove-product {
+	word-wrap: break-word !important;
+	white-space: unset !important;
+	flex: 0 0 7% !important;
+	width: 7% !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+	padding-left: 20px;
+}
+
+.mat-column-proveedor {
+	word-wrap: break-word !important;
+	white-space: unset !important;
+	flex: 0 0 6% !important;
+	width: 6% !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+	padding-left: 20px;
+}
+
+.mat-column-description {
+	word-wrap: break-word !important;
+	white-space: unset !important;
+	flex: 0 0 42% !important;
+	width: 42% !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+.mat-column-cases {
+	word-wrap: break-word !important;
+	white-space: unset !important;
+	flex: 0 0 12% !important;
+	width: 12% !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+.mat-column-price {
+	word-wrap: break-word !important;
+	white-space: unset !important;
+	flex: 0 0 14% !important;
+	width: 14% !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+.mat-column-units {
+	word-wrap: break-word !important;
+	white-space: unset !important;
+	flex: 0 0 10% !important;
+	width: 10% !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+.mat-cell,
+.mat-header-cell {
+	justify-content: left;
+}
+
+.input-cases {
+	min-width: 20px;
+	max-width: 100px;
+	width: 70%;
+}
+
+.cases-full-width {
+	width: 70%;
+}
+
+.boxtable {
+	overflow: scroll;
+}
+
+.container5 {
+	padding-top: 10px;
+	background: #fafafa;
+}
+
+.box9 .subtotal {
+	color: black;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: end;
+}
+
+.box9 {
+	text-align: end;
+}
+
+.container6 {
+	padding-bottom: 10px;
+	background: #fafafa;
+	padding-top: 5px;
+}
+
+.container4 {
+	padding-bottom: 40px;
+	background: #fafafa;
+}
+
+@media screen and (max-width: 594px) {
+	.box1 h5 {
+		display: none;
+	}
+	.box2 h2 {
+		font-size: 20px;
+	}
+	.box5 {
+		display: none;
+	}
+	.box7 h4 {
+		font-size: 14px;
+		overflow: hidden;
+	}
+	.fecha {
+		width: 140px;
+	}
+	.icon4 {
+		font-size: 25px;
+	}
+}
+
+.no-scroll {
+	overflow: hidden;
+}
+
+.x-scroll {
+	overflow-x: scroll;
+}
+
+.y-scroll {
+	overflow-y: scroll;
+}
+
+.scroll {
+	overflow: auto;
+}
+
+.ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}

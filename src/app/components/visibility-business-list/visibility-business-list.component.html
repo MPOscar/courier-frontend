@@ -1,0 +1,80 @@
+<div>
+	<div
+		fxLayout="row"
+		fxLayout.lt-md="column"
+		fxLayoutAlign="space-between center"
+		fxLayoutAlign.lt-md="start stretch"
+	>
+		<h2>Visibilidad para Empresas</h2>
+		<button
+			*ngIf="productsService.showVisibilityBusinessList"
+			mat-raised-button
+			color="primary"
+			(click)="showMassive()"
+		>
+			Asignación Masiva
+		</button>
+	</div>
+
+	<mat-table
+		fxFlexFill
+		#sort="matSort"
+		class="businesses-table"
+		[dataSource]="dataSource"
+		matSort
+		matSortActive="nombre"
+		matSortDirection="asc"
+	>
+		<mat-spinner *ngIf="showLoader" id="desktopSpinner"></mat-spinner>
+
+		<ng-container matColumnDef="nombre">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+			<mat-cell *matCellDef="let element">{{ element.nombre }}</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="razonSocial">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Razón Social</mat-header-cell>
+			<mat-cell *matCellDef="let element">{{ element.razonSocial }}</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="options">
+			<mat-header-cell *matHeaderCellDef></mat-header-cell>
+			<mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="end center">
+				<button
+					*ngIf="canEdit"
+					mat-icon-button
+					[matMenuTriggerFor]="appMenu"
+					(click)="$event.stopPropagation()"
+				>
+					<mat-icon>more_vert</mat-icon>
+				</button>
+
+				<mat-menu #appMenu="matMenu">
+					<button mat-menu-item (click)="editBusiness(element)">Editar visibilidad</button>
+				</mat-menu>
+			</mat-cell>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+		<mat-row
+			*matRowDef="let row; columns: displayedColumns; let rowInd = index"
+			(click)="watchBusiness(row)"
+		></mat-row>
+	</mat-table>
+
+	<footer [fxHide]="!dataSource?.renderedData.length">
+		<mat-paginator
+			#paginator
+			[length]="businessesListLength"
+			[pageIndex]="0"
+			[pageSize]="10"
+			[pageSizeOptions]="[5, 10, 25, 100]"
+		>
+		</mat-paginator>
+	</footer>
+
+	<div class="table-no-results" [fxHide]="dataSource?.renderedData.length">
+		No hay empresas.
+	</div>
+</div>

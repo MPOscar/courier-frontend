@@ -1,0 +1,40 @@
+<div ngClass.gt-sm="catalogo-container" ngClass.lt-md="catalogo-container-mobile">
+	<div fxFlexFill>
+		<section id="catalogLeftColumn" fxFlex="15" fxHide.lt-md="true">
+			<div fxFlex class="width-100">
+				<div class="filtrar-titulo">
+					<strong>Filtros</strong>
+				</div>
+
+				<div class="filtros">
+					<app-filtros-catalogo [productos]="productos" [selectedFiltersInput]="selectedFilters">
+					</app-filtros-catalogo>
+				</div>
+			</div>
+		</section>
+
+		<section fxLayout="column" fxFlex="60" fxFlex.lt-md="100">
+			<div fxHide.gt-sm="true">
+				<mat-expansion-panel>
+					<mat-expansion-panel-header style="font-size: 16px;"> Filtros </mat-expansion-panel-header>
+					<app-filtros-catalogo [productos]="productos" [selectedFiltersInput]="selectedFilters">
+					</app-filtros-catalogo>
+				</mat-expansion-panel>
+			</div>
+
+			<div fxFlex>
+				<app-tabla-catalogo
+					[selectedFiltersInput]="selectedFilters"
+					(productosEmitter)="handleProductosChange($event)"
+					(productoDetalleEmitter)="handleProductoDetalleChange($event)"
+					[catalogoOtros]="catalogoOtros"
+				>
+				</app-tabla-catalogo>
+			</div>
+		</section>
+
+		<section id="catalogoRightColumn" fxFlex="25" fxFlexFill fxHide.lt-md="true">
+			<app-detalle-producto-catalogo [producto]="productoDetalle"> </app-detalle-producto-catalogo>
+		</section>
+	</div>
+</div>

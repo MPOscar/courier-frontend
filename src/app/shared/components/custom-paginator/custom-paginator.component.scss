@@ -1,0 +1,22 @@
+.mat-paginator {
+	background: initial;
+	display: block;
+
+	.mat-paginator-container {
+		float: right;
+		padding-top: 5px;
+
+		.mat-paginator-page-size-select {
+			max-width: 70px;
+			padding-left: 10px;
+		}
+
+		.mat-paginator-range-actions {
+			padding: 0 10px;
+		}
+
+		* {
+			display: inline-block;
+		}
+	}
+}

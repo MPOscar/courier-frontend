@@ -1,0 +1,12 @@
+<div class="mat-h2" id="welcome">Bienvenido {{ nombre }}</div>
+<div class="verticalSpacer"></div>
+<div class="mat-h4" id="confirmText">
+	Le hemos enviando un email de verificacion (a {{ email }}) para activar su cuenta en Catalogo. Revise su correo, si
+	no le ha llegado el email por favor solicite que se le vuelva a enviar haciendo clic en el boton de abajo. Gracias
+	por formar parte de Catalogo.
+</div>
+<div class="verticalSpacer"></div>
+<div id="buttonDiv">
+	<button mat-button class="okButton" (click)="sendEmail()">Enviar nuevamente el email</button>
+	<button mat-button class="okButton margin-left-10px" routerLink="/login">Regresar</button>
+</div>

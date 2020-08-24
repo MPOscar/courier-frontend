@@ -1,0 +1,15 @@
+<div style="flex: 1 1 auto; overflow-y: auto;">
+	<div class="example-container">
+		<form class="example-container" [formGroup]="options"></form>
+		<div id="createUserTitle">Invitar Usuario</div>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Email" required [(ngModel)]="user.email" />
+			<mat-error *ngIf="invalidEmail()">Debes ingresar un email</mat-error>
+		</mat-form-field>
+	</div>
+
+	<div style="width:90%; margin:0 auto;">
+		<button id="createButton" (click)="createUser()" mat-button>Invitar</button>
+	</div>
+</div>

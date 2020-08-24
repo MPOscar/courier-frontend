@@ -1,0 +1,135 @@
+<div *ngIf="businessService.showModifyBusiness">
+	<system-admin-edit></system-admin-edit>
+</div>
+
+<div [ngClass]="businessService.showModifyBusiness == true ? 'userListHidden' : 'userList'">
+	<div class="titleDiv">Empresas Activas</div>
+	<div class="tableDiv">
+		<mat-table
+			fxFlexFill
+			#tableEmpresas
+			id="tableEmpresas"
+			[dataSource]="dataSource"
+			matSort
+			matSortActive="nombre"
+			matSortDirection="asc"
+		>
+			<ng-container matColumnDef="imagen">
+				<mat-header-cell *matHeaderCellDef> Imagen </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<img
+						matListAvatar
+						src="{{ element.foto }}"
+						onerror="this.onerror=null;this.src='https://s3.us-east-2.amazonaws.com/rondanet/assets/images/baseline_store_black_48dp.png';"
+						class="rowImage"
+					/>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="nombre">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.nombre }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="rut">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Rut </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.rut }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="editar">
+				<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<button mat-raised-button class="editarButton" (click)="modifyBusiness(element)">Modificar</button>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+			<mat-row
+				*matRowDef="let row; columns: displayedColumns; let rowInd = index"
+				[ngClass]="{ 'detalles-row': detallesRow == rowInd }"
+			>
+			</mat-row>
+		</mat-table>
+
+		<div class="table-no-results" [style.display]="dataSource?.renderedData.length == 0 ? '' : 'none'">
+			No hay empresas activas.
+		</div>
+
+		<footer style="display: none">
+			<mat-paginator
+				#paginator
+				[length]="dataSource?.filteredData?.length"
+				[pageIndex]="0"
+				[pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+	</div>
+
+	<div [ngClass]="areInactiveBusinesses == true ? 'titleDiv' : 'hidden'">Empresas dadas de baja</div>
+	<div [ngClass]="areInactiveBusinesses == true ? 'tableDiv' : 'hidden'">
+		<mat-table
+			fxFlexFill
+			#tableInactive
+			id="tableInactive"
+			[dataSource]="inactiveDataSource"
+			matSort
+			matSortActive="nombre"
+			matSortDirection="asc"
+		>
+			<ng-container matColumnDef="imagen">
+				<mat-header-cell *matHeaderCellDef> Imagen </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<img
+						matListAvatar
+						src="{{ element.foto }}"
+						onerror="this.onerror=null;this.src='https://s3.us-east-2.amazonaws.com/rondanet/assets/images/baseline_store_black_48dp.png';"
+						class="rowImage"
+					/>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="nombre">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.nombre }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="rut">
+				<mat-header-cell *matHeaderCellDef mat-sort-header> Rut </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{ element.rut }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="editar">
+				<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<button mat-raised-button class="editarButton" (click)="modifyBusiness(element)">Modificar</button>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+			<mat-row
+				*matRowDef="let row; columns: displayedColumns; let rowInd = index"
+				[ngClass]="{ 'detalles-row': detallesRow == rowInd }"
+			>
+			</mat-row>
+		</mat-table>
+
+		<div class="table-no-results" [style.display]="inactiveDataSource?.renderedData.length == 0 ? '' : 'none'">
+			No hay empresas dadas de baja.
+		</div>
+
+		<footer style="display: none">
+			<mat-paginator
+				#paginator
+				[length]="inactiveDataSource?.filteredData?.length"
+				[pageIndex]="0"
+				[pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+	</div>
+</div>

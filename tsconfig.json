@@ -1,0 +1,25 @@
+{
+	"include": ["src/**/*.ts"],
+	"compileOnSave": false,
+	"compilerOptions": {
+		"downlevelIteration": true,
+		"importHelpers": true,
+		"outDir": "./dist/out-tsc",
+		"baseUrl": "src",
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"target": "es6",
+		"typeRoots": ["../node_modules/@types"],
+		"types": ["hammerjs", "../node_modules/@types"],
+		"lib": ["es2017", "dom"],
+		"module": "esnext",
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"core-js/es7/reflect": ["../node_modules/core-js/proposals/reflect-metadata"],
+			"core-js/es6/*": ["../node_modules/core-js/es/*"]
+		}
+	}
+}

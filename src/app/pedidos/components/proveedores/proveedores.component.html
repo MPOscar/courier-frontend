@@ -1,0 +1,46 @@
+<div fxFlexFill fxLayout="column">
+	<mat-progress-bar mode="indeterminate" *ngIf="mostrarIndicadorCargando"></mat-progress-bar>
+
+	<div fxFlex="60px">
+		<div fxFlex="15" fxLayoutAlign="center center">
+			<button mat-icon-button routerLink="/pedidos/menu">
+				<mat-icon class="proveedores-back">arrow_back</mat-icon>
+			</button>
+		</div>
+
+		<div fxFlex="70" fxLayoutAlign="center center" class="title-div">
+			<span>Elegir proveedor</span>
+		</div>
+	</div>
+
+	<div fxLayout="column" [fxHide]="proveedores.length != 0" fxLayoutAlign="center center">
+		<img src="/assets/png/provider.png" style="width: 30%" />
+		<p *ngIf="!mostrarIndicadorCargando">No hay Proveedores</p>
+		<p *ngIf="mostrarIndicadorCargando">Cargando Proveedores</p>
+	</div>
+
+	<div fxLayoutAlign="center center">
+		<div fxLayoutGap="10px" fxLayoutAlign="center" fxLayout.lt-md="column">
+			<mat-card
+				*ngFor="let proveedor of proveedores"
+				fxFlex="20"
+				[fxFlex.lt-md]="40"
+				[fxFlex.xs]="100"
+				class="proveedorCard"
+				(keydown.enter)="goTo(['/pedidos/productos', proveedor.id])"
+				[routerLink]="['/pedidos/productos', proveedor.id]"
+				matRipple
+			>
+				<mat-card-header class="cardHeader">
+					<mat-card-title class="cardTitle">{{ proveedor.nombre }}</mat-card-title>
+				</mat-card-header>
+				<div fxLayout="row" fxLayoutAlign="center center">
+					<div
+						[ngStyle]="{ 'background-image': 'url(' + proveedor?.logoUrl + ')' }"
+						class="example-header-image"
+					></div>
+				</div>
+			</mat-card>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,77 @@
+<div class="create-business" fxLayout="row" fxLayoutAlign="space-around center">
+	<mat-card fxFlex="nogrow" fxFlex.lt-md="100">
+		<h2>Nueva Empresa</h2>
+
+		<div
+			fxLayout.gt-sm="row"
+			fxLayout.lt-md="column"
+			fxLayoutAlign.gt-sm="space-around center"
+			fxLayoutAlign.lt-md="start center"
+		>
+			<app-image-upload
+				fxFlex.gt-sm="50"
+				(fileChange)="handleImageChangeEvent($event)"
+				ngClass.gt-xs="image-upload"
+				ngClass.lt-sm="image-upload-mobile"
+			>
+			</app-image-upload>
+
+			<div fxFlex.gt-sm="50" fxLayout.lt-md="row" fxLayoutAlign.lt-md="center center" fxFlexAlign="stretch">
+				<form
+					fxFlex.lt-md="70"
+					fxLayout="column"
+					fxLayoutAlign="center center"
+					[formGroup]="registerForm"
+					(ngSubmit)="createBusiness()"
+				>
+					<mat-form-field [hideRequiredMarker]="false" fxFlexAlign="stretch">
+						<input
+							matInput
+							placeholder="Nombre"
+							required
+							[(ngModel)]="business.nombre"
+							[ngModelOptions]="{ standalone: true }"
+						/>
+						<mat-error *ngIf="invalidName()">"Debes ingresar un nombre"</mat-error>
+					</mat-form-field>
+
+					<mat-form-field [hideRequiredMarker]="false" fxFlexAlign="stretch">
+						<input
+							matInput
+							placeholder="Razón Social"
+							required
+							[(ngModel)]="business.razonSocial"
+							[ngModelOptions]="{ standalone: true }"
+						/>
+						<mat-error *ngIf="invalidSocialNumber()">Debes ingresar una razón social</mat-error>
+					</mat-form-field>
+
+					<mat-form-field [hideRequiredMarker]="false" fxFlexAlign="stretch">
+						<input
+							matInput
+							#rut
+							placeholder="RUT"
+							formControlName="rut"
+							required
+							[(ngModel)]="business.rut"
+							maxlength="12"
+							[ngClass]="{ 'is-invalid': submitted && f.rut.errors }"
+						/>
+						<mat-error *ngIf="submitted && f.rut.errors && f.rut.errors.required"
+							>RUT es requerido
+						</mat-error>
+						<mat-error *ngIf="submitted && f.rut.errors && f.rut.errors.rutInvalido"
+							>RUT ingresado es invalido</mat-error
+						>
+						<mat-hint align="end">{{ rut.value.length }} / 12</mat-hint>
+					</mat-form-field>
+
+					<div fxLayout="row" fxLayoutAlign="end center" fxFlexAlign="stretch" class="buttons-row">
+						<button mat-button (click)="cancel()">Cancelar</button>
+						<button mat-raised-button color="primary" type="submit">Guardar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</mat-card>
+</div>

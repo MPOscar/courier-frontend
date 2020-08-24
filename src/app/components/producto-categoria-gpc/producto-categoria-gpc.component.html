@@ -1,0 +1,34 @@
+
+<div class="pt-25px d-flex flex-direction-column">
+<mat-form-field>
+  <mat-select placeholder="Segment" [(ngModel)]="segmentCode" [disabled]="disabled">
+    <div *ngFor="let segment of segmentos">
+      <mat-option [value]="segment?.segmentCode" matTooltip="{{segment?.segmentDescripcion}}" (click)="selectFamilia(segment?.segmentCode)">{{ segment?.segmentDescripcion }}</mat-option>
+    </div>
+  </mat-select>
+</mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Family" [(ngModel)]="familiaCode" [disabled]="disabled">
+      <div *ngFor="let familia of familias">
+        <mat-option [value]="familia?.familiaCode" matTooltip="{{familia?.familiaDescripcion}}" (click)="selectClase(familia?.familiaCode)">{{ familia?.familiaDescripcion }}</mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Clase" [(ngModel)]="claseCode" [disabled]="disabled">
+      <div *ngFor="let clase of clases">
+        <mat-option [value]="clase?.claseCode" matTooltip="{{clase?.claseDescripcion}}" (click)="selectBrick(clase?.claseCode)">{{ clase?.claseDescripcion }}</mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Brick" [(ngModel)]="brickCode" [disabled]="disabled">
+      <div *ngFor="let brick of bricks">
+        <mat-option [value]="brick?.brickCode" matTooltip="{{brick?.brickDescripcion}}" (click)="sendSelection()">{{ brick?.brickDescripcion }}</mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+</div>

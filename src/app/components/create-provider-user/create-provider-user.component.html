@@ -1,0 +1,25 @@
+<div fxLayout="column" fxLayoutAlign="space-between none">
+	<div>
+		<form [formGroup]="options"></form>
+		<h2>Invitar Usuario</h2>
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Email" required [(ngModel)]="user.email" />
+			<mat-error *ngIf="invalidEmail()">Debes ingresar un email</mat-error>
+		</mat-form-field>
+	</div>
+	<div id="roleOptions">
+		<h4>Roles:</h4>
+		<mat-checkbox
+			(change)="roleChecked(rol)"
+			*ngFor="let rol of roles"
+			[value]="rol.id"
+			[checked]="rol.checked"
+			[disabled]="rol.id == 0"
+			>{{ rol.descripcion }}</mat-checkbox
+		>
+	</div>
+	<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+		<button mat-button (click)="showUserList()">Cancelar</button>
+		<button mat-button color="primary" (click)="createUser()">Invitar</button>
+	</div>
+</div>

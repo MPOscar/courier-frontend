@@ -1,0 +1,26 @@
+.supermarketRow {
+	position: relative;
+	height: 50px;
+	width: 100%;
+	border-bottom: 1px solid;
+	border-color: gainsboro;
+}
+
+.supermarketContent {
+	line-height: 50px;
+	font-size: 14px;
+	width: 50%;
+	position: relative;
+	float: left;
+	margin-left: 10px;
+}
+
+.editButton {
+	background-color: #2f66b9;
+	color: white;
+	width: 100px;
+	float: right;
+	border-radius: 10px;
+	margin-right: 10px;
+	margin-top: 8px;
+}

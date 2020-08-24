@@ -1,0 +1,41 @@
+<nav mat-tab-nav-bar [backgroundColor]="background" fxHide.lt-md="true">
+	<a
+		*ngIf="showUsers"
+		mat-tab-link
+		routerLinkActive
+		#rla="routerLinkActive"
+		[active]="rla.isActive"
+		[routerLink]="['/usuarios-proveedor']"
+	>
+		Usuarios
+	</a>
+
+	<a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['/perfil-empresa']">
+		Perfil Empresa
+	</a>
+</nav>
+
+<div fxLayout="column" fxLayoutAlign=" start" fxHide.gt-sm="true">
+	<button
+		*ngIf="showUsers"
+		mat-button
+		fxLayoutAlign=" start"
+		routerLinkActive
+		#rla="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla.isActive, 'button-active-mobile': rla.isActive }"
+		[routerLink]="['/usuarios-proveedor']"
+	>
+		Usuarios
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		routerLinkActive
+		#rla="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla.isActive, 'button-active-mobile': rla.isActive }"
+		[routerLink]="['/perfil-empresa']"
+	>
+		Perfil Empresa
+	</button>
+</div>

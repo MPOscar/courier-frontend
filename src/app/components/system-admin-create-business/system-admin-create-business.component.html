@@ -1,0 +1,31 @@
+<div style="flex: 1 1 auto; overflow-y: auto; background-color: white;">
+	<div class="mat-h2" id="welcome">Nueva Empresa</div>
+	<div id="productImg">
+		<img [src]="imgURL" *ngIf="imgURL" style="width:100%;" />
+		<input #file type="file" accept="image/*" (change)="preview(file.files, $event)" style="margin-top: 20px;" />
+	</div>
+	<div class="example-container">
+		<form class="example-container" [formGroup]="options"></form>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Nombre" required [(ngModel)]="business.nombre" />
+			<mat-error *ngIf="invalidName()">"Debes ingresar un nombre"</mat-error>
+		</mat-form-field>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Razón Social" required [(ngModel)]="business.razonSocial" />
+			<mat-error *ngIf="invalidSocialNumber()">Debes ingresar una razón social</mat-error>
+		</mat-form-field>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="RUT" required [(ngModel)]="business.rut" />
+			<mat-error *ngIf="invalidRut()">{{ getRutError() }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Email" required [(ngModel)]="business.email" />
+			<mat-error *ngIf="invalidEmail()">{{ getEmailError() }}</mat-error>
+		</mat-form-field>
+	</div>
+	<button id="createButton" (click)="createBusiness()" mat-button>Crear Empresa</button>
+</div>

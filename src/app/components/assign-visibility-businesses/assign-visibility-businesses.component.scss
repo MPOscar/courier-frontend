@@ -1,0 +1,100 @@
+.businesses-table,
+.groups-table {
+	min-width: 550px;
+
+	* {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 0 -1px;
+	}
+
+	.mat-header-cell,
+	.mat-cell {
+		box-sizing: border-box;
+	}
+
+	.mat-row {
+		cursor: pointer;
+	}
+
+	.mat-column-checkbox {
+		flex: 0 0 5%;
+		overflow: initial;
+	}
+
+	.mat-column-nombre {
+		flex: 0 0 30%;
+	}
+
+	.mat-column-rut {
+		flex: 0 0 20%;
+	}
+
+	.mat-column-razonSocial {
+		flex: 0 0 45%;
+	}
+}
+
+.groupRow {
+	background-color: rgb(250, 250, 250);
+
+	.mat-cell {
+		color: rgb(118, 118, 118) !important;
+		font-size: 17px !important;
+		font-weight: bold !important;
+	}
+}
+
+.add-button {
+	float: right;
+}
+
+#second-radio-button {
+	margin-left: 20px;
+}
+#second-radio-button {
+	margin-left: 20px;
+}
+
+.privacy-selectors {
+	margin-right: 20px;
+}
+
+.privacy-selectors-group {
+	margin-left: 25px;
+}
+
+.visibility-icons {
+	opacity: 0.8;
+	margin-right: 8px;
+}
+
+@media screen and (max-width: 768px) {
+	.add-button {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.radio-group {
+		display: flex;
+		flex-direction: column;
+		margin: 15px 0;
+	}
+
+	#second-radio-button {
+		margin-left: 0;
+		margin-top: 5px;
+	}
+
+	.businesses-table,
+	.groups-table {
+		.mat-column-checkbox {
+			flex: 0 0 10%;
+			overflow: initial;
+		}
+
+		.mat-column-razonSocial {
+			flex: 0 0 40%;
+		}
+	}
+}

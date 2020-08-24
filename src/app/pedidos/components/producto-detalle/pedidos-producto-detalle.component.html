@@ -1,0 +1,68 @@
+<div class="container1" fxFlex="80vw" fxflex.lt-md="90vw" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start">
+	<div class="box1" fxFlex="20%" fxFlex.xs="30%" fxFlex.sm="30%">
+		<mat-card>
+			<img
+				onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';"
+				mat-card-image
+				src="{{ producto?.foto }}"
+			/>
+		</mat-card>
+	</div>
+	<div class="box2" fxFlex="25%" fxFlex.xs="40%" fxFlex.sm="40%">
+		<h5><span>DESCRPICIÓN:</span></h5>
+		<h5 class="descripcion">{{ producto.descripcion }}</h5>
+
+		<h5>
+			<mat-icon>line_weight</mat-icon>
+			<span>GTIN:</span> {{ producto.gtin }}
+		</h5>
+		<h5>
+			<mat-icon>local_offer</mat-icon>
+			<span>MARCA:</span>
+			{{ producto.marca }}
+		</h5>
+		<h5>
+			<mat-icon>poll</mat-icon>
+			<span>CONTENIDO NETO:</span>
+			{{ producto.contenidoNeto }} {{ producto.unidadMedida }}
+		</h5>
+	</div>
+	<div class="box3" fxFlex="55%" fxFlex.xs="30%" fxFlex.sm="30%">
+		<h5><span>CPP:</span></h5>
+		<h5>{{ producto.cpp }}</h5>
+		<h5><span>SE VENDE DE A:</span></h5>
+		<h5>{{ producto.nivelMinimoVenta }} unidades de consumo</h5>
+		<h5><span>UNIDADES POR CAJA:</span></h5>
+		<h5 *ngIf="producto.empaques !== undefined && producto.empaques[0] !== undefined; else nd">
+			{{ producto.empaques[0]?.cantidad + ' unidades' || 'N/D' }}
+		</h5>
+		<ng-template #nd>
+			<h5>{{ 'N/D' }}</h5>
+		</ng-template>
+		<h5><span>GTIN-14:</span></h5>
+		<h5>{{ producto.gtinPresentacion || 'N/D' }}</h5>
+	</div>
+	<div class="box4" fxFlex="20%" fxFlex.xs="30%" fxFlex.sm="30%">
+		<mat-card>
+			<img
+				onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';"
+				mat-card-image
+				src="./assets/png/pallets2.png"
+			/>
+		</mat-card>
+	</div>
+	<div class="box3" fxFlex="55%" fxFlex.xs="30%" fxFlex.sm="30%">
+		<h5>
+			<span>{{ 'CAJAS X PALLET' | uppercase }}:</span>
+		</h5>
+		<h5>{{ (producto?.pallet?.cajas | number) || 'N/D' }}</h5>
+		<h5>
+			<span>{{ 'UNIDADES X PALLET' | uppercase }}:</span>
+		</h5>
+		<h5>{{ (producto.pallet?.unidadesVenta | number) || 'N/D' }}</h5>
+		<h5>
+			<span>{{ 'Nº CAMADAS X PALLET' | uppercase }}:</span>
+		</h5>
+		<h5>{{ (producto?.pallet?.camadas | number) || 'N/D' }}</h5>
+	</div>
+</div>

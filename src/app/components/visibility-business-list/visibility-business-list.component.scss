@@ -1,0 +1,55 @@
+mat-row:hover {
+	background-color: whitesmoke;
+	cursor: pointer;
+}
+
+.table-container {
+	margin-bottom: 40px;
+}
+.businesses-table {
+	* {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 0 -1px;
+	}
+
+	.mat-header-cell,
+	.mat-cell {
+		box-sizing: border-box;
+	}
+
+	.mat-row {
+		cursor: pointer;
+	}
+
+	.mat-column-nombre {
+		flex: 0 0 40%;
+	}
+
+	.mat-column-razonSocial {
+		flex: 0 0 50%;
+	}
+
+	.mat-column-options {
+		text-overflow: unset;
+		flex: 0 0 10%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.businesses-table {
+		.mat-column-nombre {
+			padding-left: 10px;
+			flex: 0 0 40%;
+		}
+
+		.mat-column-razonSocial {
+			flex: 0 0 45%;
+		}
+
+		.mat-column-options {
+			padding-right: 10px;
+			flex: 0 0 15%;
+		}
+	}
+}

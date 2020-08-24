@@ -1,0 +1,68 @@
+<div fxLayout="column" fxFlexFill>
+	<h2>Creación Lista</h2>
+
+	<mat-horizontal-stepper labelPosition="bottom" linear #stepper fxFlexFill>
+		<mat-step [stepControl]="firstFormGroup" completed="false" fxLayout="column">
+			<form [formGroup]="firstFormGroup" fxLayout="column">
+				<mat-form-field>
+					<input
+						#nameInput
+						matInput
+						placeholder="Nombre de la lista de venta"
+						formControlName="name"
+						required
+					/>
+				</mat-form-field>
+
+				<mat-form-field>
+					<textarea
+						#descriptionInput
+						matInput
+						placeholder="Descripción"
+						formControlName="description"
+						required
+						matTextareaAutosize
+						matAutosizeMinRows="1"
+						matAutosizeMaxRows="5"
+					></textarea>
+				</mat-form-field>
+			</form>
+
+			<div fxLayout="row" style="margin-bottom:15px; margin-top:15px;" fxLayoutAlign="space-between center">
+				<button mat-button color="warn" (click)="showList()">Cancelar</button>
+				<button
+					(click)="firstButtonClick(stepper, nameInput.value, descriptionInput.value)"
+					mat-raised-button
+					color="primary"
+				>
+					Siguiente
+				</button>
+			</div>
+		</mat-step>
+
+		<mat-step [stepControl]="saleListService.secondStepDone" completed="false">
+			<ng-template matStepLabel>Target</ng-template>
+			<sale-list-businesses></sale-list-businesses>
+			<div fxLayout="row" style="margin-bottom:15px; margin-top:15px;" fxLayoutAlign="space-between center">
+				<button mat-button color="warn" (click)="showList()">Cancelar</button>
+				<div>
+					<button mat-button color="primary" matStepperPrevious>Anterior</button>
+					<button (click)="secondButtonClick(stepper)" mat-raised-button color="primary">Siguiente</button>
+				</div>
+			</div>
+		</mat-step>
+
+		<mat-step [stepControl]="saleListService.thirdStepDone" completed="false">
+			<ng-template matStepLabel>Productos</ng-template>
+			<sale-list-products></sale-list-products>
+
+			<div fxLayout="row" style="margin-bottom:15px; margin-top:15px;" fxLayoutAlign="space-between center">
+				<button mat-button color="warn" (click)="showList()">Cancelar</button>
+				<div>
+					<button mat-button color="primary" matStepperPrevious>Anterior</button>
+					<button mat-raised-button color="primary" (click)="createSaleList()">Guardar</button>
+				</div>
+			</div>
+		</mat-step>
+	</mat-horizontal-stepper>
+</div>

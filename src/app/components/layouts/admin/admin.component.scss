@@ -1,0 +1,65 @@
+.toolbar-spacer {
+	flex: 1 1 auto;
+}
+
+.mat-elevation-z2 {
+	position: relative;
+	z-index: 2;
+}
+
+.app-content {
+	height: calc(100% - 65px);
+}
+
+#topNavBarFirstButton {
+	margin-left: 50px;
+}
+
+.desktopMenuOption {
+	display: block;
+}
+
+#burgerIcon {
+	display: none;
+}
+
+@media screen and (max-width: 768px) {
+	.desktopMenuOption {
+		display: none;
+	}
+
+	#burgerIcon {
+		display: block;
+		position: relative;
+		float: left;
+	}
+
+	#topImage {
+		position: relative;
+		display: block;
+		margin: auto;
+	}
+
+	.toolbar-spacer {
+		display: none;
+	}
+
+	.sideMenuButton {
+		position: relative;
+		width: 100%;
+		float: left;
+		height: 50px;
+	}
+
+	#ProveedoresTitle {
+		line-height: 50px;
+		font-size: 16px;
+		margin-left: 15px;
+	}
+
+	#EmpresasTitle {
+		line-height: 50px;
+		font-size: 16px;
+		margin-left: 15px;
+	}
+}

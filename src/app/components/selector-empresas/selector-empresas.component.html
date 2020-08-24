@@ -1,0 +1,18 @@
+<div fxLayout="column" fxFlexFill>
+	<h3>Empresas seleccionadas</h3>
+
+	<app-selector-empresas-tabla
+		[isAddingTable]="false"
+		[businessesIn]="selectedElementsIn"
+		(businessesOut)="removeElements($event)"
+	></app-selector-empresas-tabla>
+
+	<h3>Seleccionar empresas</h3>
+
+	<app-selector-empresas-tabla
+		[isAddingTable]="true"
+		[businessesIn]="allElementsIn"
+		[newBusinessesIn]="newElements"
+		(businessesOut)="addElements($event)"
+	></app-selector-empresas-tabla>
+</div>

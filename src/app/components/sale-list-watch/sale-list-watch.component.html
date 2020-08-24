@@ -1,0 +1,59 @@
+<h2>{{ list?.nombre }}</h2>
+
+<p>{{ list?.descripcion }}</p>
+
+<mat-tab-group>
+    <mat-tab class="my-tab" label="Empresas">
+        <app-selector-empresas-tabla [isEditing]="false" [businessesIn]="businesses"></app-selector-empresas-tabla>
+    </mat-tab>
+
+    <mat-tab class="my-tab" label="Grupos" [disabled]="!showBusinessesAndGroups">
+        <div>
+            <mat-table fxFlex [style.display]="showGroups ? '' : 'none'" #addedGroupsSort="matSort" id="addedTableGrupos" [dataSource]="addedGroupBusinessesDataSource" matSort matSortActive="nombre" matSortDirection="asc">
+                <ng-container matColumnDef="tituloGrupo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="nombre">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de empresa </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="razonSocial">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element?.razonSocial }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="gln">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> GLN de empresa </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element?.gln }} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsGroups"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumnsGroups; let rowInd = index"> </mat-row>
+
+                <ng-container matColumnDef="groupHeader">
+                    <mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+                </ng-container>
+
+                <mat-row *matRowDef="let row; columns: displayedColumnsGroup; when: isGroup"> </mat-row>
+            </mat-table>
+
+            <div class="table-no-results" [style.display]="addedGroupBusinessesDataSource?.renderedData.length == 0 ? '' : 'none'">
+                No hay grupos de empresas agregados.
+            </div>
+            <div [hidden]="businessesGroupDataSourceLength <= 5">
+                <footer>
+                    <mat-paginator #groupsPaginator [length]="businessesGroupDataSourceLength" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </footer>
+            </div>
+        </div>
+    </mat-tab>
+
+    <mat-tab class="my-tab" label="Productos">
+        <app-selector-productos-tabla [isEditing]="false" [productsIn]="productsWithCategories"></app-selector-productos-tabla>
+    </mat-tab>
+</mat-tab-group>

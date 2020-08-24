@@ -1,0 +1,31 @@
+<div style="flex: 1 1 auto; overflow-y: auto;">
+	<h1 id="editBusinessTitle">Editar Empresa {{ supermarket.nombre }}</h1>
+	<div class="example-container">
+		<form class="example-container" [formGroup]="options"></form>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Nombre" required [(ngModel)]="supermarket.nombre" />
+			<mat-error *ngIf="invalidName()">"Debes ingresar un nombre"</mat-error>
+		</mat-form-field>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Razón Social" required [(ngModel)]="supermarket.razonSocial" />
+			<mat-error *ngIf="invalidSocialNumber()">Debes ingresar una razón social</mat-error>
+		</mat-form-field>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Rut" required [(ngModel)]="supermarket.rut" />
+			<mat-error *ngIf="invalidRut()">{{ getRutError() }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field [hideRequiredMarker]="false">
+			<input matInput placeholder="Gln" required [(ngModel)]="supermarket.gln" />
+			<mat-error *ngIf="invalidGln()">Debes ingresar un gln</mat-error>
+		</mat-form-field>
+	</div>
+	<div id="buttonsContainer">
+		<button id="createButton" (click)="updateBusiness()" mat-button>Actualizar Empresa</button>
+
+		<button id="deleteButton" (click)="deleteBusiness()" mat-button>Eliminar Empresa</button>
+	</div>
+</div>

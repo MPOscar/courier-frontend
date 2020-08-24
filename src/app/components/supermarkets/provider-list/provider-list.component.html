@@ -1,0 +1,25 @@
+<div class="provider-list" fxLayoutAlign="center start">
+	<mat-card fxFlex="80" fxFlex.lt-md="100">
+		<h2>Ingresar al catálogo de otras empresas</h2>
+
+		<div fxLayout="row" fxLayout.lt-md="column" class="bottom-row">
+			<div fxLayoutAlign="center center" fxLayoutAlign.lt-md="start center" fxFlex.gt-sm="25">
+				Seleccione una empresa
+			</div>
+
+			<div fxFlex.gt-sm="60" fxLayoutAlign.lt-md="center center">
+				<mat-select fxFlex class="dropdown-businesses" placeholder="Empresas" [(ngModel)]="selectedValue">
+					<mat-option *ngFor="let provider of providers" [value]="provider">
+						{{ provider.nombre }}
+					</mat-option>
+				</mat-select>
+			</div>
+
+			<div fxLayoutAlign="center center" fxLayoutAlign.lt-md="end center" fxFlex.gt-sm="15">
+				<button mat-raised-button color="primary" (click)="goToProvider()">
+					Seleccionar
+				</button>
+			</div>
+		</div>
+	</mat-card>
+</div>

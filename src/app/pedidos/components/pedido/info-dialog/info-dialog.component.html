@@ -1,0 +1,29 @@
+<mat-dialog-content>
+	<main fxFlex fxLayout="column" style="height:300px">
+		<header fxFlex="30" fxLayoutAlign="center center">
+			<img
+				style="opacity:1"
+				fxFlex="25"
+				src="{{ actualIcon }}"
+				[@slide]="transicion"
+				(@slide.done)="onAnimationFinish($event)"
+			/>
+		</header>
+		<section fxFlex fxLayoutAlign="center center">
+			<b>{{ mensaje }}</b>
+		</section>
+	</main>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<footer fxFlex fxLayoutAlign="end center">
+		<button
+			mat-raised-button
+			[disabled]="disableActions"
+			(click)="onAcceptClick()"
+			color="primary"
+			matTooltip="{{ okButtonText }}"
+		>
+			{{ okButtonText }}
+		</button>
+	</footer>
+</mat-dialog-actions>

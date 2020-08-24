@@ -1,0 +1,75 @@
+#toolbar-1 {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	nav {
+		border: 0 !important;
+	}
+}
+
+#toolbar-1 {
+	z-index: 3;
+	top: 0;
+	height: 64px;
+
+	.logo {
+		height: 70%;
+		width: 110px;
+	}
+
+	nav {
+		margin-left: 20px;
+
+		.mat-tab-link {
+			height: 64px;
+		}
+	}
+
+	#user-name {
+		font-weight: normal;
+		font-size: 12px;
+		line-height: normal;
+	}
+
+	#business-name {
+		line-height: normal;
+		font-size: 16px;
+	}
+}
+
+.main {
+	padding-top: 64px;
+	height: calc(100vh - 64px);
+}
+
+.main-mobile {
+	padding-top: 64px;
+}
+
+.mobile-main-container {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.mobile-drawer-container {
+	flex: 1 0 auto;
+}
+.button-active-mobile {
+	border-left-width: 3px;
+	border-left-style: solid;
+	border-left-color: #2f66b9;
+	margin-left: 0px;
+	width: 100%;
+}
+.button-inactive-mobile {
+	margin-left: 3px;
+	opacity: 0.7;
+	width: 100%;
+}

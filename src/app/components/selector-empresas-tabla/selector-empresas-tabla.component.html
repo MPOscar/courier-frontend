@@ -1,0 +1,91 @@
+<div fxLayout="column" class="x-scroll">
+	<app-searchbar (filtersOut)="handleFilterChange($event)"></app-searchbar>
+
+	<mat-table
+		fxFlex
+		class="businesses-table"
+		[dataSource]="businessesDataSource"
+		matSort
+		matSortActive="nombre"
+		matSortDirection="asc"
+		[fxHide]="businessesDataSource?.data?.length === 0"
+	>
+		<ng-container matColumnDef="checkbox">
+			<mat-header-cell *matHeaderCellDef>
+				<mat-checkbox
+					(change)="$event ? masterToggleBusinesses() : null"
+					[checked]="selection.hasValue() && areAllBusinessesSelected()"
+					[indeterminate]="selection.hasValue() && !areAllBusinessesSelected()"
+				>
+				</mat-checkbox>
+			</mat-header-cell>
+			<mat-cell *matCellDef="let element">
+				<mat-checkbox
+					(click)="$event.stopPropagation()"
+					(change)="$event ? selectBusiness(element) : null"
+					[checked]="selection.isSelected(element)"
+				>
+				</mat-checkbox>
+			</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="nombre">
+			<mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element?.nombre }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="rut">
+			<mat-header-cell *matHeaderCellDef mat-sort-header> RUT </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element?.rut }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="razonSocial">
+			<mat-header-cell *matHeaderCellDef mat-sort-header> Razon Social </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element?.razonSocial }} </mat-cell>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+		<mat-row *matRowDef="let row; columns: displayedColumns; let rowInd = index"> </mat-row>
+	</mat-table>
+
+	<div>
+		<footer class="footer" [fxHide]="businessesDataSource?.data?.length === 0">
+			<mat-paginator
+				#businessesPaginator
+				[length]="businessesDataSource?.data?.length"
+				[pageIndex]="0"
+				[pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+	</div>
+
+	<div *ngIf="isEditing && businessesDataSource?.data?.length > 0">
+		<button
+			mat-raised-button
+			color="primary"
+			class="add-button"
+			*ngIf="isAddingTable"
+			(click)="addSelectedBusinesses()"
+		>
+			Agregar Empresas
+		</button>
+
+		<button
+			mat-raised-button
+			color="warn"
+			class="add-button"
+			*ngIf="!isAddingTable"
+			(click)="addSelectedBusinesses()"
+		>
+			Quitar Empresas
+		</button>
+	</div>
+</div>
+<div class="table-no-results" [fxHide]="businessesDataSource?.data?.length > 0">
+	<span *ngIf="!isAddingTable && isEditing">No hay empresas seleccionadas</span>
+	<span *ngIf="isAddingTable && isEditing">No hay empresas para seleccionar</span>
+	<span *ngIf="!isEditing">No hay empresas para la búsqueda</span>
+</div>

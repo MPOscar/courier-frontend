@@ -1,0 +1,52 @@
+<div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="start stretch" style="height:100vh">
+	<div class="divPallets" fxFlex="50" fxLayoutAlign="center center" fxFlex.xs="30">
+		<img src="/assets/images/logoRondanet.svg" style="width: 60%" />
+	</div>
+
+	<div
+		fxLayout="row"
+		fxLayoutAlign="center center"
+		fxFlex="50"
+		fxFlex.xs="85"
+		fxLayoutAlign.xs="center start"
+		style="background-color: #EEE; font-size: 15px;"
+	>
+		<div id="registerFormCol" fxLayoutAlign="center center">
+			<div class="register-form">
+				<div id="createUserTitle">Bienvenido {{ user.email }}, por favor complete sus datos</div>
+
+				<mat-form-field [hideRequiredMarker]="false">
+					<input matInput placeholder="Nombre" required [(ngModel)]="user.nombre" />
+					<mat-error *ngIf="invalidName()">"Debes ingresar un nombre"</mat-error>
+				</mat-form-field>
+
+				<mat-form-field [hideRequiredMarker]="false">
+					<input matInput placeholder="Apellido" required [(ngModel)]="user.apellido" />
+					<mat-error *ngIf="invalidLastName()">Debes ingresar un apellido</mat-error>
+				</mat-form-field>
+
+				<mat-form-field [hideRequiredMarker]="false">
+					<input type="password" matInput placeholder="Contraseña" required [(ngModel)]="user.contrasena" />
+					<mat-error *ngIf="invalidPassword()">Debes ingresar una contraseña</mat-error>
+				</mat-form-field>
+
+				<mat-form-field [hideRequiredMarker]="false">
+					<input
+						type="password"
+						matInput
+						placeholder="Repetir Contraseña"
+						required
+						[(ngModel)]="repeatPassword"
+					/>
+					<mat-error *ngIf="invalidPasswordRepeat()">Debes repetir la contraseña</mat-error>
+				</mat-form-field>
+
+				<div class="form-button">
+					<button mat-raised-button color="primary" type="submit" id="createButton" (click)="registerUser()">
+						REGISTRARSE
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

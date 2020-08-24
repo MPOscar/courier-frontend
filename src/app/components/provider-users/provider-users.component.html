@@ -1,0 +1,6 @@
+<div class="provider-users" fxLayout="row" fxLayoutAlign="center start">
+	<mat-card fxFlex="85" fxFlex.lt-md="100">
+		<create-provider-user *ngIf="userService.showCreateUser"></create-provider-user>
+		<provider-user-list *ngIf="userService.showProviderUserList"></provider-user-list>
+	</mat-card>
+</div>

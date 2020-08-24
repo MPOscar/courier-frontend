@@ -1,0 +1,43 @@
+<div class="main-container">
+	<h2 *ngIf="!groupsService.isEditing">{{ group.nombre }}</h2>
+
+	<form fxLayout="column" fxFlexFill [formGroup]="form" [ngClass]="{ 'not-editing': !groupsService.isEditing }">
+		<mat-form-field *ngIf="groupsService.isEditing">
+			<input matInput placeholder="Nombre" formControlName="name" value="{{ group.nombre }}" />
+		</mat-form-field>
+
+		<mat-form-field>
+			<textarea
+				matInput
+				placeholder="Descripción del grupo"
+				formControlName="description"
+				appearance="outline"
+				matTextareaAutosize
+				matAutosizeMinRows="1"
+				matAutosizeMaxRows="5"
+				>{{ group.descripcion }}</textarea
+			>
+		</mat-form-field>
+	</form>
+
+	<div fxLayout="column">
+		<div *ngIf="groupsService.isEditing">
+			<app-selector-empresas
+				[allBusinessesIn]="businesses"
+				[selectedBusinessesIn]="selectedBusinesses"
+				(businessesOut)="handleSelectedBusinessesChange($event)"
+			></app-selector-empresas>
+		</div>
+
+		<div *ngIf="!groupsService.isEditing">
+			<app-selector-empresas-tabla
+				[isEditing]="false"
+				[businessesIn]="selectedBusinesses"
+			></app-selector-empresas-tabla>
+		</div>
+
+		<div [fxHide]="!groupsService.isEditing">
+			<button mat-raised-button color="primary" class="add-button" (click)="saveGroup()">Guardar</button>
+		</div>
+	</div>
+</div>

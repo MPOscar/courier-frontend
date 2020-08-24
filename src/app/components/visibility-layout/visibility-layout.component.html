@@ -1,0 +1,20 @@
+<!--<div class="spinner" *ngIf="loaderVisible" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner></mat-spinner>
+</div>-->
+
+<div *ngIf="!loaderVisible" class="visibility" fxLayout="row" fxLayoutAlign="space-around center">
+	<mat-card class="main-container" fxFlex="85" fxFlex.sm="100" fxFlex.xs="100">
+		<button *ngIf="productsService.showVisibilitySingleBusiness" mat-button color="primary" (click)="showList()">
+			<mat-icon>arrow_back</mat-icon> Listado
+		</button>
+
+		<visibility-business-list *ngIf="productsService.showVisibilityBusinessList"></visibility-business-list>
+		<visibility-single-business
+			*ngIf="productsService.showVisibilitySingleBusiness && !productsService.editBusinessVisibility"
+		></visibility-single-business>
+		<app-visibility-single-business-edit
+			*ngIf="productsService.showVisibilitySingleBusiness && productsService.editBusinessVisibility"
+		></app-visibility-single-business-edit>
+		<assign-visibility *ngIf="productsService.showVisibilityMassive"></assign-visibility>
+	</mat-card>
+</div>

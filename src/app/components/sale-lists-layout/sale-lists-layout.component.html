@@ -1,0 +1,23 @@
+<!--<div class="spinner" *ngIf="loaderVisible" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner></mat-spinner>
+</div>-->
+
+<div *ngIf="!loaderVisible" class="sale-lists" fxLayout="row" fxLayoutAlign="space-around center">
+	<mat-card class="main-container" fxFlex="85" fxFlex.sm="100" fxFlex.xs="100" fxLayout="column">
+		<div fxFlex>
+			<button
+				*ngIf="saleListsService.showWatch || saleListsService.showEdit"
+				mat-stroked-button
+				color="primary"
+				(click)="showList()"
+			>
+				<mat-icon>arrow_back</mat-icon> Listado
+			</button>
+		</div>
+
+		<sale-lists-list *ngIf="saleListsService.showList"></sale-lists-list>
+		<sale-list-watch *ngIf="saleListsService.showWatch"></sale-list-watch>
+		<sale-lists *ngIf="saleListsService.showCreateList"></sale-lists>
+		<sale-list-edit *ngIf="saleListsService.showEdit"></sale-list-edit>
+	</mat-card>
+</div>

@@ -1,0 +1,29 @@
+.hidden {
+	display: none;
+}
+
+.mat-row:hover {
+	background-color: whitesmoke;
+}
+
+#tableUsuarios {
+	min-width: 500px;
+
+	.mat-header-cell,
+	.mat-cell {
+		box-sizing: border-box;
+	}
+
+	.mat-column-nombre,
+	.mat-column-apellido {
+		flex: 0 0 25%;
+	}
+
+	.mat-column-email {
+		flex: 0 0 40%;
+	}
+
+	.mat-column-quitar {
+		flex: 0 0 10%;
+	}
+}

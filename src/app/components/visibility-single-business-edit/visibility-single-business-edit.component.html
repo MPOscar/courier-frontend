@@ -1,0 +1,15 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+	<h2>Productos Visibles por {{ business?.nombre }}</h2>
+</div>
+
+<app-selector-productos
+	[allElementsIn]="products"
+	[selectedElementsIn]="selectedProducts"
+	(elementsOut)="handleSelectedProductschange($event)"
+></app-selector-productos>
+
+<div [fxHide]="!productosService.editBusinessVisibility">
+	<button (click)="saveChanges()" class="save-button" mat-raised-button color="primary">
+		Guardar
+	</button>
+</div>

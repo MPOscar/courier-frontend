@@ -1,0 +1,151 @@
+<div fxLayout="column" class="padding-left-25px padding-right-25px" style="height: 100%;" fxFlexFill>
+	<div style="flex: 1 1 auto; overflow-y: auto;" class="superContainer">
+		<h3>Productos visibles</h3>
+		<div id="searchBar">
+			<div fxFlexFill fxLayout="column" style="height:100%;">
+				<div fxFlex="60px">
+					<div fxFlexFill fxLayout="row">
+						<div fxFlex class="main-bar mat-elevation-z1" fxLayoutAlign="start center">
+							<i class="material-icons lupa"> search </i>
+
+							<mat-form-field class="filtros-chip-list" floatLabel="never">
+								<mat-chip-list #chipList>
+									<mat-chip
+										*ngFor="let filter of selectedFilters; let i = index"
+										[removable]="true"
+										(removed)="removeFilter(filter)"
+									>
+										{{ filter }}
+										<mat-icon matChipRemove>cancel</mat-icon>
+									</mat-chip>
+
+									<input
+										matInput
+										[matChipInputFor]="chipList"
+										[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+										[matChipInputAddOnBlur]="true"
+										(matChipInputTokenEnd)="addFiltro($event)"
+									/>
+								</mat-chip-list>
+							</mat-form-field>
+							<label class="chip-filtros-label">Buscar </label>
+
+							<span class="fill-space"></span> <a mat-button style="height: 0; position: absolute;"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tableProductsContainer">
+			<table
+				mat-table
+				fxFlexFill
+				#sortGroups="matSort"
+				matSort
+				matSortActive="descripcion"
+				matSortDirection="asc"
+				class="tableProducts"
+				[dataSource]="products"
+			>
+				<ng-container matColumnDef="checkbox">
+					<th mat-header-cell *matHeaderCellDef>
+						<mat-checkbox
+							(change)="$event ? masterToggle() : null"
+							[checked]="selection.hasValue() && isAllSelected()"
+							[indeterminate]="selection.hasValue() && !isAllSelected()"
+						>
+						</mat-checkbox>
+					</th>
+					<td mat-cell *matCellDef="let element">
+						<mat-checkbox
+							(click)="$event.stopPropagation()"
+							(change)="$event ? addProduct(element) : null"
+							[checked]="selection.isSelected(element)"
+						>
+						</mat-checkbox>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="imagen">
+					<th mat-header-cell *matHeaderCellDef></th>
+					<td mat-cell *matCellDef="let item">
+						<img
+							*ngIf="item.foto"
+							matListAvatar
+							src="{{ appConfig.apiBucket }}/{{ item.foto }}"
+							onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';"
+							class="rowImage"
+						/>
+						<img
+							*ngIf="!item.foto"
+							matListAvatar
+							src="./assets/images/no-image-available.png"
+							class="rowImage"
+						/>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="cpp">
+					<th mat-header-cell *matHeaderCellDef>CPP</th>
+					<td mat-cell *matCellDef="let item">{{ item.cpp }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="descripcion">
+					<th mat-header-cell *matHeaderCellDef>Descripción</th>
+					<td mat-cell *matCellDef="let item">{{ item.descripcion }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="gtin">
+					<th mat-header-cell *matHeaderCellDef>GTIN</th>
+					<td mat-cell *matCellDef="let item">{{ item.gtin }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="marca">
+					<th mat-header-cell *matHeaderCellDef>Marca</th>
+					<td mat-cell *matCellDef="let item">{{ item.marca }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="linea">
+					<th mat-header-cell *matHeaderCellDef>Linea</th>
+					<td mat-cell *matCellDef="let item">{{ item.categoria?.padre?.nombre }}</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="addedDisplayedColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: addedDisplayedColumns"></tr>
+				<tr
+					mat-row
+					*matRowDef="let row; columns: ['checkbox', 'descripcion']; when: isExtendedRow"
+					class="darken"
+				></tr>
+			</table>
+
+			<div
+				class="table-no-results"
+				[style.display]="productsDataSource?.renderedData.length == 0 ? '' : 'none'"
+			></div>
+		</div>
+		<div>
+			<footer class="footerVisibility" style="bottom: 0px; width: 100%;background-color: #fafafa;">
+				<mat-paginator
+					#paginator
+					id="paginator"
+					[length]="productsLength"
+					[pageIndex]="0"
+					[pageSize]="25"
+					[pageSizeOptions]="[5, 10, 25, 100]"
+					(page)="cambiarPagina()"
+				>
+				</mat-paginator>
+			</footer>
+		</div>
+		<div>
+			<button mat-raised-button color="primary" class="add-button" (click)="eliminarVisibilidad()">
+				Eliminar Visibilidad
+			</button>
+		</div>
+	</div>
+
+	<div id="dividerBottom"></div>
+	<div id="buttonContainer" style="float: right;"></div>
+</div>

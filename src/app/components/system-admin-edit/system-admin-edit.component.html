@@ -1,0 +1,77 @@
+<div style="flex: 1 1 auto; overflow-y: auto; background-color: white;">
+	<div class="mat-h2" id="welcome">Editar Empresa</div>
+	<div id="productInfo">
+		<div id="productImg">
+			<img [src]="imgURL" *ngIf="imgURL" style="width:100%;" />
+			<input
+				#file
+				type="file"
+				accept="image/*"
+				(change)="preview(file.files, $event)"
+				style="margin-top: 20px;"
+			/>
+		</div>
+		<div class="example-container">
+			<form class="example-container" [formGroup]="options"></form>
+			<mat-form-field [hideRequiredMarker]="false">
+				<input matInput placeholder="Nombre" required [(ngModel)]="business.nombre" />
+				<mat-error *ngIf="invalidName()">"Debes ingresar un nombre"</mat-error>
+			</mat-form-field>
+
+			<mat-form-field [hideRequiredMarker]="false">
+				<input matInput placeholder="Razón Social" required [(ngModel)]="business.razonSocial" />
+				<mat-error *ngIf="invalidSocialNumber()">Debes ingresar una razón social</mat-error>
+			</mat-form-field>
+
+			<mat-form-field [hideRequiredMarker]="false">
+				<input matInput placeholder="RUT" required [(ngModel)]="business.rut" />
+				<mat-error *ngIf="invalidRut()">{{ getRutError() }}</mat-error>
+			</mat-form-field>
+		</div>
+		<button class="app-button blue-background" id="saveButton" (click)="saveChanges()" mat-button>
+			Guardar Cambios
+		</button>
+		<button class="app-button gray-background" (click)="goBack()" mat-button>Volver</button>
+	</div>
+
+	<mat-card id="activations" class="light-gray-background" fxLayout="row" fxLayoutAlign="space-between center">
+		<div style="width:100%">
+			<div class="activationRow">
+				<div id="statusTitle">STATUS</div>
+				<div *ngIf="business.activo" id="active">ACTIVO</div>
+				<div *ngIf="!business.activo" id="inactive">BAJA DE EMPRESA</div>
+			</div>
+
+			<div *ngFor="let inactivation of inactivations; let i = index">
+				<div class="baja">
+					<div style="font-weight:bold;" class="historyRow">BAJA DE EMPRESA</div>
+					<div class="historyRow">Fecha: {{ inactivation.fechaCreacion }}</div>
+					<div class="historyRow">{{ inactivation.motivo }}</div>
+					<div class="historyRow"></div>
+				</div>
+				<div class="alta" *ngIf="i + 1 != inactivations.length || business.activo">
+					<div style="font-weight:bold;" class="historyRow">Alta DE EMPRESA</div>
+					<div class="historyRow">Fecha: {{ inactivation.fechaEdicion }}</div>
+					<div class="historyRow"></div>
+				</div>
+			</div>
+			<div *ngIf="business.activo" id="makeInactiveDiv">
+				<div class="activationRow">Ingrese una justificacion para la baja de empresa</div>
+				<div class="activationRow">
+					<textarea id="motiveText" matInput [(ngModel)]="newInactivation.motivo"></textarea>
+					<button class="app-button blue-background" id="makeInactive" (click)="makeInactive()" mat-button>
+						Dar de Baja
+					</button>
+				</div>
+				<div class="activationRow" style="margin-top: 40px;font-size: 9px;">
+					La empresa no será eliminada físicamente
+				</div>
+			</div>
+			<div *ngIf="!business.activo">
+				<div class="activationRow">
+					<button class="app-button blue-background" (click)="makeActive()" mat-button>Dar de Alta</button>
+				</div>
+			</div>
+		</div>
+	</mat-card>
+</div>

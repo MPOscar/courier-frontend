@@ -1,0 +1,312 @@
+<mat-progress-bar mode="indeterminate" *ngIf="mostrarIndicadorCargando"></mat-progress-bar>
+<div class="container1 mat-elevation-z2" fxLayout="row" fxLayoutAlign="space-between">
+	<div class="box1" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+		<button mat-icon-button aria-label="Volver" (click)="regresar()">
+			<mat-icon>arrow_back</mat-icon>
+		</button>
+		<label>Atrás</label>
+	</div>
+	<div class="box2" fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
+		<h2>Finalizar Pedido</h2>
+	</div>
+	<div class="box1" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%"></div>
+</div>
+
+<!--     Input Comentarios    -->
+<div class="container2 " fxLayout="row" fxLayoutAlign="center">
+	<div class="box6" fxFlex="5%" fxFlex.xs="15%" fxFlex.sm="5%">
+		<mat-icon class="icon4">comment</mat-icon>
+	</div>
+	<div class="box3" fxFlex="65%" fxFlex.xs="80%" fxFlex.sm="85%">
+		<span class="box-comentario">
+			<mat-form-field class="comentario">
+				<textarea
+					autofocus
+					matInput
+					placeholder="Añadir comentario a la Orden de Compra"
+					[(ngModel)]="comentario"
+				></textarea>
+			</mat-form-field>
+		</span>
+	</div>
+</div>
+
+<div class="container3" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center">
+	<h4>N° Orden:</h4>
+	<mat-form-field floatPlaceholder="never">
+		<input
+			#cantInput
+			matInput
+			type="text"
+			[(ngModel)]="nroOrden"
+			matTooltip="Inserte o Modifique Número de Orden"
+		/>
+	</mat-form-field>
+</div>
+
+<!--    Footer  -->
+<div class="container5" fxLayout="row" fxLayoutAlign="center center">
+	<div class="box9" fxFlex="70%" fxFlex.xs="95%" fxFlex.sm="90%">
+		<div class="subtotal">
+			<small>Total Productos con Precio en UYU:</small> {{ total('UYU') | currency: 'UYU':'UYU ' }}
+		</div>
+		<div class="subtotal">
+			<small>Total Productos con Precio en USD:</small> {{ total('USD') | currency: 'USD':'USD ' }}
+		</div>
+		<div class="subtotal"><small>Cantidad Productos Sin Precio:</small> {{ total(null) }}</div>
+	</div>
+</div>
+
+<div class="container6" fxLayout="row" fxLayoutAlign="center center">
+	<div class="box4" fxFlex="35%" fxFlex.xs="50%" fxFlex.sm="45%">
+		<mat-form-field class="fecha" (click)="fechaEntregaDate.open()">
+			<input
+				matInput
+				[min]="minDate"
+				[matDatepicker]="fechaEntregaDate"
+				placeholder="Fecha de Entrega"
+				[formControl]="fechaEntrega"
+			/>
+			<mat-datepicker-toggle matSuffix [for]="fechaEntregaDate"></mat-datepicker-toggle>
+			<mat-datepicker #fechaEntregaDate></mat-datepicker>
+		</mat-form-field>
+	</div>
+	<div class="box4" fxFlex="35%" fxFlex.xs="50%" fxFlex.sm="45%">
+		<mat-form-field fxFlex>
+			<mat-label>Lugar de Entrega</mat-label>
+			<mat-select [(ngModel)]="sucursal">
+				<mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
+					{{ sucursal.descripcion }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+
+	<div class="box4" fxFlex="35%" fxFlex.xs="45%" fxFlex.sm="45%">
+		<button
+			mat-raised-button
+			color="primary"
+			class="boton"
+			(click)="finalizarOc()"
+			mat-tooltip="Finalizar Pedido"
+			[disabled]="mostrarIndicadorCargando || this.carrito.length == 0 || sucursal == null"
+		>
+			Finalizar Pedido
+		</button>
+	</div>
+</div>
+
+<!--     Tabla    -->
+<div class="container4" fxLayout="row" fxLayoutAlign="center">
+	<div class="boxtable mat-elevation-z3 table" fxFlex="70%" fxFlex.xs="95%" fxFlex.sm="90%">
+		<mat-table [dataSource]="productosDataSource" fxFlex fxFlexFill>
+			<ng-container matColumnDef="remove-product">
+				<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+				<mat-cell *matCellDef="let prod">
+					<button mat-icon-button aria-label="Eliminar Producto" (click)="addProducto(prod, 0)">
+						<mat-icon>remove_shopping_cart</mat-icon>
+					</button>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="description">
+				<mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+				<mat-cell *matCellDef="let prod" class="ellipsis"> {{ prod.descripcion }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="cases">
+				<mat-header-cell *matHeaderCellDef> Cantidad del Pedido </mat-header-cell>
+				<mat-cell *matCellDef="let prod">
+					<span class="input-cases">
+						<mat-form-field class="cases-full-width">
+							<input
+								min="0"
+								matInput
+								placeholder=""
+								[(ngModel)]="prod.cantidad"
+								matinput
+								type="number"
+								(change)="actualizarCantidad(prod, $event)"
+							/>
+						</mat-form-field>
+					</span>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="price">
+				<mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
+				<mat-cell *matCellDef="let prod">
+					<ng-container *ngIf="prod.moneda; else SinMoneda">
+						<b>
+							<small matTooltip="	{{ prod.precio | currency: prod.moneda }}">
+								{{ prod.precio | currency: prod.moneda }}
+							</small>
+						</b>
+					</ng-container>
+					<ng-template #SinMoneda>
+						N/D
+					</ng-template>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="units">
+				<mat-header-cell *matHeaderCellDef> Unidades </mat-header-cell>
+				<mat-cell *matCellDef="let prod"> {{ prod.cantidad * prod.nivelMinimoVenta }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="proveedor">
+				<mat-header-cell *matHeaderCellDef fxFlex="8"> </mat-header-cell>
+				<mat-cell *matCellDef="let prod" fxFlex="8" fxLayoutAlign="center center">
+					<img
+						class="example-option-img"
+						aria-hidden
+						[src]="
+							prod?._proveedor?.logoUrl
+								? prod?._proveedor?.logoUrl
+								: './assets/images/no-image-available.png'
+						"
+						width="20px"
+						height="20px"
+						onerror="this.onerror=null; this.src='./assets/images/no-image-available.png';"
+					/>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="cabecera-fila"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+		</mat-table>
+	</div>
+</div>
+
+<!-- <div fxFill fxLayout="column">
+	<mat-progress-bar mode="indeterminate" *ngIf="mostrarIndicadorCargando"></mat-progress-bar>
+	<div fxFlex="60px" fxLayout="row" class="main-bar mat-elevation-z1">
+		<div fxFlex="10" fxLayoutAlign="start center" class="back">
+			<button mat-icon-button routerLink="/pedidos/proveedores">
+				<mat-icon>arrow_back</mat-icon>
+			</button>
+		</div>
+
+		<div fxFlex="80" fxLayoutAlign="center center">
+			<strong>Finalizar pedido</strong>
+		</div>
+	</div>
+
+	<div fxFlex fxLayout="column">
+		<div fxLayout="row wrap" fxLayoutAlign="center center">
+			<h2 *ngIf="!carrito.length || carrito.length === 0">
+				No existen Productos seleccionados
+			</h2>
+		</div>
+		<div *ngIf="carrito.length">
+			<div fxLayout="row" fxLayoutAlign="center center">
+				<div fxFlex="70" fxFlexFill>
+					<mat-form-field fxFlexFill class="title">
+						<textarea
+							autofocus
+							fxFlexFill
+							matTextareaAutosize
+							matAutosizeMinRows="4"
+							matAutosizeMaxRows="4"
+							matInput
+							[placeholder]="'Comentario de Orden de Compra'"
+							[(ngModel)]="comentario"
+						></textarea>
+					</mat-form-field>
+				</div>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="center center">
+				<div fxFlex="70">
+					<div class="contenedor-pedido">
+						<div *ngFor="let proveedor of proveedores | async">
+							<div *ngIf="carritoProveedor(proveedor.id).length">
+								<h2>{{ proveedor.nombre }}</h2>
+								<div class="mat-elevation-z1">
+									<div class="mat-table tableOrden">
+										<div class="mat-header-row">
+											<div class="mat-header-cell mat-column-borrar"></div>
+											<div class="mat-header-cell mat-column-descripcion">Descripción</div>
+											<div class="mat-header-cell mat-column-cantidad">Cant.</div>
+											<div class="mat-header-cell mat-column-precio">Precio</div>
+											<div class="mat-header-cell mat-column-cajacamad">CxC</div>
+											<div class="mat-header-cell mat-column-camadpall">CxP</div>
+											<div class="mat-header-cell mat-column-unidcaja">UP</div>
+											<div class="mat-header-cell mat-column-envcant">CU</div>
+										</div>
+
+										<div *ngFor="let prod of carritoProveedor(proveedor.id); let i = index">
+											<div class="mat-row">
+												<div class="mat-cell mat-column-borrar">
+													<button mat-icon-button (click)="addProducto(prod, 0)">
+														<i class="material-icons">remove_shopping_cart</i>
+													</button>
+												</div>
+												<div class="mat-cell mat-column-descripcion">
+													{{ prod.descripcion }}
+												</div>
+												<div class="mat-cell mat-column-cantidad">
+													<mat-form-field floatPlaceholder="never">
+														<input matInput type="number" [(ngModel)]="prod.cantidad" />
+													</mat-form-field>
+												</div>
+												<div class="mat-cell mat-column-precio">
+													<ng-container *ngIf="prod.moneda; else SinMoneda">
+														<b>
+															<small>
+																{{ prod.precio | currency: prod.moneda }}
+															</small>
+														</b>
+													</ng-container>
+													<ng-template #SinMoneda>
+														N/D
+													</ng-template>
+												</div>
+												<div class="mat-cell mat-column-cajacamad">
+													{{ prod?.pallet?.cajas / prod?.pallet?.camadas | number }}
+												</div>
+												<div class="mat-cell mat-column-camadpall">
+													{{ prod?.pallet?.cajas }}
+												</div>
+												<div class="mat-cell mat-column-unidcaja">
+													{{ prod.nivelMinimoVenta }}
+												</div>
+												<div class="mat-cell mat-column-envcant">
+													{{ prod.precio / prod.cantidad }}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div fxLayout="row" fxLayoutAlign="end center">
+									<div class="subtotal-div">
+										Subtotal USD {{ proveedor.nombre }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${{
+											subtotal(proveedor.id)
+
+}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div fxLayout="row" fxLayoutAlign="center center">
+				<div fxFlex="70" fxLayoutGap="20px" fxLayoutAlign="end center">
+					<mat-form-field (click)="fechaEntregaDate.open()">
+						<input
+							matInput
+							[matDatepicker]="fechaEntregaDate"
+							placeholder="Fecha de Entrega"
+							[formControl]="fechaEntrega"
+						/>
+						<mat-datepicker-toggle matSuffix [for]="fechaEntregaDate"></mat-datepicker-toggle>
+						<mat-datepicker #fechaEntregaDate></mat-datepicker>
+					</mat-form-field>
+					<button mat-raised-button color="primary" (click)="finalizarOc()">Finalizar Pedido</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->

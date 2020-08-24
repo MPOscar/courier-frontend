@@ -1,0 +1,225 @@
+<div ngClass.gt-sm="ordenes-container" ngClass.lt-md="ordenes-container-mobile">
+	<mat-progress-bar mode="indeterminate" *ngIf="mostrarIndicadorCargando"></mat-progress-bar>
+	<div fxFlexFill fxLayout="column">
+		<div fxFlex="calc(100% - 120px)" fxLayout="row">
+			<div fxFlex="20%" fxHide.lt-md="true" class="filtros-div">
+				<button class="button-volver" mat-button routerLink="/pedidos/menu">
+					<mat-icon>arrow_back</mat-icon>
+					Volver
+				</button>
+				<div class="filtrar-titulo">
+					<strong>FILTRAR</strong>
+				</div>
+				<ng-container *ngTemplateOutlet="areaFiltros"></ng-container>
+			</div>
+			<div
+				fxFlex="80%"
+				fxFlex.lt-md="100%"
+				fxFlexFill
+				fxLayout="column"
+				fxLayoutAlign="start stretch"
+				class="no-scroll"
+			>
+				<div>
+					<mat-expansion-panel fxHide.gt-sm="true" style="min-height: 48px;">
+						<mat-expansion-panel-header style="font-size: 16px;">
+							Filtros
+						</mat-expansion-panel-header>
+						<ng-container *ngTemplateOutlet="areaFiltros"></ng-container>
+					</mat-expansion-panel>
+				</div>
+				<div fxFlex="60px" class="filtros-bar" fxLayoutAlign="start center">
+					<label class="chip-filtros-label"><mat-icon>search</mat-icon> </label>
+
+					<mat-form-field class="filtros-chip-list" floatPlaceholder="never">
+						<mat-chip-list #chipList selectable="false">
+							<mat-chip
+								*ngFor="let filter of filtrosActivos; let i = index"
+								removable="true"
+								(removed)="removeFilter(filter)"
+							>
+								{{ filter }}
+								<mat-icon matChipRemove>cancel</mat-icon>
+							</mat-chip>
+
+							<input
+								matInput
+								[matChipInputFor]="chipList"
+								[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+								[matChipInputAddOnBlur]="true"
+								(matChipInputTokenEnd)="addFilter($event)"
+							/>
+						</mat-chip-list>
+					</mat-form-field>
+				</div>
+				<div fxLayout="column" class="scroll">
+					<mat-table
+						fxFlex
+						[dataSource]="dataSource"
+						matSortActive="fecha_envio"
+						matSort
+						multiTemplateDataRows
+					>
+						<ng-container matColumnDef="fecha_envio">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>
+								Fecha Envío
+							</mat-header-cell>
+							<mat-cell *matCellDef="let element">
+								{{ getAsSafariCompatibleDate(element.fechaEstado) | date: 'short' }}
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="de">
+							<mat-header-cell *matHeaderCellDef fxFlex="noshrink">
+								De
+							</mat-header-cell>
+							<mat-cell *matCellDef="let element" fxFlex
+								><span class="ellipsis">{{ element.deRazonSocial }}</span></mat-cell
+							>
+						</ng-container>
+
+						<ng-container matColumnDef="para">
+							<mat-header-cell *matHeaderCellDef fxFlex="30">
+								Para
+							</mat-header-cell>
+							<mat-cell *matCellDef="let element" fxFlex="30"
+								><span class="ellipsis">{{ element.paraRazonSocial }}</span></mat-cell
+							>
+						</ng-container>
+
+						<ng-container matColumnDef="numero">
+							<mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15">
+								Número
+							</mat-header-cell>
+							<mat-cell *matCellDef="let element" fxFlex="15">
+								<span class="ellipsis">
+									{{ element.nroOrden }}
+								</span>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="status">
+							<mat-header-cell *matHeaderCellDef fxFlex="15">
+								Status
+							</mat-header-cell>
+							<mat-cell *matCellDef="let element" fxFlex="15">
+								<a>
+									<div *ngIf="element.estado === 1">Recibido por Rondanet</div>
+									<div *ngIf="element.estado === 2">No valido</div>
+									<div *ngIf="element.estado === 3">Via EdiBatch o FTP</div>
+									<div *ngIf="element.estado === 5">Recibido por destinatario</div>
+									<div *ngIf="element.estado === 6">Via externa (Easymail)</div>
+									<div *ngIf="element.estado === 7">Archivado por destinatario</div>
+									<div *ngIf="element.estado === 100">Otros. Ver Información</div>
+								</a>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="abrir">
+							<mat-header-cell *matHeaderCellDef class="abrir-button"></mat-header-cell>
+							<mat-cell *matCellDef="let orden" class="abrir-button">
+								<button
+									mat-icon-button
+									[matMenuTriggerFor]="menu"
+									#matMenuTrigger="matMenuTrigger"
+									(click)="matMenuTrigger.openMenu(); $event.stopPropagation()"
+								>
+									<mat-icon>more_vert</mat-icon>
+								</button>
+								<mat-menu #menu="matMenu" [overlapTrigger]="false">
+									<div (mouseleave)="matMenuTrigger.closeMenu()">
+										<button mat-menu-item (click)="descargarOC(orden, 'txt')">
+											<mat-icon>text_format</mat-icon>
+											<span>Texto Plano</span>
+										</button>
+										<button mat-menu-item (click)="descargarOC(orden, 'xml')">
+											<mat-icon>import_export</mat-icon><span>XML</span>
+										</button>
+										<button mat-menu-item (click)="descargarOC(orden, 'EANCOM')">
+											<mat-icon>zoom_out_map</mat-icon> <span>EANCOM</span>
+										</button>
+									</div>
+								</mat-menu>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="detalleOC">
+							<mat-cell *matCellDef="let orden" [attr.colspan]="displayedColumns.length">
+								<div
+									fxFlex
+									fxLayout="column"
+									fxLayoutAlign="start stretch"
+									class="detalle-oc"
+									[@detailExpand]="orden == ordenSeleccionada ? 'expanded' : 'collapsed'"
+								>
+									<div fxLayout="row" fxLayoutAlign="start center" fxHide.gt-sm class="status">
+										<mat-icon>article</mat-icon>
+										<strong>Status:</strong>
+										<div *ngIf="orden.estado === 1">Recibido por Rondanet</div>
+										<div *ngIf="orden.estado === 2">No valido</div>
+										<div *ngIf="orden.estado === 3">Via EdiBatch o FTP</div>
+										<div *ngIf="orden.estado === 5">Recibido por destinatario</div>
+										<div *ngIf="orden.estado === 6">Via externa (Easymail)</div>
+										<div *ngIf="orden.estado === 7">Archivado por destinatario</div>
+										<div *ngIf="orden.estado === 100">Otros. Ver Información</div>
+									</div>
+									<app-oc-detalle fxFlex [orden]="orden"></app-oc-detalle>
+								</div>
+							</mat-cell>
+						</ng-container>
+
+						<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+						<mat-row
+							*matRowDef="let row; columns: displayedColumns"
+							(click)="ordenSeleccionada = row == ordenSeleccionada ? null : row"
+							class="element-row"
+							[class.expanded]="ordenSeleccionada == row"
+						></mat-row>
+						<mat-row *matRowDef="let row; columns: ['detalleOC']" class="fila-detalle-oc"></mat-row>
+					</mat-table>
+
+					<div class="table-no-results" *ngIf="!dataSource?.filteredData.length">
+						No hay órdenes de compra para mostrar.
+					</div>
+				</div>
+
+				<div fxFlex="56px">
+					<footer class="mat-paginator-wrapper">
+						<mat-paginator
+							[length]="dataSource.filteredData.length / 2"
+							[pageIndex]="0"
+							[pageSize]="25"
+							[pageSizeOptions]="[5, 10, 25, 100]"
+						>
+						</mat-paginator>
+					</footer>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #areaFiltros>
+	<div ngClass.gt-sm="filtros">
+		<mat-form-field (click)="startDate.open()">
+			<input matInput [matDatepicker]="startDate" placeholder="Fecha desde" [formControl]="startDateFilter" />
+			<mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+			<mat-datepicker #startDate></mat-datepicker>
+		</mat-form-field>
+
+		<mat-form-field (click)="endDate.open()">
+			<input matInput [matDatepicker]="endDate" placeholder="Fecha hasta" [formControl]="endDateFilter" />
+			<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+			<mat-datepicker #endDate></mat-datepicker>
+		</mat-form-field>
+		<!-- <mat-form-field> // TODO Esto debe ser implementado, pero lleva implementar manejo de los GLN asociados a la Empresa logueada
+							<mat-label mat-tooltip="Mostrar Ordenes Recibidas/Emitidas">Tipo Orden</mat-label>
+							<mat-select [(ngModel)]="tipoOrden" (ngModelChange)="">
+								<mat-option value="">Todas</mat-option>
+								<mat-option value="EMITIDAS">Emitidas</mat-option>
+								<mat-option value="RECIBIDAS">Recibidas</mat-option>
+							</mat-select>
+						</mat-form-field> -->
+	</div>
+</ng-template>

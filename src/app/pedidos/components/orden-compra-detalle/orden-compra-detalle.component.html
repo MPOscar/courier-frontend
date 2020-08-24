@@ -1,0 +1,131 @@
+<div class="container3 top-details">
+	<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start start">
+		<div class="box3" fxFlex>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon1">shopping_cart</mat-icon>
+				<h4>
+					N° Orden: <span>{{ orden.nroOrden }}</span>
+				</h4>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon5">monetization_on</mat-icon>
+				<h5>
+					Moneda:
+					<span> {{ (ordenEDI$ | async)?.oc1.transactionCurrency || 'N/A' }}</span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="box5" fxFlex>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon1">store_mall_directory</mat-icon>
+				<h4>
+					Comprador: <span>{{ orden.deRazonSocial }}</span>
+				</h4>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon5">language</mat-icon>
+				<h5>GLN: {{ orden.deGLN }}</h5>
+			</div>
+		</div>
+		<div class="box6" fxFlex>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon1">location_city</mat-icon>
+
+				<h4 class="ellipsis">
+					Receptor: <span>{{ orden.paraRazonSocial }}</span>
+				</h4>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon5">language</mat-icon>
+				<h5>GLN: {{ orden.paraGLN }}</h5>
+			</div>
+		</div>
+	</div>
+	<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start start">
+		<div class="box8" fxFlex>
+			<p>
+				Fecha Orden: <span>{{ (ordenEDI | async)?.oc1.documentDate }}</span> <br />
+				Fecha Entrega: <span>{{ (ordenEDI | async)?.oc1.requestedDeliveryDate }}</span
+				><br />
+				Fecha Tope: <span>{{ (ordenEDI | async)?.oc1.latestDeliveryDate }}</span>
+			</p>
+		</div>
+
+		<div class="box10" fxFlex>
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<mat-icon class="icon2">room</mat-icon>
+				<h5>
+					Lugar de Entrega:
+					<span> {{ (ordenEDI | async)?.oc1.shipTo_name }}</span>
+				</h5>
+			</div>
+			<h5 class="entrega-gln">GLN: {{ (ordenEDI | async)?.oc1.shipTo_gln }}</h5>
+		</div>
+		<div fxFlex></div>
+	</div>
+</div>
+<div class="container4 container3" fxLayout="row" fxLayoutAlign="center center">
+	<div class="box11" fxFlex>
+		<div fxLayout="row" fxLayoutAlign="center center">
+			<mat-icon class="icon4">comment</mat-icon>
+			<h4>
+				<span>
+					{{ (ordenEDI | async)?.oc1.documentRemarks || 'Orden sin comentario' }}
+				</span>
+			</h4>
+		</div>
+	</div>
+</div>
+<div class="container3" fxLayout="column" fxLayoutAlign="start stretch">
+	<mat-table [dataSource]="dataSource" class="mat-elevation-z4 table">
+		<ng-container matColumnDef="position">
+			<mat-header-cell *matHeaderCellDef> Lin. </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.position }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="gtin">
+			<mat-header-cell *matHeaderCellDef> GTIN </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.gtin }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="description">
+			<mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.description }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="brand">
+			<mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.brand }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="cpp">
+			<mat-header-cell *matHeaderCellDef> CPP </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.cpp }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="orderUnit">
+			<mat-header-cell *matHeaderCellDef> Unidades </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.orderUnit !== '' ? element.orderUnit : '-' }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="cases">
+			<mat-header-cell *matHeaderCellDef> Cantidad del Pedido </mat-header-cell>
+			<mat-cell *matCellDef="let element"> {{ element.cases }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="unitPrice">
+			<mat-header-cell *matHeaderCellDef> Precio Unitario </mat-header-cell>
+			<mat-cell *matCellDef="let element">
+				{{
+					element.unitPrice > 0
+						? (element.unitPrice | currency: (ordenEDI | async)?.oc1.invoicingCurrency)
+						: ''
+				}}
+			</mat-cell>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+		<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+	</mat-table>
+</div>

@@ -1,0 +1,61 @@
+<div fxFill fxLayout="column">
+	<div fxLayout="row" class="nopad">
+		<div fxFlex="100" fxLayout="column">
+			<div fxFlex="60px" class="main-bar mat-elevation-z1" fxLayoutAlign="start center">
+				<div fxFlex="10">
+					<a routerLink="/pedidos/ordenes">
+						<i class="material-icons proveedores-back">arrow_back</i>
+					</a>
+				</div>
+
+				<div fxFlex="80" fxLayoutAlign="center center">
+					<strong class="orden-compra-title">Orden de compra</strong>
+				</div>
+			</div>
+
+			<div>
+				<div fxLayout="row" fxLayoutAlign="center center" *ngIf="!cargando">
+					<div fxFlex="70">
+						<div id="tableOrden" class="mat-table">
+							<div class="mat-header-row">
+								<div class="mat-header-cell mat-column-cpp"></div>
+								<div class="mat-header-cell mat-column-cpp">CPP</div>
+								<div class="mat-header-cell mat-column-descripcion">Descripción</div>
+								<div class="mat-header-cell mat-column-marca">Marca</div>
+								<div class="mat-header-cell mat-column-cantidad">Cant.</div>
+								<div class="mat-header-cell mat-column-precio">Precio</div>
+							</div>
+
+							<div class="mat-elevation-z3">
+								<div *ngFor="let proveedor of productosProveedoresKeys">
+									<div class="mat-row para-row">
+										<div class="mat-cell">{{ proveedor }}</div>
+									</div>
+
+									<div *ngFor="let producto of productosProveedores[proveedor]">
+										<div class="mat-row">
+											<div class="mat-cell mat-column-cpp"></div>
+											<div class="mat-cell mat-column-cpp">{{ producto.cpp }}</div>
+											<div class="mat-cell mat-column-descripcion">
+												{{ producto.descripcion }}
+											</div>
+											<div class="mat-cell mat-column-marca">{{ producto.marca }}</div>
+											<div class="mat-cell mat-column-cantidad">{{ producto.cantidad }}</div>
+											<div class="mat-cell mat-column-precio">{{ producto.precio }}</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="table-no-results" *ngIf="!orden.productosCarrito.length">
+									Esta orden no tiene productos.
+								</div>
+							</div>
+						</div>
+
+						<div class="total-div">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${{ total() }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

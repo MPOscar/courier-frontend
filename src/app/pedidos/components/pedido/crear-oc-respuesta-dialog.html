@@ -1,0 +1,27 @@
+<mat-dialog-content>
+	<main fxFlex fxLayout="column" style="height:300px;overflow:hidden">
+		<header fxFlex="30" fxLayoutAlign="center center">
+			<img fxFlex="25" src="/assets/png/dialog/attention.png" />
+		</header>
+		<section fxLayoutAlign="center center"><h4>Resultado Creación Órdenes de Compra</h4></section>
+		<section fxFlex="70" fxFlexFill fxLayout="column" fxLayoutAlign="center center" style="overflow:auto">
+			<mat-divider></mat-divider>
+			<mat-list>
+				<ng-container *ngFor="let mensaje of mensajes">
+					<mat-list-item>
+						<mat-icon matListAvatar>description</mat-icon>
+						{{ mensaje }}
+					</mat-list-item>
+					<mat-divider matInset></mat-divider>
+				</ng-container>
+			</mat-list>
+		</section>
+	</main>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<footer fxFlex fxLayoutAlign="end center">
+		<button mat-button cdkFocusInitial (click)="onNoClick()" tabindex="-1" matTooltip="Cerrar">
+			Cerrar
+		</button>
+	</footer>
+</mat-dialog-actions>

@@ -1,0 +1,33 @@
+<div class="display-flex" *ngIf="data.messageType == 'Error'">
+	<div class="display-flex">
+		<div class="text-align-justify">
+			<div *ngIf="data.messageTitle; else elseTitle">
+				<p>
+					<b>{{ data.messageTitle | translate }}</b>
+				</p>
+			</div>
+			<ng-template #elseTitle>
+				<p>
+					<b>{{ 'Error' | translate }}</b>
+				</p>
+			</ng-template>
+			{{ data.messageData | translate }}
+		</div>
+	</div>
+</div>
+
+<div class="display-flex" *ngIf="data.messageType == 'Success'">
+	<div class="margin-auto-5px-auto-5px">
+		<mat-icon class="margin-right-10px">check</mat-icon>
+	</div>
+	<div class="display-flex">
+		<div class="text-align-justify">
+			<div *ngIf="data.messageTitle">
+				<p>
+					<b>{{ data.messageTitle | translate }}</b>
+				</p>
+			</div>
+			{{ data.messageData | translate }}
+		</div>
+	</div>
+</div>

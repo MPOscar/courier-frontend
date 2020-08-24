@@ -1,0 +1,43 @@
+.proveedorCard {
+	height: 200px;
+	margin: 15px 0;
+	cursor: pointer;
+	min-width: 300px;
+}
+
+.example-header-image {
+	margin-bottom: 18px;
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 288px;
+	height: 100px;
+}
+
+.cardHeader {
+	display: block !important;
+}
+
+.cardTitle {
+	text-align: center !important;
+}
+
+.title-div {
+	span {
+		font-weight: normal !important;
+		font-size: 1.3rem;
+		color: #3f51b5;
+	}
+}
+
+mat-card img {
+	object-fit: cover;
+	width: 100%;
+	height: 80%;
+}
+
+@media screen and (max-width: 650px) {
+	.title-div span {
+		margin-left: 0px;
+	}
+}

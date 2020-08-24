@@ -1,0 +1,172 @@
+<main
+	fxLayout="column"
+	fxFlexFill
+	fxLayoutAlign="start stretch"
+	[ngStyle]="{ 'min-width.px': 500 }"
+	[ngStyle.md]="{ 'width.px': 500 }"
+	[ngStyle.xs]="{ 'width.px': 350 }"
+	class="no-scroll"
+>
+	<!-- Header Section -->
+	<header fxFlex="60px" class="main-bar mat-elevation-z1">
+		<div fxFlex="10" fxLayoutAlign="start center">
+			<button mat-icon-button (click)="toggleCarrito(false)" matTooltip="Ocultar Carro de Compras">
+				<mat-icon>chevron_right</mat-icon>
+			</button>
+		</div>
+
+		<div fxFlex="80" fxLayoutAlign="center center">
+			<span>Detalle del Pedido</span>
+		</div>
+		<div fxFlex="10" fxFlexFill fxLayoutAlign="center center">
+			<button
+				mat-icon-button
+				matTooltip="Guardar planilla"
+				aria-label="Guardar planilla"
+				(click)="guardarPlanilla()"
+				[disabled]="!carritoDataSource.data.length"
+				[ngClass]="{ disabled: !carritoDataSource.data.length }"
+			>
+				<mat-icon>save</mat-icon>
+			</button>
+		</div>
+		<div fxFlex="10" fxFlexFill fxLayoutAlign="center center">
+			<button
+				mat-icon-button
+				matTooltip="Eliminar todos los Productos del Carrito"
+				aria-label="Eliminar todos los Productos del Carrito"
+				(click)="openEmptyCartDialog()"
+				[disabled]="!carritoDataSource.data.length"
+				[ngClass]="{ disabled: !carritoDataSource.data.length }"
+			>
+				<mat-icon>delete_forever</mat-icon>
+			</button>
+		</div>
+	</header>
+
+	<mat-tab-group #tabGroupProductos (selectedIndexChange)="tabChanged($event)">
+		<ng-container *ngFor="let item of monedas | keyvalue">
+			<mat-tab *ngIf="monedasOrder.indexOf(item.key) > -1">
+				<ng-template mat-tab-label>
+					<span
+						[matBadge]="item.value"
+						matBadgeOverlap="false"
+						matTooltip="Cantidad de Productos {{
+							!!item.key ? 'Cotizados en ' + item.key : ' Sin Precio Disponible'
+						}}"
+					>
+						{{ item.key || 'Sin Precio' }}
+					</span>
+				</ng-template>
+			</mat-tab>
+		</ng-container>
+	</mat-tab-group>
+
+	<section fxFlex fxLayout="column" fxLayoutAlign="start" class="y-scroll">
+		<mat-table
+			fxFlex
+			id="carritoTable"
+			[dataSource]="carritoDataSource"
+			*ngIf="carritoDataSource.filteredData.length"
+		>
+			<ng-container matColumnDef="borrar">
+				<mat-header-cell fxFlex="10" *matHeaderCellDef></mat-header-cell>
+				<mat-cell fxFlex="10" fxLayoutAlign="center center" *matCellDef="let element">
+					<button
+						mat-icon-button
+						(click)="addProducto(element, 0)"
+						matTooltip="Borrar del carrito"
+						matTooltipPosition="above"
+					>
+						<i class="material-icons">remove_shopping_cart</i>
+					</button>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="descripcion">
+				<mat-header-cell fxFlex="40" fxLayoutAlign="start center" *matHeaderCellDef
+					>Descripción</mat-header-cell
+				>
+				<mat-cell fxFlex="30" fxLayoutAlign="start center" *matCellDef="let element">
+					<small>{{ element.descripcion }}</small>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="cantidad">
+				<mat-header-cell fxFlex="18" fxLayoutAlign="center center" *matHeaderCellDef>
+					Cantidad del Pedido
+				</mat-header-cell>
+				<mat-cell fxFlex="18" *matCellDef="let element" fxLayoutAlign="center center">
+					{{ element.cantidad }}
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="unidades">
+				<mat-header-cell fxFlex="18" fxLayoutAlign="center center" *matHeaderCellDef>Unidades</mat-header-cell>
+				<mat-cell fxFlex="18" *matCellDef="let element" fxLayoutAlign="center center">
+					{{ element.cantidad * element.nivelMinimoVenta }}
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="importe">
+				<mat-header-cell fxFlex="24" fxLayoutAlign="center center" *matHeaderCellDef>Importe</mat-header-cell>
+				<mat-cell fxFlex="24" fxLayoutAlign="center center" *matCellDef="let element">
+					<ng-container *ngIf="element.moneda; else SinMoneda">
+						<small>
+							<b>{{ element.precio * element.cantidad | number: '1.0-2' }}</b>
+						</small>
+					</ng-container>
+					<ng-template #SinMoneda>
+						N/D
+					</ng-template>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="carritoDisplayedColumns; sticky: true"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: carritoDisplayedColumns"></mat-row>
+
+			<ng-container matColumnDef="encabezadoProveedor">
+				<mat-cell *matCellDef="let proveedor">
+					<strong>{{ proveedor.nombre }}</strong>
+				</mat-cell>
+			</ng-container>
+		</mat-table>
+
+		<div *ngIf="!carritoDataSource.filteredData.length" class="table-no-results" [@estadoCarrito]="'vacio'">
+			No hay Productos para la Categoría seleccionada.
+		</div>
+	</section>
+
+	<section id="subtotales" fxFlex="64px" fxLayout="column" fxLayoutAlign="end stretch">
+		<mat-toolbar>
+			<mat-toolbar-row fxLayoutAlign="space-between center">
+				<span>
+					<b>Total: </b>
+					<b>
+						<small>{{
+							monedas[monedasOrder[tabGroupProductos.selectedIndex] + 'Total']
+								| currency
+									: monedasOrder[tabGroupProductos.selectedIndex]
+									: monedasOrder[tabGroupProductos.selectedIndex] + ' '
+						}}</small>
+					</b>
+					<span *ngIf="monedasOrder[tabGroupProductos.selectedIndex] == ''">
+						<small>No Disponible</small>
+					</span>
+				</span>
+
+				<button
+					aria-label="Enviar Pedido"
+					mat-raised-button
+					color="primary"
+					routerLink="/pedidos/pedido"
+					[disabled]="!carritoDataSource.data.length || carritoDataSource.data.length === 0"
+					[ngClass]="{ disabled: !carritoDataSource.data.length || carritoDataSource.data.length === 0 }"
+					matTooltip="Finalizar Pedido"
+				>
+					Finalizar Pedido
+				</button>
+			</mat-toolbar-row>
+		</mat-toolbar>
+	</section>
+</main>

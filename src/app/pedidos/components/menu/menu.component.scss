@@ -1,0 +1,91 @@
+.container1 {
+	background-image: url('~assets/images/9.jpg');
+	background-position: center;
+	background-size: cover;
+	height: 190px;
+}
+
+.container2 {
+	margin-top: 40px;
+	background-color: #f9f9f9;
+}
+
+.card1 {
+	background: white;
+	overflow: hidden;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.title-card1 {
+	color: #22197f;
+	text-align: center;
+	font-size: 16px;
+	transition: all 0.3s ease 0s !important;
+}
+.card1 img {
+	transition: 0.4s ease;
+	overflow: hidden;
+	margin-bottom: 25px;
+}
+.card1 img:hover {
+	transform: scale(1.08);
+	-webkit-transition: all 0.4s ease 0s !important;
+	transition: all 0.4s ease 0s !important;
+}
+.card1 img:hover + .title-card1 {
+	color: #f92107;
+	transition: all 0.3s ease 0s !important;
+}
+.title-card1:hover {
+	color: #f92107;
+	transition: all 0.3s ease 0s !important;
+}
+.icon1 {
+	margin-right: 15px;
+	color: #424242;
+	position: relative;
+	top: 4px;
+	font-size: 18px;
+}
+@media screen and (max-width: 1025px) {
+	.title-card1 {
+		font-size: 14px;
+	}
+	.card1 {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	.container1 {
+		height: 180px;
+	}
+	.container2 {
+		margin-top: 30px;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.title-card1 {
+		font-size: 12px;
+	}
+	.icon1 {
+		margin-right: 10px;
+		position: relative;
+		top: 2px;
+		font-size: 14px;
+	}
+	.card1 {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.container1 {
+		height: 100px;
+	}
+	.container2 {
+		margin-top: 20px;
+	}
+}
+
+.box1:hover {
+	cursor: pointer;
+}

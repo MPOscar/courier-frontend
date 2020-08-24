@@ -1,0 +1,70 @@
+<nav mat-tab-nav-bar [backgroundColor]="background" fxHide.lt-md="true">
+	<a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['/catalogo']">
+		Productos
+	</a>
+
+	<a
+		mat-tab-link
+		routerLinkActive
+		#rla2="routerLinkActive"
+		[active]="rla2.isActive"
+		[routerLink]="['/grupos-empresas']"
+	>
+		Grupos de Empresas
+	</a>
+
+	<a mat-tab-link routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive" [routerLink]="['/listas-venta']">
+		Listas de Venta
+	</a>
+
+	<a mat-tab-link routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive" [routerLink]="['/visibilidad']">
+		Visibilidad
+	</a>
+</nav>
+
+<div fxLayout="column" fxLayoutAlign="start" fxHide.gt-sm="true">
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		routerLinkActive
+		#rla="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla.isActive, 'button-active-mobile': rla.isActive }"
+		[routerLink]="['/catalogo']"
+	>
+		Productos
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		routerLinkActive
+		#rla2="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla2.isActive, 'button-active-mobile': rla2.isActive }"
+		[routerLink]="['/grupos-empresas']"
+	>
+		Grupos de Empresas
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		routerLinkActive
+		#rla3="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla3.isActive, 'button-active-mobile': rla3.isActive }"
+		[routerLink]="['/listas-venta']"
+	>
+		Listas de Venta
+	</button>
+
+	<button
+		mat-button
+		fxLayoutAlign=" start"
+		routerLinkActive
+		#rla4="routerLinkActive"
+		[ngClass]="{ 'button-inactive-mobile': !rla4.isActive, 'button-active-mobile': rla4.isActive }"
+		*ngIf="showVisibility"
+		[routerLink]="['/visibilidad']"
+	>
+		Visibilidad
+	</button>
+</div>

@@ -1,0 +1,105 @@
+<div class="listContent">
+	<div id="topRow">
+		<div id="textContainerTopRow">Exportación Personalizada</div>
+		<div id="selectContainerTopRow">
+			<mat-select
+				id="dropdownTopRow"
+				placeholder="Seleccionar Opción"
+				(selectionChange)="changeSelectOption($event.value)"
+				[(ngModel)]="selectedValue"
+			>
+				<mat-option [value]="1">Productos Seleccionados</mat-option>
+				<mat-option [value]="2">Todos los productos</mat-option>
+			</mat-select>
+		</div>
+
+		<div *ngIf="!isTata" id="buttonContainerTopRow">
+			<button mat-raised-button class="exportButton" (click)="exportProducts()">Exportar a Excel</button>
+		</div>
+		<div *ngIf="isTata" id="buttonContainerTopRowTata">
+			<a
+				*ngIf="allProductsLoaded"
+				id="logistica"
+				mat-raised-button
+				class="exportButton"
+				href="http://boxlb-cunaonline-test-catalogo-1765845409.us-east-1.elb.amazonaws.com:8080/wishlist/tataIndividualFull/{{
+					providerId
+				}}"
+				>Exportar Todos Logística</a
+			>
+			<a
+				*ngIf="allProductsLoaded"
+				id="volumetria"
+				mat-raised-button
+				class="exportButton"
+				style="margin-right: 18px;"
+				href="http://boxlb-cunaonline-test-catalogo-1765845409.us-east-1.elb.amazonaws.com:8080/wishlist/tataListFull/{{
+					providerId
+				}}"
+				>Exportar Todos Volumetría</a
+			>
+		</div>
+
+		<div id="cleanContainerTopRow" (click)="clearProducts()" style="cursor: pointer;">Limpiar</div>
+	</div>
+
+	<div id="middleRow">
+		<div id="middleRowTextContainer">
+			Los productos se exportarán en formato excel con el formato por defecto el proveedor seleccionado. <br />
+			Este excel exportará toda la información de los productos.
+		</div>
+	</div>
+
+	<div id="tableContainer">
+		<mat-table fxFlexFill [dataSource]="dataSource" id="wishlistTable">
+			<ng-container matColumnDef="imagen">
+				<mat-header-cell *matHeaderCellDef> Imagen </mat-header-cell>
+				<mat-cell *matCellDef="let item">
+					<img
+						matListAvatar
+						src="{{ appConfig.apiBucket }}{{ item.foto }}"
+						onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';"
+						class="rowImage"
+					/>
+				</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="cpp">
+				<mat-header-cell *matHeaderCellDef> CPP </mat-header-cell>
+				<mat-cell *matCellDef="let item"> {{ item.cpp }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="descripcion">
+				<mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+				<mat-cell *matCellDef="let item"> {{ item.descripcion }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="gtin">
+				<mat-header-cell *matHeaderCellDef> GTIN </mat-header-cell>
+				<mat-cell *matCellDef="let item"> {{ item.gtin }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="marca">
+				<mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
+				<mat-cell *matCellDef="let item"> {{ item.marca }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="linea">
+				<mat-header-cell *matHeaderCellDef> Linea </mat-header-cell>
+				<mat-cell *matCellDef="let item"> {{ item.categoria?.padre?.nombre }} </mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="xx">
+				<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+				<mat-cell *matCellDef="let item">
+					<button mat-raised-button class="quitarButton" (click)="removeFromWishlist(item)">Quitar</button>
+					<button mat-raised-button class="verButton" (click)="goToProductDetail(item)">Ver</button>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			<mat-row *matRowDef="let row; columns: ['descripcion']; when: isExtendedRow" class="darken"> </mat-row>
+		</mat-table>
+	</div>
+</div>

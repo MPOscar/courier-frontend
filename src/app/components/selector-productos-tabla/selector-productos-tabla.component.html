@@ -1,0 +1,121 @@
+<div fxLayout="column" class="x-scroll">
+	<app-searchbar (filtersOut)="handleFilterChange($event)"></app-searchbar>
+
+	<mat-table
+		fxFlex
+		class="tableProducts"
+		[dataSource]="productsDataSource"
+		[fxHide]="productsDataSource?.data?.length === 0"
+	>
+		<ng-container matColumnDef="imagen">
+			<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+			<mat-cell *matCellDef="let item">
+				<img
+					*ngIf="item.foto"
+					matListAvatar
+					src="{{ appConfig.apiBucket }}{{ item.foto }}"
+					onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';"
+					class="rowImage"
+				/>
+				<img *ngIf="!item.foto" matListAvatar src="./assets/images/no-image-available.png" class="rowImage" />
+			</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="cpp">
+			<mat-header-cell *matHeaderCellDef> CPP </mat-header-cell>
+			<mat-cell *matCellDef="let item"> {{ item.cpp }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="descripcion">
+			<mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+			<mat-cell *matCellDef="let item"> {{ item.descripcion }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="gtin">
+			<mat-header-cell *matHeaderCellDef> GTIN </mat-header-cell>
+			<mat-cell *matCellDef="let item"> {{ item.gtin }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="marca">
+			<mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
+			<mat-cell *matCellDef="let item"> {{ item.marca }} </mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="linea">
+			<mat-header-cell *matHeaderCellDef> Linea </mat-header-cell>
+			<mat-cell *matCellDef="let item">
+				{{ item.categoria?.padre?.nombre ? item.categoria?.padre?.nombre : '-' }}
+			</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="checkbox">
+			<mat-header-cell *matHeaderCellDef>
+				<mat-checkbox
+					(change)="$event ? selectAll() : null"
+					[checked]="selection.hasValue() && allProductsSelected()"
+					[indeterminate]="selection.hasValue() && !allProductsSelected()"
+				>
+				</mat-checkbox>
+			</mat-header-cell>
+			<mat-cell *matCellDef="let element">
+				<mat-checkbox
+					(click)="$event.stopPropagation()"
+					(change)="$event ? selectProduct(element) : null"
+					[checked]="selection.isSelected(element)"
+					[indeterminate]="groupIsIndeterminate(element)"
+				>
+				</mat-checkbox>
+			</mat-cell>
+		</ng-container>
+
+		<ng-container matColumnDef="groupName">
+			<mat-cell *matCellDef="let item" [attr.colspan]="displayedColumns.length - 1">
+				{{ item.groupName ? item.groupName : 'Sin línea' }}
+			</mat-cell>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+		<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+		<mat-row *matRowDef="let row; columns: displayedGroupColumns; when: isGroupRow" class="darken"> </mat-row>
+	</mat-table>
+
+	<div>
+		<footer class="footer" [fxHide]="productsDataSource?.data?.length === 0">
+			<mat-paginator
+				#productsPaginator
+				[length]="productsDataSource?.data?.length"
+				[pageIndex]="0"
+				[pageSize]="25"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+	</div>
+
+	<div *ngIf="isEditing && productsDataSource?.data?.length > 0">
+		<button
+			mat-raised-button
+			color="primary"
+			class="add-button"
+			*ngIf="isAddingTable"
+			(click)="addSelectedProducts()"
+		>
+			Agregar Productos
+		</button>
+
+		<button
+			mat-raised-button
+			color="warn"
+			class="add-button"
+			*ngIf="!isAddingTable"
+			(click)="addSelectedProducts()"
+		>
+			Quitar Productos
+		</button>
+	</div>
+</div>
+<div class="table-no-results" [fxHide]="productsDataSource?.data?.length > 0">
+	<span *ngIf="!isAddingTable && isEditing">No hay productos seleccionados</span>
+	<span *ngIf="isAddingTable && isEditing">No hay productos para seleccionar</span>
+	<span *ngIf="!isEditing">No hay productos para la búsqueda</span>
+</div>

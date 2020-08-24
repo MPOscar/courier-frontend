@@ -1,0 +1,21 @@
+<h2 mat-dialog-title *ngIf="dataReceived.title != ''">{{ dataReceived.title }}</h2>
+
+<div mat-dialog-content *ngIf="dataReceived.content != ''">
+	<p>{{ dataReceived.content }}</p>
+</div>
+<ng-container *ngTemplateOutlet="dataReceived.template"></ng-container>
+
+<div mat-dialog-actions fxLayoutAlign="end center" *ngIf="!dataReceived.noButtons">
+	<button mat-button mat-dialog-close *ngIf="!dataReceived.isSingleButton">
+		{{ dataReceived.cancelButtonText }}
+	</button>
+	<button
+		mat-raised-button
+		[disabled]="dataReceived.disabled"
+		[color]="dataReceived.type"
+		[mat-dialog-close]="true"
+		cdkFocusInitial
+	>
+		{{ dataReceived.acceptButtonText }}
+	</button>
+</div>

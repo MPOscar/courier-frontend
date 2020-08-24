@@ -1,0 +1,557 @@
+.save-button {
+	margin: 10px 8px;
+	background-color: #ff6800;
+	color: white;
+	position: relative;
+	display: block;
+	width: auto;
+	float: right;
+	border-radius: 50px;
+	margin-right: 21px;
+}
+
+.productNameAndButton {
+	display: flex !important;
+	align-items: center !important;
+}
+
+.centimetersText {
+	width: 30px;
+	position: relative;
+	float: left;
+	top: 35px;
+	margin-left: -15px;
+}
+
+#topProductContainer {
+	height: 80px;
+	width: 100%;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 80px;
+	font-size: 14px;
+}
+
+#backArrow {
+	float: left;
+	margin-left: 25px;
+	margin-top: 25px;
+	cursor: pointer;
+}
+
+#productImg {
+	position: relative;
+	display: block;
+	float: left;
+	width: 20%;
+	margin-top: 25px;
+	height: 408px;
+	margin-left: 8px;
+}
+
+#formContainer {
+	position: relative;
+	display: block;
+	float: left;
+	width: 77%;
+	margin-left: 20px;
+	margin-top: 25px;
+}
+
+.image {
+	width: 100%;
+}
+
+.nuevoPalletForm {
+	border: 1px solid;
+	border-color: black;
+	background-color: white;
+	height: 270px;
+	position: relative;
+	width: 600px;
+	display: block;
+	margin: 40px auto;
+}
+
+#palletsLeftCol {
+	position: relative;
+	width: 48%;
+	float: left;
+	height: auto;
+}
+#nuevoPalletTopRow {
+	color: #3a62b3;
+	text-decoration: underline;
+	font-weight: 500;
+	font-size: 15px;
+	width: 90%;
+	float: left;
+	margin-top: 12px;
+	margin-left: 16px;
+}
+#palletTitle {
+	float: left;
+}
+#nuevoPalletMiddleRow {
+	position: relative;
+	width: 94%;
+	margin-left: 16px;
+	margin-top: 12px;
+	font-size: 14px;
+	float: left;
+	height: auto;
+}
+#palletMeasurementsContainer {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+#productInfoContainer {
+	width: 96%;
+	margin: 0 auto;
+}
+
+#filtersContainer {
+	padding-left: 50px;
+	padding-top: 10px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.header {
+	margin-top: 15px;
+}
+.filtro-checkbox {
+	.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+		background-color: #3f51b5 !important; // transform: scale(.7) !important;
+	}
+}
+
+#noPacksContainer {
+	margin-top: 40px;
+	text-align: center;
+	font-size: 15px;
+}
+
+#empaquesContainer {
+	position: relative;
+	width: 95%;
+	display: block;
+	margin: 0 auto;
+}
+
+#packsContainer {
+	margin-top: 20px;
+}
+
+#secondPackContainer {
+	margin-top: 35px;
+	position: relative;
+	float: left;
+	width: 100%;
+	bottom: 10px;
+}
+
+#firstPackContainer {
+	position: relative;
+	float: left;
+	width: 100%;
+}
+
+#noBusinessGroupsTextContainer {
+	text-align: center;
+	margin-top: 40px;
+	font-size: 15px;
+}
+
+.clientProductDetailField {
+	width: 99%;
+	pointer-events: none;
+	color: darkgray;
+	font-size: 15px;
+}
+
+#addRemoveButtonContainer {
+	display: none;
+}
+
+#addRemoveButtonContainerDesktop {
+	display: unset;
+}
+
+#productName {
+	display: none;
+}
+
+#productNameAndButton {
+	display: unset;
+}
+
+#desktopProductName {
+	position: relative;
+	display: block;
+	margin: 0 auto;
+	width: 90%;
+}
+
+#addRemoveButtonContainerDesktop {
+	width: 120px;
+	display: block;
+	right: 37px;
+	top: 76px;
+	padding-right: 10px;
+}
+
+.remove-button {
+	margin: 0 auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	background-color: #ff0000;
+	color: white;
+	position: relative;
+	display: block;
+	width: 96%;
+	float: unset;
+	border-radius: 50px;
+}
+
+.add-remove-button {
+	margin-bottom: 10px;
+	margin-top: 10px;
+	background-color: #f37676;
+	color: white;
+	position: relative;
+	display: block;
+	width: 100%;
+	float: unset;
+	border-radius: 8px;
+	height: auto;
+	line-height: 32px;
+	font-size: 13px;
+	padding: 0 8px;
+	height: 34px;
+}
+
+#measurementsContainer {
+	position: relative;
+	width: 100%;
+}
+
+#textMeasurements {
+	position: relative;
+	float: left;
+	line-height: 20px;
+	width: 25%;
+}
+
+#minVentaContainerTopRow {
+	position: relative;
+	width: 99%;
+	height: auto;
+	height: 62px;
+}
+
+#minVentaTopText {
+	position: relative;
+	float: left;
+	margin-top: 28px;
+}
+
+#minVentaField {
+	width: 40px;
+	font-size: 15px;
+	margin-left: 5px;
+	pointer-events: none;
+}
+
+#minVentaContainerBottomRow {
+	width: 99%;
+	color: gray;
+}
+
+#measurementsContainer {
+	position: relative;
+	width: 100%;
+	margin-top: 25px;
+}
+
+.singleMeasurementContainer {
+	position: relative;
+	float: left;
+	width: 30%;
+	margin-left: 10px;
+}
+
+.mobileField {
+	position: relative;
+	width: 95%;
+	margin-top: 10px;
+	margin-bottom: -25px;
+}
+
+.measureImg {
+	float: left;
+}
+
+#singleMeasurementContainerFirst {
+	margin-left: 0px;
+}
+
+#textMeasurements {
+	position: relative;
+	float: left;
+	line-height: 20px;
+	width: 32%;
+	text-decoration: underline;
+}
+
+#blocksMeasurements {
+	position: relative;
+	float: left;
+	width: 80%;
+	height: auto;
+	margin-top: 15px;
+}
+
+.disabledField {
+	pointer-events: none;
+	color: darkgray !important;
+}
+
+.mobileCompleteWidth {
+	width: 30%;
+}
+.empaqueIngresadoContainer {
+	width: 50%;
+	float: left;
+}
+.nuevoEmpaqueForm {
+	position: relative;
+	width: 550px;
+	height: 572px;
+	background-color: #f4f4f4;
+	display: block;
+	margin: 40px auto;
+}
+.empaqueIngresado {
+	border: 1px solid;
+	border-color: black;
+	background-color: white;
+	height: 420px;
+	margin: 40px auto;
+}
+#nuevoEmpaqueTopRow {
+	color: #3a62b3;
+	text-decoration: underline;
+	font-weight: 500;
+	font-size: 15px;
+	width: 90%;
+	float: left;
+	margin-top: 12px;
+	margin-left: 16px;
+}
+::ng-deep .notEditableField {
+	pointer-events: none;
+
+	.mat-form-field-underlinerline {
+		display: none;
+	}
+}
+
+.mobileFormField {
+	width: 100%;
+	margin-bottom: -15px;
+}
+#nuevoEmpaqueMiddleRow {
+	position: relative;
+	width: 94%;
+	margin-left: 16px;
+	margin-top: 12px;
+	font-size: 14px;
+	float: left;
+	height: auto;
+}
+
+#nivelText {
+	width: 250px;
+	height: auto;
+	float: left;
+	text-decoration: underline;
+	font-weight: 500px;
+}
+
+#packMeasurementsText {
+	color: #727272;
+	text-decoration: underline;
+	margin-top: 20px;
+}
+#packMeasurementsContainer {
+	margin-top: 15px;
+}
+
+.measureText {
+	font-size: 14px;
+	margin-left: 5px;
+	width: 40px;
+	top: 18px;
+	float: left;
+}
+
+@media screen and (max-width: 768px) {
+	.mobileFormField {
+		width: 95%;
+	}
+
+	.empaqueIngresado {
+		height: 580px;
+	}
+
+	.nuevoEmpaqueForm {
+		width: 100%;
+	}
+
+	.nuevoEmpaqueForm {
+		margin: 10px auto;
+	}
+	#empaquesContainer {
+		width: 95%;
+	}
+	.empaqueIngresadoContainer {
+		width: 100%;
+		float: left;
+	}
+	#productInfoContainer {
+		position: relative;
+		width: 93%;
+		margin: auto;
+	}
+	.nuevoPalletForm {
+		position: relative;
+		width: 100%;
+		height: 605px;
+	}
+
+	#palletsLeftCol {
+		width: 100%;
+		float: left;
+		height: auto;
+	}
+
+	#backArrow {
+		margin-top: 29px;
+	}
+
+	#productName {
+		display: unset;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 12px;
+	}
+
+	#productNameAndButton {
+		display: none;
+	}
+
+	#productImg {
+		position: relative;
+		width: 100%;
+		margin: auto;
+		margin-top: 25px;
+		height: auto;
+	}
+
+	#formContainer {
+		position: relative;
+		width: 100%;
+		margin: auto;
+		margin-top: 25px;
+	}
+
+	#productInfoSaveButton {
+		margin-right: 0px;
+	}
+
+	#addRemoveButtonContainer {
+		display: unset;
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+		background-color: #f5f5f5;
+		z-index: 2;
+	}
+
+	#addRemoveButtonContainerDesktop {
+		display: none;
+	}
+
+	.remove-button {
+		margin: 0 auto;
+		margin-bottom: 10px;
+		margin-top: 10px;
+		background-color: #ff0000;
+		color: white;
+		position: relative;
+		display: block;
+		width: 96%;
+		float: unset;
+		border-radius: 50px;
+	}
+
+	.add-button {
+		margin: 0 auto;
+		margin-bottom: 10px;
+		margin-top: 10px;
+		background-color: #ff6800;
+		color: white;
+		position: relative;
+		display: block;
+		width: 96%;
+		float: unset;
+		border-radius: 50px;
+	}
+
+	#textMeasurements {
+		width: 35%;
+	}
+
+	.singleMeasurementContainer {
+		width: 26%;
+		margin-left: 8%;
+	}
+
+	#measurementsContainer {
+		bottom: 14px;
+	}
+
+	.mobileCompleteWidth {
+		width: 100%;
+	}
+
+	#minVentaField {
+		width: 50px;
+	}
+	#minVentaTopText {
+	}
+	#textMeasurements {
+		width: 90%;
+	}
+
+	#blocksMeasurements {
+		width: 100%;
+	}
+
+	.centimetersText {
+		width: 20px;
+	}
+
+	.add-button {
+		background-color: #f37676;
+		border-radius: 10px;
+	}
+
+	.remove-button {
+		background-color: #f37676;
+		border-radius: 10px;
+	}
+}

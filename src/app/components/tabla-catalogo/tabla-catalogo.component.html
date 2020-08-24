@@ -1,0 +1,323 @@
+<div fxFlexFill fxLayout="column">
+    <div *ngIf="!catalogoOtros" fxFlex="60px" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px" class="botones-row x-scroll" fxHide.lt-md>
+        <ng-container *ngIf="!deleteMode; else elseDeleteMode">
+            <button *ngIf="canEdit" color="primary" mat-button (click)="goToCreateProduct()">
+				<mat-icon>add</mat-icon>
+				Nuevo Producto
+			</button>
+
+            <button *ngIf="canEdit" color="primary" mat-button (click)="openExcelDialog()">
+				<mat-icon>cloud_upload</mat-icon>
+				Cargar Excel
+			</button>
+
+            <button *ngIf="productos?.length != 0" color="primary" mat-button (click)="exportProducts()">
+				<mat-icon>cloud_download</mat-icon>
+				Descargar Productos
+			</button>
+
+            <button *ngIf="productos?.length != 0 && !deleteMode && canEdit" color="primary" mat-button [matMenuTriggerFor]="deleteMenu">
+				<mat-icon>delete_forever</mat-icon>
+				Eliminar Productos
+			</button>
+
+            <mat-menu #deleteMenu="matMenu">
+                <button mat-menu-item (click)="deleteMode = !deleteMode; enableDeleteSelect()">
+					<mat-icon>playlist_add_check</mat-icon>Selección
+				</button>
+                <button mat-menu-item (click)="openDeleteExcelDialog()"><mat-icon>description</mat-icon>Excel</button>
+            </mat-menu>
+        </ng-container>
+
+        <ng-template #elseDeleteMode>
+            <button mat-button color="primary" (click)="deleteMode = !deleteMode; cancelDeleteSelect()">
+				<mat-icon>cancel</mat-icon>
+				Cancelar
+			</button>
+
+            <button mat-button color="warn" (click)="deleteSelectedProducts()">
+				<mat-icon>delete_forever</mat-icon>
+				Eliminar Seleccionados
+			</button>
+        </ng-template>
+    </div>
+
+    <div fxFlex="60px" fxLayoutAlign="start center" class="filtros-row">
+        <label class="chip-filtros-label">
+			<mat-icon>search</mat-icon>
+		</label>
+
+        <mat-form-field class="filtros-chip-list" floatLabel="never">
+            <mat-chip-list #chipList>
+                <mat-chip *ngFor="let filter of selectedFilters; let i = index" [removable]="true" (removed)="removeFilter(filter)">
+                    {{ filter }}
+                    <mat-icon matChipRemove>cancelar</mat-icon>
+                </mat-chip>
+
+                <input matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addFiltro($event)" />
+            </mat-chip-list>
+        </mat-form-field>
+
+        <div fxHide.gt-sm>
+            <button mat-icon-button [matMenuTriggerFor]="utilsMenu">
+				<mat-icon>more_vert</mat-icon>
+			</button>
+            <mat-menu #utilsMenu="matMenu">
+                <button *ngIf="canEdit" mat-menu-item (click)="goToCreateProduct()">
+					<mat-icon>add</mat-icon>
+					Nuevo Producto
+				</button>
+
+                <button *ngIf="canEdit" mat-menu-item (click)="openExcelDialog()">
+					<mat-icon>cloud_upload</mat-icon>
+					Cargar Excel
+				</button>
+
+                <button *ngIf="canEdit" mat-menu-item (click)="openExcelLaboratorioDialog()">
+					<mat-icon>cloud_upload</mat-icon>
+					Excel Laboatorio
+				</button>
+
+                <button *ngIf="productos?.length != 0" mat-menu-item (click)="exportProducts()">
+					<mat-icon>cloud_download</mat-icon>
+					Descargar Productos
+				</button>
+
+                <button *ngIf="productos?.length != 0 && !deleteMode && canEdit" mat-menu-item [matMenuTriggerFor]="deleteMenuMobile">
+					<mat-icon>delete_forever</mat-icon>
+					Eliminar Productos
+				</button>
+            </mat-menu>
+            <mat-menu #deleteMenuMobile="matMenu">
+                <button mat-menu-item (click)="deleteMode = !deleteMode; enableDeleteSelect()">
+					<mat-icon>playlist_add_check</mat-icon>Selección
+				</button>
+                <button mat-menu-item (click)="openDeleteExcelDialog()"><mat-icon>description</mat-icon>Excel</button>
+            </mat-menu>
+        </div>
+    </div>
+
+    <div *ngIf="deleteMode" fxHide.gt-sm fxLayoutAlign="center center">
+        <button mat-button color="primary" (click)="deleteMode = !deleteMode; cancelDeleteSelect()">
+			<mat-icon>cancel</mat-icon>
+			Cancelar
+		</button>
+
+        <button mat-button color="warn" (click)="deleteSelectedProducts()">
+			<mat-icon>delete_forever</mat-icon>
+			Eliminar Seleccionados
+		</button>
+    </div>
+
+    <div fxFlex fxLayout="column" class="scroll" fxHide.lt-md [fxHide]="!dataSource?.renderedData.length">
+        <mat-table fxFlex #tablaProductos id="tablaProductos" [ngClass]="{ loading: loading }" [dataSource]="dataSource" matSort matSortActive="descripcion" matSortDirection="asc">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell fxLayoutAlign="center center" *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cpp">
+                <mat-header-cell *matHeaderCellDef mat-sort-header (click)="resetearProductoDetalle()">
+                    CPP
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"><span>{{ element.cpp }}</span></mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="descripcion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header (click)="resetearProductoDetalle()">
+                    Descripción
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" [matTooltip]="element.descripcion" matTooltipShowDelay="1000">
+                    <span>
+						{{ element.descripcion }}
+					</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="marca">
+                <mat-header-cell *matHeaderCellDef mat-sort-header (click)="resetearProductoDetalle()">
+                    Marca
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" [matTooltip]="element.marca" matTooltipShowDelay="1000">
+                    <span>{{ element.marca }}</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="division">
+                <mat-header-cell *matHeaderCellDef mat-sort-header (click)="resetearProductoDetalle()">
+                    División
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" [matTooltip]="element.categoria?.nombre" matTooltipShowDelay="1000">
+                    <span>
+						{{ element.categoria?.nombre }}
+					</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="linea">
+                <mat-header-cell *matHeaderCellDef mat-sort-header (click)="resetearProductoDetalle()">
+                    Línea
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" [matTooltip]="element.categoria?.padre?.nombre" matTooltipShowDelay="1000">
+                    <span>
+						{{ element.categoria?.padre?.nombre }}
+					</span>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns; let rowInd = index" (click)="detallesProducto(row); detallesRow = rowInd; deleteMode ? selection.toggle(row) : ''" [ngClass]="{ 'detalles-row': detallesRow == rowInd }"></mat-row>
+        </mat-table>
+    </div>
+
+    <div fxFlex class="table-no-results" *ngIf="!dataSource?.renderedData.length">
+        <p *ngIf="!loaderVisible">
+            No hay productos para mostrar.
+        </p>
+    </div>
+
+    <div fxFlex *ngIf="screenWidth < 959">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="mobile-topbar-tools" *ngIf="dataSource?.renderedData.length">
+            <mat-slide-toggle [(ngModel)]="panelOpenState" color="primary">
+                Expandir todos
+            </mat-slide-toggle>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div *ngIf="mobileSortAsc !== undefined">
+                    <mat-icon *ngIf="mobileSortAsc" class="mobile-sort-arrow">arrow_upward</mat-icon>
+                    <mat-icon *ngIf="!mobileSortAsc" class="mobile-sort-arrow">arrow_downward</mat-icon>
+                </div>
+                <button mat-icon-button aria-label="Sort" (click)="sortMobile()">
+					<mat-icon [class.mobile-sort-icon]="mobileSortAsc">sort</mat-icon>
+				</button>
+                <button mat-icon-button [matMenuTriggerFor]="sortMenu">
+					<mat-icon>tune</mat-icon>
+				</button>
+                <mat-menu #sortMenu="matMenu">
+                    <div fxLayout="column" class="sort-menu">
+                        Ordenar por:
+                        <mat-radio-group [(ngModel)]="mobileSortCPP" (change)="sortMobile()" fxLayout="column">
+                            <mat-radio-button color="primary" [value]="true">CPP</mat-radio-button>
+                            <mat-radio-button color="primary" [value]="false">Descripción</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </mat-menu>
+            </div>
+        </div>
+        <mat-checkbox *ngIf="deleteMode" class="mobile-topbar-checkbox" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()"><span>Seleccionar todos los productos</span></mat-checkbox>
+
+        <div *ngFor="let producto of dataSource?.filteredData">
+            <div class="panel-producto">
+                <mat-expansion-panel [expanded]="panelOpenState">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ producto?.descripcion }}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" (click)="goToProductDetail(producto.id)">
+                        <mat-checkbox *ngIf="deleteMode" class="mobile-delete-checkbox" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(producto) : null" [checked]="selection.isSelected(producto)" [aria-label]="checkboxLabel(producto)">
+                        </mat-checkbox>
+                        <div *ngIf="producto?.foto">
+                            <img class="imagen-producto" src="{{ config?.apiBucket }}{{ producto?.foto }}" onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';" />
+                        </div>
+                        <div *ngIf="!producto?.foto">
+                            <img class="imagen-producto" src="./assets/images/no-image-available.png" />
+                        </div>
+                        <div class="datos-panel-producto">
+                            <p fxLayout="row" fxLayoutAlign="start center">
+                                Marca: <br />
+                                <strong>{{ producto?.marca | uppercase }}</strong>
+                            </p>
+                            <p fxLayout="row" fxLayoutAlign="start center">
+                                GTIN: <br />
+                                <strong>{{ producto?.gtin }}</strong>
+                            </p>
+                            <p fxLayout="row" fxLayoutAlign="start center">
+                                CPP: <br />
+                                <strong>{{ producto?.cpp }} </strong>
+                            </p>
+
+                            <p fxLayout="row wrap" fxLayoutAlign="start center">
+                                Presentación: <br />
+                                <strong>{{ (producto?.presentacion | presentacion | async)?.nombre }}</strong>
+                            </p>
+                            <p fxLayout="row" fxLayoutAlign="start center">
+                                Contenido neto: <br />
+                                <strong>{{ producto?.contenidoNeto }} {{ producto?.unidadMedida | uppercase }}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+
+    <div fxFlex="56px" [fxHide]="!dataSource?.renderedData.length">
+        <footer>
+            <mat-paginator #paginator [length]="productLength" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]" (page)="cambiarPagina()">
+            </mat-paginator>
+        </footer>
+    </div>
+</div>
+
+<ng-template #exportDialogTemplate>
+    <div style="margin-bottom: 20px;">Seleccione el formato deseado</div>
+    <mat-form-field>
+        <mat-label>Empresa seleccionada</mat-label>
+        <mat-select [(value)]="selectedExportType">
+            <mat-option *ngFor="let business of businessesExportType" [value]="business.id">
+                {{ business.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</ng-template>
+
+<ng-template #excelDeleteTemplate>
+    <div class="dialog-content">
+        <h1 mat-dialog-title fxLayoutAlign="space-between center">
+            Excel eliminación masiva
+            <button mat-button color="primary" (click)="fileInput.click()">Seleccionar</button>
+        </h1>
+
+        <div mat-dialog-content>
+            <div class="form-group">
+                <input (change)="uploadedDeleteExcel($event)" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" #fileInput hidden />
+            </div>
+
+            <div class="filename-div">
+                <div *ngIf="excelDeleteFile; else emptyFile">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <span>{{ excelDeleteFile.name }} ({{ excelDeleteFile.size / 1024 | number: '1.2-2' }} KB)</span>
+                </div>
+                <ng-template #emptyFile>
+                    <div class="empty-file">
+                        Ningún archivo cargado.
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayout.xs="column" style="margin-top:10px" fxLayoutAlign="space-between center">
+            <a id="sampleButton" href="/assets/Excel_Eliminacion_Catalogo.xlsx" download mat-button>Descargar Excel de Muestra</a
+			>
+
+			<div fxLayoutAlign="end center" fxLayoutGap="10px">
+				<button mat-button mat-dialog-close>Cancelar</button>
+				<mat-spinner-button
+					[options]="progressButtonOptions"
+					(click)="readAsJson()"
+					mat-dialog-close
+					matFocusInitial
+				>
+				</mat-spinner-button>
+			</div>
+		</div>
+	</div>
+</ng-template>

@@ -1,0 +1,6 @@
+<div *ngFor="let supermercado of supermarkets" class="supermarketRow">
+	<div class="supermarketContent">
+		{{ supermercado.nombre }}
+	</div>
+	<button mat-button class="editButton" (click)="showSupermarket(supermercado)">Editar</button>
+</div>

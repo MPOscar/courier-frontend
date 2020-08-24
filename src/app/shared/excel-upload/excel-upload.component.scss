@@ -1,0 +1,30 @@
+.filename-div {
+	mat-icon {
+		vertical-align: middle;
+	}
+	span {
+		font-size: 1.3em;
+	}
+}
+.empty-file {
+	font-style: italic;
+	color: grey;
+	min-height: 200px;
+}
+.uploadfilecontainer {
+	width: 90%;
+	margin: 10px auto;
+	border: 2px dashed #1c8adb;
+	border-radius: 10px;
+	min-height: 200px;
+	max-height: 60vh;
+	overflow: auto;
+}
+
+#sampleButton {
+	margin-bottom: 5px;
+}
+
+.padding-left-10px {
+	padding-left: 10px !important;
+}

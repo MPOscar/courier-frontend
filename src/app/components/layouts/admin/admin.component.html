@@ -1,0 +1,121 @@
+<mat-drawer-container class="example-container" style="height: 100%;">
+	<mat-drawer #drawer style="width:75%;">
+		<div id="ProveedoresTitle" class="sideMenuButton" style="font-style: italic; font-weight: bold;">Usuarios</div>
+		<button
+			mat-button
+			*ngIf="selectedCrearUsuario"
+			class="sideMenuButton"
+			(click)="goToCreateUser(); drawer.toggle()"
+			style="background-color: darkgray;"
+		>
+			<div>Crear Usuario</div>
+		</button>
+		<button
+			mat-button
+			*ngIf="!selectedCrearUsuario"
+			class="sideMenuButton"
+			(click)="goToCreateUser(); drawer.toggle()"
+			style="background-color: white;"
+		>
+			<div>Crear Usuario</div>
+		</button>
+		<button
+			mat-button
+			*ngIf="selectedListarUsuarios"
+			class="sideMenuButton"
+			(click)="goToListUsers(); drawer.toggle()"
+			style="background-color: darkgray;"
+		>
+			<div>Listar Usuarios</div>
+		</button>
+		<button
+			mat-button
+			*ngIf="!selectedListarUsuarios"
+			class="sideMenuButton"
+			(click)="goToListUsers(); drawer.toggle()"
+			style="background-color: white;"
+		>
+			<div>Listar Usuarios</div>
+		</button>
+
+		<div id="EmpresasTitle" class="sideMenuButton" style="font-style: italic; font-weight: bold;">Empresas</div>
+		<button
+			mat-button
+			*ngIf="selectedCreateEmpresas"
+			class="sideMenuButton"
+			(click)="goToCreateBusiness(); drawer.toggle()"
+			style="background-color: darkgray;"
+		>
+			<div>Crear Empresa</div>
+		</button>
+		<button
+			mat-button
+			*ngIf="!selectedCreateEmpresas"
+			class="sideMenuButton"
+			(click)="goToCreateBusiness(); drawer.toggle()"
+			style="background-color: white;"
+		>
+			<div>Crear Empresa</div>
+		</button>
+		<button
+			mat-button
+			*ngIf="selectedEditarEmpresas"
+			class="sideMenuButton"
+			(click)="goToEditBusinesses(); drawer.toggle()"
+			style="background-color: darkgray;"
+		>
+			<div>Editar Empresa</div>
+		</button>
+		<button
+			mat-button
+			*ngIf="!selectedEditarEmpresas"
+			class="sideMenuButton"
+			(click)="goToEditBusinesses(); drawer.toggle()"
+			style="background-color: white;"
+		>
+			<div>Editar Empresa</div>
+		</button>
+	</mat-drawer>
+	<mat-drawer-content>
+		<div fxFlexFill fxLayout="column">
+			<mat-toolbar class="mat-elevation-z2" fxFlex="64px">
+				<button id="burgerIcon" mat-icon-button (click)="drawer.toggle()">
+					<mat-icon>menu</mat-icon>
+				</button>
+				<img id="topImage" src="/assets/images/logoRondanet.svg" height="50%" />
+
+				<button id="topNavBarFirstButton" mat-button class="desktopMenuOption" (click)="goToUsers()">
+					<div *ngIf="selectedUsuarios" style="font-weight:bold; text-decoration:underline;">Usuarios</div>
+					<div *ngIf="!selectedUsuarios">Usuarios</div>
+				</button>
+
+				<button mat-button class="desktopMenuOption" (click)="goToBusinesses()">
+					<div *ngIf="selectedEmpresas" style="font-weight:bold; text-decoration:underline;">Empresas</div>
+					<div *ngIf="!selectedEmpresas">Empresas</div>
+				</button>
+
+				<span class="toolbar-spacer"></span>
+
+				<mat-menu #appMenu="matMenu">
+					<button mat-menu-item>
+						<mat-icon>account_circle</mat-icon>
+						<span>Perfil</span>
+					</button>
+
+					<button mat-menu-item (click)="logout()">
+						<mat-icon>exit_to_app</mat-icon>
+						<span>Logout</span>
+					</button>
+				</mat-menu>
+
+				<button mat-icon-button [matMenuTriggerFor]="appMenu">
+					<mat-icon>account_circle</mat-icon>
+				</button>
+			</mat-toolbar>
+
+			<div>
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</mat-drawer-content>
+</mat-drawer-container>

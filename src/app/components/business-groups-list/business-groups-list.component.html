@@ -1,0 +1,76 @@
+<div [ngClass]="groupService.showGroupEdit == true ? 'groupListHidden' : 'groupList'">
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h2>Grupos de Empresas</h2>
+
+		<mat-spinner-button
+			*ngIf="groupService.showList && showCreateBusinessGroups"
+			[options]="progressButtonOptions"
+			(click)="showCreate()"
+			matFocusInitial
+		></mat-spinner-button>
+	</div>
+	<div class="tableDiv">
+		<mat-table
+			fxFlexFill
+			#tableGroups
+			[dataSource]="dataSource"
+			matSort
+			matSortActive="nombre"
+			matSortDirection="asc"
+		>
+			<ng-container matColumnDef="nombre">
+				<mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+				<mat-cell *matCellDef="let element">{{ element.nombre }}</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="descripcion">
+				<mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</mat-header-cell>
+				<mat-cell *matCellDef="let element">{{ element.descripcion }}</mat-cell>
+			</ng-container>
+
+			<ng-container matColumnDef="quitar">
+				<mat-header-cell *matHeaderCellDef></mat-header-cell>
+				<mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+					<button
+						*ngIf="canEdit"
+						mat-icon-button
+						[matMenuTriggerFor]="appMenu"
+						(click)="$event.stopPropagation()"
+					>
+						<mat-icon>more_vert</mat-icon>
+					</button>
+
+					<mat-menu #appMenu="matMenu">
+						<button mat-menu-item (click)="editGroup(element)"><mat-icon>edit</mat-icon>Editar</button>
+						<button mat-menu-item (click)="openDeleteDialog(element)">
+							<mat-icon>delete</mat-icon>Eliminar
+						</button>
+					</mat-menu>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+			<mat-row
+				*matRowDef="let row; columns: displayedColumns; let rowInd = index"
+				(click)="watchGroup(row)"
+				[ngClass]="{ 'detalles-row': detallesRow == rowInd }"
+			></mat-row>
+		</mat-table>
+
+		<footer [hidden]="groupsLength <= 5">
+			<mat-paginator
+				#paginator
+				[length]="groupsLength"
+				[pageIndex]="0"
+				[pageSize]="10"
+				[pageSizeOptions]="[5, 10, 25, 100]"
+			>
+			</mat-paginator>
+		</footer>
+
+		<div class="table-no-results" [style.display]="dataSource?.renderedData.length == 0 ? '' : 'none'">
+			No hay grupos de empresas.
+		</div>
+	</div>
+</div>

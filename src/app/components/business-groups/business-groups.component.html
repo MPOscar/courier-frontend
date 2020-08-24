@@ -1,0 +1,37 @@
+<div fxFlexFill fxLayout="column">
+	<h2>Crear Grupo de Empresas</h2>
+
+	<form fxLayout="column" [formGroup]="form">
+		<mat-form-field>
+			<input matInput placeholder="Nombre del grupo" formControlName="name" required />
+		</mat-form-field>
+
+		<mat-form-field>
+			<textarea
+				matInput
+				placeholder="Descripción del grupo"
+				formControlName="description"
+				appearance="outline"
+				matTextareaAutosize
+				matAutosizeMinRows="1"
+				matAutosizeMaxRows="5"
+				required
+			></textarea>
+		</mat-form-field>
+	</form>
+	<app-selector-empresas
+		[allElementsIn]="businesses"
+		[selectedElementsIn]="selectedBusinesses"
+		(elementsOut)="handleSelectedBusinessesChange($event)"
+	></app-selector-empresas>
+
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<button mat-button color="warn" (click)="showList()">Cancelar</button>
+
+		<mat-spinner-button
+			[options]="progressButtonOptions"
+			(click)="createGroup()"
+			matFocusInitial
+		></mat-spinner-button>
+	</div>
+</div>

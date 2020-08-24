@@ -1,0 +1,16 @@
+.button-row {
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+@media screen and (max-width: 768px) {
+	::ng-deep .mat-horizontal-content-container {
+		padding: 0 !important;
+	}
+
+	.button-row .mat-button {
+		padding: 0 10px;
+	}
+}

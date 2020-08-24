@@ -1,0 +1,97 @@
+<div ngClass.lt-md="mobile-main-container">
+	<mat-drawer-container ngClass.lt-md="mobile-drawer-container">
+		<mat-drawer #drawer>
+			<div fxLayout="column" fxLayoutAlign=" start">
+				<mat-accordion [displayMode]="flat">
+					<mat-expansion-panel fxFill>
+						<mat-expansion-panel-header
+							[ngClass]="{ 'inactive-mobile': !showMyBusiness, 'active-mobile': showMyBusiness }"
+						>
+							<mat-panel-title> Mi Catálogo </mat-panel-title>
+						</mat-expansion-panel-header>
+						<my-business-bar (click)="drawer.toggle(); doShowMyBusiness()"></my-business-bar>
+					</mat-expansion-panel>
+
+					<mat-expansion-panel fxFill>
+						<mat-expansion-panel-header
+							[ngClass]="{ 'inactive-mobile': !showOtherBusiness, 'active-mobile': showOtherBusiness }"
+						>
+							<mat-panel-title> Otros Catálogos </mat-panel-title>
+						</mat-expansion-panel-header>
+						<other-business-bar (click)="drawer.toggle(); doShowOtherBusiness()"></other-business-bar>
+					</mat-expansion-panel>
+
+					<mat-expansion-panel fxFill>
+						<mat-expansion-panel-header
+							[ngClass]="{ 'inactive-mobile': !showSettings, 'active-mobile': showSettings }"
+						>
+							<mat-panel-title> Ajustes </mat-panel-title>
+						</mat-expansion-panel-header>
+						<settings-bar (click)="drawer.toggle(); doShowSettings()"></settings-bar>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</mat-drawer>
+
+		<mat-drawer-content fxFlexFill>
+			<mat-toolbar id="toolbar-1" class="mat-elevation-z3">
+				<mat-toolbar-row fxFlexFill fxLayout="row" fxLayoutAlign="space-between center">
+					<div fxLayout="row" fxLayoutAlign="start center">
+						<button mat-icon-button fxHide.gt-sm="true" (click)="drawer.toggle()">
+							<mat-icon>menu</mat-icon>
+						</button>
+
+						<img class="logo" src="assets/images/logoRondanet.svg" routerLink="/catalogo" />
+
+						<nav mat-tab-nav-bar [backgroundColor]="background" fxHide.lt-md="true">
+							<a mat-tab-link [active]="activeLink == 0" (click)="changeNavbarPos(0); doShowMyBusiness()">
+								Mi Catálogo
+							</a>
+							<a
+								mat-tab-link
+								[active]="activeLink == 1"
+								(click)="changeNavbarPos(1); doShowOtherBusiness()"
+							>
+								Otros Catálogos
+							</a>
+							<a mat-tab-link [active]="activeLink == 2" (click)="changeNavbarPos(2); doShowSettings()">
+								Ajustes
+							</a>
+						</nav>
+					</div>
+
+					<div fxLayout="row">
+						<div fxLayout="column" fxLayoutAlign="space-around center" fxShow="false" fxHide.gt-sm="false">
+							<div id="business-name">{{ nombreEmpresa }}</div>
+							<div id="user-name">{{ nombreCompleto }}</div>
+						</div>
+
+						<button mat-icon-button matTooltip="Mi&nbsp;cuenta" [matMenuTriggerFor]="menu">
+							<mat-icon>account_circle</mat-icon>
+						</button>
+					</div>
+				</mat-toolbar-row>
+			</mat-toolbar>
+
+			<mat-toolbar id="toolbar-2" class="mat-elevation-z2" fxHide.lt-md="true">
+				<mat-toolbar-row fxFlexFill fxLayoutAlign="start stretch">
+					<my-business-bar *ngIf="showMyBusiness"></my-business-bar>
+					<other-business-bar *ngIf="showOtherBusiness"></other-business-bar>
+					<settings-bar *ngIf="showSettings"></settings-bar>
+				</mat-toolbar-row>
+			</mat-toolbar>
+
+			<mat-menu #menu="matMenu">
+				<a mat-menu-item routerLink="/perfil"> <mat-icon>account_circle</mat-icon>Perfil </a>
+				<a mat-menu-item routerLink="/seleccionar-empresa">
+					<mat-icon>compare_arrows</mat-icon>Cambiar de Empresa
+				</a>
+				<a mat-menu-item routerLink="/login"> <mat-icon>exit_to_app</mat-icon>Logout </a>
+			</mat-menu>
+
+			<div ngClass.gt-sm="main" ngClass.lt-md="main-mobile">
+				<router-outlet></router-outlet>
+			</div>
+		</mat-drawer-content>
+	</mat-drawer-container>
+</div>

@@ -1,0 +1,148 @@
+<div
+	*ngIf="isEmpty && empaquesFormIn?.disabled"
+	class="emptyContainer"
+	fxLayout="column"
+	fxLayoutAlign="space-between center"
+>
+	<mat-icon>error_outline</mat-icon>
+	Este producto no tiene empaques.
+</div>
+<div *ngIf="!isEmpty || empaquesFormIn?.enabled" ngClass.gt-xs="empaques">
+	<button
+		*ngIf="empaquesFormIn?.enabled && empaquesFormIn?.length < 3"
+		id="addPackLevelButton"
+		mat-raised-button
+		color="primary"
+		(click)="addEmpaque()"
+	>
+		<mat-icon>add</mat-icon>
+		Agregar Nivel
+	</button>
+	<div *ngIf="empaquesFormIn?.length > 0">
+		<div *ngFor="let empaque of empaquesFormIn?.controls; let i = index">
+			<div
+				fxLayout.gt-xs="row"
+				fxLayoutAlign.gt-xs="space-between start"
+				fxLayout.lt-sm="column"
+				fxLayoutAlign.lt-sm="start stretch"
+				[formGroup]="empaque"
+				[ngClass]="{ 'not-editing': empaquesFormIn?.disabled }"
+			>
+				<div fxLayout="column" fxLayoutAlign="start stretch" fxFlex.gt-xs="50">
+					<div fxLayout="row" fxLayoutAlign="start center">
+						<h3>Nivel de empaque {{ empaque.controls['nivel'].value }}</h3>
+						<button mat-icon-button (click)="eliminarEmpaque(i)" *ngIf="empaquesFormIn.enabled">
+							<mat-icon>delete_forever</mat-icon>
+						</button>
+					</div>
+					<mat-form-field matTooltip="Código Producto Proveedor" matTooltipShowDelay="1000">
+						<input matInput placeholder="CPP" formControlName="cpp" />
+						<mat-hint *ngIf="empaquesFormIn?.enabled"
+							>Dejar vacío para rellenar con CPP del producto</mat-hint
+						>
+					</mat-form-field>
+					<mat-form-field>
+						<input
+							matInput
+							placeholder="GTIN"
+							formControlName="gtin"
+							[required]="empaquesFormIn.at(i)?.errors?.empaqueFieldRequired"
+						/>
+						<mat-error *ngIf="f(i)?.gtin?.errors?.empaqueFieldRequired">Campo requerido</mat-error>
+						<mat-hint *ngIf="empaquesFormIn.enabled">Campo requerido</mat-hint>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-select
+							placeholder="Presentación"
+							formControlName="clasificacion"
+							[required]="empaquesFormIn.at(i)?.errors?.empaqueFieldRequired"
+						>
+							<div *ngFor="let element of packClasificationTypes">
+								<mat-option [value]="element">{{ element }}</mat-option>
+							</div>
+						</mat-select>
+						<mat-error *ngIf="f(i)?.clasificacion?.errors?.empaqueFieldRequired">Campo requerido</mat-error>
+						<mat-hint *ngIf="empaquesFormIn.enabled">Campo requerido</mat-hint>
+					</mat-form-field>
+					<div fxLayout="row" fxLayoutAlign=" center">
+						<mat-form-field fxFlex="70">
+							<input matInput placeholder="Peso Bruto" formControlName="pesoBruto" />
+							<mat-error *ngIf="f(i)?.pesoBruto?.errors?.pattern">Ingresar número</mat-error>
+						</mat-form-field>
+						<span fxFlex="2"></span>
+						<mat-form-field matToolTip="Unidad Medida Peso Bruto" fxFlex="28">
+							<mat-select placeholder="Unidad" formControlName="unidadMedida">
+								<div *ngFor="let element of weightUnits">
+									<mat-option [value]="element">{{ element }}</mat-option>
+								</div>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<mat-form-field>
+						<input
+							matInput
+							[matTooltip]="cantidadVentaTooltip(i)"
+							[placeholder]="cantidadVentaPlaceholder(i)"
+							formControlName="cantidad"
+							[required]="empaquesFormIn.at(i)?.errors?.empaqueFieldRequired"
+						/>
+						<mat-error *ngIf="f(i)?.cantidad?.errors?.pattern">Ingresar número</mat-error>
+						<mat-error *ngIf="f(i)?.cantidad?.errors?.empaqueFieldRequired">Campo requerido</mat-error>
+						<mat-hint *ngIf="empaquesFormIn.enabled">Campo requerido</mat-hint>
+					</mat-form-field>
+				</div>
+				<div
+					fxLayout.gt-xs="column"
+					fxLayoutAlign.gt-xs="start center"
+					fxLayout.lt-sm="column"
+					fxLayoutAlign.lt-sm="start stretch"
+				>
+					<div id="boxImg" fxLayout="column" fxLayoutAlign.gt-sm="start center" fxHide.lt-sm>
+						<img style="max-width: 100%; max-width: 100%;" src="./assets/images/box.jpg" />
+					</div>
+					<div fxLayout="column" fxLayoutAlign.lt-sm="start stretch" ngClass.gt-xs="medidas-empaque">
+						<div fxLayout="row" fxLayoutAlign="center center">
+							<img
+								class="img-dimensiones"
+								src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/alto.png"
+							/>
+							<mat-form-field fxFlex.gt-xs="65" fxFlex.lt-sm="100">
+								<input matInput placeholder="Alto" formControlName="alto" />
+								<strong matSuffix>CM</strong>
+								<mat-error *ngIf="f(i)?.alto?.errors?.pattern">Ingresar número</mat-error>
+							</mat-form-field>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="center center">
+							<img
+								class="img-dimensiones"
+								src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/ancho.png"
+							/>
+							<mat-form-field fxFlex.gt-xs="65" fxFlex.lt-sm="100">
+								<input matInput placeholder="Ancho" formControlName="ancho" />
+								<strong matSuffix>CM</strong>
+								<mat-error *ngIf="f(i)?.ancho?.errors?.pattern">Ingresar número</mat-error>
+							</mat-form-field>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="center center">
+							<img
+								class="img-dimensiones"
+								src="https://s3.us-east-2.amazonaws.com/rondanet/assets/images/profundidad.png"
+							/>
+							<mat-form-field
+								fxFlex.gt-xs="65"
+								fxFlex.lt-sm="100"
+								matTooltip="Profundidad"
+								matTooltipShowDelay="1000"
+							>
+								<input matInput placeholder="Profundidad" formControlName="profundidad" />
+								<strong matSuffix>CM</strong>
+								<mat-error *ngIf="f(i)?.profundidad?.errors?.pattern">Ingresar número</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+</div>

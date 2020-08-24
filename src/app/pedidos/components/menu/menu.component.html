@@ -1,0 +1,17 @@
+<div class="container1 mat-elevation-z1" fxLayout="row" fxLayoutAlign="space-between"></div>
+<div class="container2" fxLayout="row wrap" fxLayoutGap="3%" fxLayoutAlign="center">
+	<div class="box1" fxFlex="22%" fxFlex.xs="60%" fxFlex.sm="50%">
+		<mat-card class="card1" routerLink="/pedidos/ordenes" (keydown.enter)="goTo(['/pedidos/ordenes'])">
+			<img mat-card-image src="assets/images/4.jpg" />
+			<mat-card-title class="title-card1"><mat-icon class="icon1">info</mat-icon> Listar Pedidos</mat-card-title>
+		</mat-card>
+	</div>
+	<div class="box1" fxFlex="22%" fxFlex.xs="60%" fxFlex.sm="50%">
+		<mat-card class="card1" routerLink="/pedidos/proveedores" (keydown.enter)="goTo(['/pedidos/proveedores'])">
+			<img mat-card-image src="assets/images/2.jpg" />
+			<mat-card-title class="title-card1"
+				><mat-icon class="icon1">shopping_cart</mat-icon>Realizar Pedido</mat-card-title
+			>
+		</mat-card>
+	</div>
+</div>

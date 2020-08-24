@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Login</h2>
+
+<div mat-dialog-content>
+	<form [formGroup]="loginForm" (ngSubmit)="login()" fxLayout="column">
+		<mat-form-field>
+			<input matInput placeholder="Usuario" formControlName="usuario" />
+			<mat-error *ngIf="loginForm.get('usuario')?.invalid">No puede estar vacío.</mat-error>
+		</mat-form-field>
+
+		<mat-form-field>
+			<input
+				matInput
+				placeholder="Contraseña"
+				formControlName="contrasena"
+				[type]="hidePassword ? 'password' : 'text'"
+			/>
+			<mat-icon matSuffix (click)="hidePassword = !hidePassword; $event.stopPropagation()"
+				>{{ hidePassword ? 'visibility' : 'visibility_off' }}
+			</mat-icon>
+			<mat-error *ngIf="loginForm.get('contrasena')?.invalid">No puede estar vacío.</mat-error>
+		</mat-form-field>
+	</form>
+</div>
+<div mat-dialog-actions>
+	<button mat-button color="warn" (click)="logOut()">Cerrar Sesión</button>
+	<button mat-raised-button color="primary" (click)="login()" cdkFocusInitial>Ingresar</button>
+</div>

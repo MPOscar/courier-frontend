@@ -1,0 +1,117 @@
+#welcome {
+	margin-top: 15px;
+	text-align: center;
+}
+
+#buttonDiv {
+	text-align: center;
+}
+
+#productImg {
+	position: relative;
+	/* display: block; */
+	float: left;
+	width: 20%;
+	/* margin-top: 25px; */
+	height: 408px;
+	margin-left: 30px;
+}
+
+.example-container {
+	display: flex;
+	flex-direction: column;
+	float: left;
+	width: 75%;
+}
+.example-container button {
+	margin-top: 20px;
+	height: 50px;
+	margin-bottom: 20px;
+	width: 90%;
+}
+.example-container > * {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.example-container form {
+	margin-bottom: 20px;
+}
+
+.example-container form > * {
+	margin: 5px 0;
+}
+
+.example-container .mat-radio-button {
+	margin: 0 5px;
+}
+#createButton {
+	position: relative;
+	float: right;
+	background-color: #2f6bb9;
+	color: white;
+	margin-right: 4%;
+	width: 200px;
+	border-radius: 10px;
+	margin-top: 20px;
+	height: 40px;
+	margin-bottom: 20px;
+}
+
+#createBusinessTitle {
+	display: none;
+}
+
+#radioButtonsContainer {
+	position: relative;
+	width: 90%;
+	margin: 0 auto;
+	height: auto;
+}
+
+#radioButtonsText {
+	position: relative;
+	width: 100px;
+	float: left;
+}
+
+#radioButtons {
+	position: relative;
+	width: 100px;
+	float: left;
+	margin-left: 5px;
+}
+
+#providerRadioButtonOption {
+	margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+	#productImg {
+		position: relative;
+		width: 100%;
+		margin: auto;
+		margin-top: 25px;
+		height: auto;
+	}
+
+	#createBusinessTitle {
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 35px;
+	}
+
+	#createButton {
+		float: none;
+		margin-right: 0px;
+		width: 90%;
+		margin: 0 auto;
+		display: block;
+		margin-top: 20px;
+	}
+
+	.example-container {
+		font-size: 14px;
+	}
+}

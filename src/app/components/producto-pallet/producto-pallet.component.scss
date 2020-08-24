@@ -1,0 +1,29 @@
+#palletImg {
+	max-width: 400px;
+	max-height: 400px;
+	margin-bottom: 40px;
+}
+@media screen and (max-width: 599px) {
+	#palletImg {
+		max-width: 200px;
+		max-height: 200px;
+		margin-bottom: 20px;
+	}
+}
+.palletizacion {
+	margin-top: 20px;
+}
+.datos-pallet {
+	margin-bottom: 12px;
+}
+.cantidades-pallet {
+	margin-left: 55px;
+}
+.divider-medidas {
+	height: 210px;
+	margin-right: 40px;
+	margin-left: 40px;
+}
+mat-form-field {
+	margin-bottom: 5px;
+}

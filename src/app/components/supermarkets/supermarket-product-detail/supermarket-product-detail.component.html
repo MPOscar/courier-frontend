@@ -1,0 +1,396 @@
+<div *ngIf="showForm">
+	<div id="topProductContainer">
+		<i id="backArrow" class="material-icons" (click)="goBack()"> arrow_back_ios </i>
+		<div id="productName">{{ product.descripcion }}</div>
+
+		<div id="productNameAndButton" class="productNameAndButton">
+			<div id="desktopProductName">{{ product.descripcion }}</div>
+			<div id="addRemoveButtonContainerDesktop">
+				<button
+					*ngIf="!product?.enWishlist"
+					mat-raised-button
+					class="add-remove-button"
+					(click)="addToWishlist(product.id)"
+				>
+					<mat-icon>add</mat-icon>
+					Agregar
+				</button>
+				<button
+					*ngIf="product?.enWishlist"
+					mat-raised-button
+					class="add-remove-button"
+					(click)="removeFromWishlist(product.id)"
+				>
+					<mat-icon>delete</mat-icon>
+					Remover
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<mat-tab-group style="margin-bottom: 42px;">
+		<mat-tab>
+			<ng-template mat-tab-label> Información del producto </ng-template>
+
+			<div id="productInfoContainer">
+				<div id="productImg">
+					<div *ngIf="!product?.foto" style="width: 100%; height: auto;">
+						<img
+							style="max-width: 100%; max-height: 100%;"
+							class="image"
+							src="./assets/images/no-image-available.png"
+						/>
+					</div>
+
+					<div *ngIf="product?.foto" style="width: 100%; height: auto;">
+						<img
+							style="max-width: 100%; max-height: 620px; width: auto; display: block; margin: 0 auto;"
+							class="image"
+							src="{{ appConfig.apiBucket }}{{ product?.foto }}"
+							onerror="this.onerror=null;this.src='./assets/images/no-image-available.png';"
+						/>
+					</div>
+				</div>
+
+				<div id="formContainer">
+					<form style="width: 99%;" class="product-form" [formGroup]="productForm" (ngSubmit)="register()">
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width: 99%;"
+								matInput
+								required
+								placeholder="CPP (Código Producto Proveedor)"
+								formControlName="cpp"
+								[(ngModel)]="product.cpp"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width:99%;"
+								matInput
+								required
+								placeholder="GTIN"
+								formControlName="gtin"
+								[(ngModel)]="product.gtin"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width: 99%;"
+								matInput
+								required
+								placeholder="País de Origen"
+								formControlName="pais"
+								[(ngModel)]="product.paisOrigen"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width: 99%;"
+								matInput
+								required
+								placeholder="Marca"
+								formControlName="marca"
+								[(ngModel)]="product.marca"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width:99%;"
+								matInput
+								required
+								placeholder="División"
+								formControlName="division"
+								[(ngModel)]="product.categoria.nombre"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width:99%;"
+								matInput
+								required
+								placeholder="Linea"
+								formControlName="linea"
+								[(ngModel)]="product.categoria?.padre.nombre"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width:99%;"
+								matInput
+								required
+								placeholder="Presentación"
+								formControlName="presentacion"
+								[ngModel]="(product?.presentacion | presentacion | async)?.nombre"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width:99%;"
+								matInput
+								required
+								placeholder="Contenido Neto"
+								formControlName="contenidoNeto"
+								[(ngModel)]="product.contenidoNeto"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="mobileCompleteWidth disabledField" style="font-size: 15px;">
+							<mat-select
+								placeholder="Unidad Medida Contenido Neto"
+								formControlName="unidadMedidaContenidoNeto"
+							>
+								<div *ngFor="let element of measurementUnits">
+									<mat-option [value]="element">{{ element }}</mat-option>
+								</div>
+							</mat-select>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="clientProductDetailField">
+							<input
+								style="width:99%;"
+								matInput
+								required
+								placeholder="Peso Bruto"
+								formControlName="pesoBruto"
+								[(ngModel)]="product.pesoBruto"
+							/>
+						</mat-form-field>
+						<br />
+						<mat-form-field class="mobileCompleteWidth disabledField" style="font-size: 15px;">
+							<mat-select placeholder="Unidad Medida Peso Bruto" formControlName="unidadMedidaPesoBruto">
+								<div *ngFor="let element of measurementUnits">
+									<mat-option [value]="element">{{ element }}</mat-option>
+								</div>
+							</mat-select>
+						</mat-form-field>
+						<br />
+						<div id="minVentaContainerTopRow">
+							<div id="minVentaTopText">
+								Se vende de a
+								<mat-form-field id="minVentaField">
+									<input
+										style="width:99%;"
+										matInput
+										formControlName="minimoVenta"
+										[(ngModel)]="product.nivelMinimoVenta"
+									/>
+								</mat-form-field>
+								unidades de consumo
+							</div>
+						</div>
+
+						<br />
+						<div id="measurementsContainer">
+							<div id="textMeasurements">Medidas del Producto en Góndola</div>
+							<div id="blocksMeasurements">
+								<div class="singleMeasurementContainer" id="singleMeasurementContainerFirst">
+									<img class="measureImg" src="./assets/images/alto.png" />
+									<mat-form-field class="measureText disabledField">
+										<input
+											matInput
+											required
+											formControlName="alto"
+											placeholder="Alto"
+											[(ngModel)]="product.alto"
+										/>
+									</mat-form-field>
+									<div class="centimetersText">centímetros</div>
+								</div>
+
+								<div class="singleMeasurementContainer">
+									<img class="measureImg" src="./assets/images/ancho.png" />
+									<mat-form-field class="measureText disabledField">
+										<input
+											matInput
+											required
+											formControlName="ancho"
+											placeholder="Ancho"
+											[(ngModel)]="product.ancho"
+										/>
+									</mat-form-field>
+									<div class="centimetersText">centímetros</div>
+								</div>
+
+								<div class="singleMeasurementContainer">
+									<img class="measureImg" src="./assets/images/profundidad.png" />
+									<mat-form-field class="measureText disabledField">
+										<input
+											matInput
+											required
+											formControlName="profundidad"
+											placeholder="Profundidad"
+											[(ngModel)]="product.profundidad"
+										/>
+									</mat-form-field>
+									<div class="centimetersText">centímetros</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</mat-tab>
+
+		<mat-tab>
+			<ng-template mat-tab-label> Empaques </ng-template>
+			<div id="empaquesDiv">
+				<div *ngIf="product.empaques.length == 0" id="noPacksContainer">Este producto no tiene empaques.</div>
+
+				<div id="empaquesContainer">
+					<div *ngFor="let pack of productPacks; let i = index">
+						<div class="empaqueIngresadoContainer">
+							<div class="nuevoEmpaqueForm empaqueIngresado">
+								<div id="nuevoEmpaqueTopRow">
+									<div id="nivelText">Nivel de empaque {{ i + 1 }}</div>
+								</div>
+								<div id="nuevoEmpaqueMiddleRow">
+									<mat-form-field id="cppField" class="notEditableField mobileFormField">
+										<input
+											matInput
+											placeholder="CPP (Código Producto Proveedor)"
+											[(ngModel)]="pack.cpp"
+										/>
+									</mat-form-field>
+									<mat-form-field id="gtinField" class="notEditableField mobileFormField">
+										<input matInput placeholder="GTIN" [(ngModel)]="pack.gtin" />
+									</mat-form-field>
+									<mat-form-field id="weightField" class="notEditableField mobileFormField">
+										<input matInput placeholder="Peso Bruto" [(ngModel)]="pack.pesoBruto" />
+									</mat-form-field>
+									<mat-form-field
+										id="weightMeasureUnitField"
+										class="notEditableField mobileFormField"
+									>
+										<input
+											matInput
+											placeholder="Unidad de medida Peso Bruto"
+											[(ngModel)]="pack.unidadMedida"
+										/>
+									</mat-form-field>
+									<mat-form-field id="quantityField" class="notEditableField mobileFormField">
+										<input
+											matInput
+											*ngIf="i == 0"
+											placeholder="Cantidad por Empaque de la unidad de venta"
+											[(ngModel)]="pack.cantidad"
+										/>
+										<input
+											matInput
+											*ngIf="i != 0"
+											placeholder="Cantidad por Empaque del nivel anterior"
+											[(ngModel)]="pack.cantidad"
+										/>
+									</mat-form-field>
+									<div id="packMeasurementsText">Medidas del Empaque</div>
+									<div id="packMeasurementsContainer">
+										<div class="singleMeasurementContainer" id="singleMeasurementContainerFirst">
+											<img class="measureImg" src="./assets/images/alto.png" />
+											<mat-form-field class="measureText notEditableField">
+												<input matInput placeholder="Alto" [(ngModel)]="pack.alto" />
+											</mat-form-field>
+											<div class="centimetersText">cm</div>
+										</div>
+
+										<div class="singleMeasurementContainer">
+											<img class="measureImg" src="./assets/images/ancho.png" />
+											<mat-form-field class="measureText notEditableField">
+												<input matInput placeholder="Ancho" [(ngModel)]="pack.ancho" />
+											</mat-form-field>
+											<div class="centimetersText">cm</div>
+										</div>
+
+										<div class="singleMeasurementContainer">
+											<img class="measureImg" src="./assets/images/profundidad.png" />
+											<mat-form-field class="measureText notEditableField">
+												<input matInput placeholder="Prof." [(ngModel)]="pack.profundidad" />
+											</mat-form-field>
+											<div class="centimetersText">cm</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-tab>
+
+		<mat-tab>
+			<ng-template mat-tab-label> Palletizacion </ng-template>
+			<div *ngIf="product.pallet == undefined" id="noPacksContainer">Este producto no tiene pallets.</div>
+
+			<div *ngIf="product.pallet != undefined" id="palletsDiv">
+				<div id="palletsLeftCol">
+					<div class="nuevoPalletForm">
+						<div id="nuevoPalletTopRow"><div id="palletTitle">Producto Palletizado</div></div>
+						<div id="nuevoPalletMiddleRow">
+							<div id="palletMeasurementsContainer">
+								<div class="singleMeasurementContainer" id="singleMeasurementContainerFirst">
+									<img class="measureImg" src="./assets/images/alto.png" />
+									<mat-form-field class="measureText notEditableField">
+										<input matInput placeholder="Alto" [(ngModel)]="product.pallet.alto" />
+									</mat-form-field>
+									<div class="centimetersText">cm</div>
+								</div>
+
+								<div class="singleMeasurementContainer">
+									<img class="measureImg" src="./assets/images/ancho.png" />
+									<mat-form-field class="measureText notEditableField">
+										<input matInput placeholder="Ancho" [(ngModel)]="product.pallet.ancho" />
+									</mat-form-field>
+									<div class="centimetersText">cm</div>
+								</div>
+
+								<div class="singleMeasurementContainer">
+									<img class="measureImg" src="./assets/images/profundidad.png" />
+									<mat-form-field class="measureText notEditableField">
+										<input matInput placeholder="Prof." [(ngModel)]="product.pallet.profundidad" />
+									</mat-form-field>
+									<div class="centimetersText">cm</div>
+								</div>
+							</div>
+
+							<mat-form-field id="saleUnitField" class="mobileField notEditableField">
+								<input
+									matInput
+									placeholder="Unidad de Venta/Pallet"
+									[(ngModel)]="product.pallet.unidadesVenta"
+								/>
+							</mat-form-field>
+							<mat-form-field id="boxesField" class="mobileField notEditableField">
+								<input matInput placeholder="Cajas/Pallet" [(ngModel)]="product.pallet.cajas" />
+							</mat-form-field>
+							<mat-form-field id="batchesField" class="mobileField notEditableField">
+								<input matInput placeholder="Nº Camadas/Pallet" [(ngModel)]="product.pallet.camadas" />
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+
+	<div id="addRemoveButtonContainer">
+		<button *ngIf="!product?.enWishlist" mat-raised-button class="add-button" (click)="addToWishlist(product.id)">
+			<mat-icon>add</mat-icon>
+			Agregar
+		</button>
+		<button
+			*ngIf="product?.enWishlist"
+			mat-raised-button
+			class="remove-button"
+			(click)="removeFromWishlist(product.id)"
+		>
+			<mat-icon>delete</mat-icon>
+			Remover
+		</button>
+	</div>
+</div>

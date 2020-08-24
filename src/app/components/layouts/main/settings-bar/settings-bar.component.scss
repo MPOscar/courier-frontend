@@ -1,0 +1,18 @@
+nav {
+	height: 100%;
+	border: 0;
+}
+
+.button-active-mobile {
+	border-left-width: 3px;
+	border-left-style: solid;
+	border-left-color: #2f66b9;
+	margin-left: 0px;
+	width: 100%;
+}
+
+.button-inactive-mobile {
+	margin-left: 3px;
+	opacity: 0.7;
+	width: 100%;
+}

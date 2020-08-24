@@ -1,0 +1,9 @@
+<div fxLayout="column" [ngClass]="{ 'hidden-button': !showButton }">
+	<div id="profileImgContainer" fxLayout="row" fxLayoutAlign="space-around center">
+		<img [src]="imgURL" *ngIf="imgURL" id="profileImg" />
+	</div>
+	<button mat-button color="primary" (click)="file.click($event)" *ngIf="showButton">
+		<mat-icon class="margen-icono-boton">cloud_upload</mat-icon>Subir imagen
+	</button>
+	<input hidden type="file" accept="image/*" (change)="selectFile($event)" #file />
+</div>

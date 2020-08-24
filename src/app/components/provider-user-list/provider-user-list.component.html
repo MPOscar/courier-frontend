@@ -1,0 +1,123 @@
+<div *ngIf="userService.showProviderUserEdit">
+	<provider-user-edit></provider-user-edit>
+</div>
+
+<div [ngClass]="userService.showProviderUserEdit == true ? 'hidden' : ''">
+	<div fxLayout="row" fxLayoutAlign="space-between center">
+		<h2>Usuarios</h2>
+		<button mat-raised-button color="primary" (click)="openCreateDialog()">Invitar Usuario</button>
+	</div>
+	<mat-tab-group>
+		<mat-tab label="Usuarios Confirmados">
+			<div fxLayout="column" class="x-scroll">
+				<mat-table
+					fxFlex
+					#tableUsuarios
+					id="tableUsuarios"
+					[dataSource]="dataSource"
+					matSort
+					matSortActive="nombre"
+					matSortDirection="asc"
+				>
+					<ng-container matColumnDef="nombre">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+						<mat-cell *matCellDef="let element">{{ element.nombre ? element.nombre : '-' }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="apellido">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</mat-header-cell>
+						<mat-cell *matCellDef="let element">{{ element.apellido ? element.apellido : '-' }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="email">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+						<mat-cell *matCellDef="let element">{{ element.email ? element.email : '-' }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="quitar">
+						<mat-header-cell *matHeaderCellDef></mat-header-cell>
+						<mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="end center">
+							<button mat-icon-button [matMenuTriggerFor]="appMenu" (click)="$event.stopPropagation()">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+
+							<mat-menu #appMenu="matMenu">
+								<button mat-menu-item (click)="openEditDialog(element)">Editar usuario</button>
+								<button mat-menu-item (click)="sendPassword(element)">Email reseteo contraseña</button>
+								<button mat-menu-item (click)="openDeleteDialog(element)">
+									Desvincular de la empresa
+								</button>
+							</mat-menu>
+						</mat-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+					<mat-row *matRowDef="let row; columns: displayedColumns; let rowInd = index"></mat-row>
+				</mat-table>
+
+				<div [style.display]="dataSource?.renderedData.length == 0 ? '' : 'none'">No hay usuarios.</div>
+
+				<footer [style.display]="dataSource?.filteredData.length > 5 ? '' : 'none'">
+					<mat-paginator
+						#paginator
+						[length]="dataSource?.filteredData?.length"
+						[pageIndex]="0"
+						[pageSize]="25"
+						[pageSizeOptions]="[5, 10, 25, 100]"
+					>
+					</mat-paginator>
+				</footer>
+			</div>
+		</mat-tab>
+
+		<mat-tab label="Invitaciones Enviadas">
+			<mat-table
+				fxFlexFill
+				#tableInvitations
+				[dataSource]="invitationsDataSource"
+				matSort
+				matSortActive="email"
+				matSortDirection="asc"
+			>
+				<ng-container matColumnDef="invitationEmail">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+					<mat-cell *matCellDef="let element">{{ element.email }}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="invitationQuitar">
+					<mat-header-cell *matHeaderCellDef></mat-header-cell>
+					<mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="end center">
+						<button mat-icon-button [matMenuTriggerFor]="appMenu" (click)="$event.stopPropagation()">
+							<mat-icon>more_vert</mat-icon>
+						</button>
+
+						<mat-menu #appMenu="matMenu">
+							<button mat-menu-item (click)="sendEmail(element)">Volver a enviar email</button>
+							<button mat-menu-item (click)="cancelInvitation(element)">Cancelar invitación</button>
+						</mat-menu>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="invitationDisplayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: invitationDisplayedColumns; let rowInd = index"></mat-row>
+			</mat-table>
+
+			<div [style.display]="invitationsDataSource?.renderedData.length == 0 ? '' : 'none'">
+				No hay invitaciones pendientes.
+			</div>
+
+			<footer [style.display]="invitationsDataSource?.filteredData.length > 5 ? '' : 'none'">
+				<mat-paginator
+					#paginator
+					[length]="invitationsDataSource?.filteredData?.length"
+					[pageIndex]="0"
+					[pageSize]="25"
+					[pageSizeOptions]="[5, 10, 25, 100]"
+				>
+				</mat-paginator>
+			</footer>
+		</mat-tab>
+	</mat-tab-group>
+</div>
